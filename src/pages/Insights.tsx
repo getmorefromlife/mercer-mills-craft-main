@@ -4,6 +4,7 @@ import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading";
+import { marked } from "marked";
 
 interface Post {
   date: string;
@@ -11,6 +12,7 @@ interface Post {
   title: string;
   excerpt: string;
   tags: string[];
+  bodyHtml: string;
 }
 
 function parseFrontmatter(raw: string): { data: Record<string, unknown>; content: string } {
@@ -39,8 +41,9 @@ const posts: Post[] = Object.values(rawPosts).map((raw) => {
     date: (data.date as string) || "",
     readTime: (data.readTime as string) || "",
     title: (data.title as string) || "",
-    excerpt: content,
+    excerpt: content.split("\n\n")[0].replace(/[#*`_~>\[\]()]/g, "").trim(),
     tags: (data.tags as string[]) || [],
+    bodyHtml: marked.parse(content) as string,
   };
 }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
@@ -92,7 +95,7 @@ const Insights = () => {
                   </span>
                 </div>
                 <h2 className="font-serif text-2xl font-bold mb-3">{post.title}</h2>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4">{post.excerpt}</p>
+                <div className="text-muted-foreground text-sm leading-relaxed mb-4 prose prose-invert prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: post.bodyHtml }} />
                 <div className="flex flex-wrap gap-2 mb-4">
                   {post.tags.map((tag) => (
                     <span key={tag} className="px-2.5 py-1 border border-primary/30 rounded text-[10px] font-body font-semibold text-primary uppercase tracking-wider">
