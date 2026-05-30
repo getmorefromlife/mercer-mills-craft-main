@@ -2,6 +2,9 @@ backend:
   name: git-gateway
   branch: main
 
+site_url: https://mercerandmills.com
+display_url: https://mercerandmills.com
+
 media_folder: public/images
 public_folder: /images
 
