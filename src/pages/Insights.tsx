@@ -5,29 +5,27 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading";
 
-const posts = [
-  {
-    date: "May 25, 2026",
-    readTime: "5 min read",
-    title: "Why Founders Need a PMP Lead, Not Another Agency",
-    excerpt: "Most digital agencies operate on a black-box model: you pay a premium, and hope the work gets done. Here's why a PMP-certified lead with a freelance network is a better model for founders.",
-    tags: ["Project Management", "Founder Tips"],
-  },
-  {
-    date: "May 18, 2026",
-    readTime: "4 min read",
-    title: "The Mercer Method: Agile Governance for Creative Production",
-    excerpt: "How we adapted Scrum and PMP governance frameworks for creative workflows — and why it eliminates the chaos most founders experience with creative teams.",
-    tags: ["Methodology", "Agile"],
-  },
-  {
-    date: "May 10, 2026",
-    readTime: "6 min read",
-    title: "From Idea to Launch: A 10-Day Sprint Framework for Digital Products",
-    excerpt: "A breakdown of our 10-Day Quickstart Sprint — how we take a raw concept to a launch-ready digital product in two weeks flat.",
-    tags: ["Product Launch", "Sprint"],
-  },
-];
+import matter from "gray-matter";
+
+interface Post {
+  date: string;
+  readTime: string;
+  title: string;
+  excerpt: string;
+  tags: string[];
+}
+
+const rawPosts = import.meta.glob("/content/posts/*.md", { query: "?raw", import: "default", eager: true }) as Record<string, string>;
+const posts: Post[] = Object.values(rawPosts).map((raw) => {
+  const { data, content } = matter(raw);
+  return {
+    date: (data.date as string) || "",
+    readTime: (data.readTime as string) || "",
+    title: (data.title as string) || "",
+    excerpt: content.trim(),
+    tags: (data.tags as string[]) || [],
+  };
+}).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
 const Insights = () => {
   return (
@@ -36,7 +34,6 @@ const Insights = () => {
         <title>Insights | Mercer &amp; Mills | Digital Production Strategy</title>
         <meta name="description" content="Practical insights on digital production, project management, and product strategy from the Mercer & Mills team." />
       </Helmet>
-      {/* Hero */}
       <section className="py-28 md:py-36">
         <div className="container">
           <motion.div
@@ -57,7 +54,6 @@ const Insights = () => {
         </div>
       </section>
 
-      {/* Posts */}
       <section className="py-20 bg-secondary">
         <div className="container">
           <div className="max-w-4xl mx-auto space-y-8">
@@ -96,7 +92,6 @@ const Insights = () => {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="py-24">
         <div className="container">
           <div className="bg-midnight-gradient border border-border rounded-2xl p-12 md:p-20 text-center shadow-gold-lg max-w-4xl mx-auto">
