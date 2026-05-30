@@ -4,6 +4,7 @@ import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading";
+import LeadMagnet from "@/components/LeadMagnet";
 import { posts } from "@/lib/posts";
 
 const TRUNCATE_LENGTH = 250;
@@ -82,6 +83,12 @@ const Insights = () => {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-secondary">
+        <div className="container max-w-2xl">
+          <LeadMagnet />
         </div>
       </section>
 

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading";
 import TestimonialsSection from "@/components/TestimonialsSection";
+import LeadMagnet from "@/components/LeadMagnet";
 
 const offeredServices = [
   {
@@ -158,11 +159,15 @@ const Services = () => {
         </div>
 
       </div>
-    </section>
+      </section>
 
-    <TestimonialsSection />
+      <section className="py-16 bg-secondary">
+        <div className="container max-w-2xl">
+          <LeadMagnet />
+        </div>
+      </section>
 
-    <section className="py-24">
+      <section className="py-24">
       <div className="container">
         <div className="mt-24 text-center">
           <p className="text-muted-foreground mb-6">Not sure which offer fits? Book a free 20-minute call and we'll figure it out together.</p>

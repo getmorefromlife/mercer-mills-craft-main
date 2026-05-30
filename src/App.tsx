@@ -28,6 +28,7 @@ const FinancialCenter = lazy(() => import("./pages/FinancialCenter"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Insights = lazy(() => import("./pages/Insights"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
+const SprintBlueprint = lazy(() => import("./pages/SprintBlueprint"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -67,6 +68,7 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/insights" element={<Insights />} />
               <Route path="/insights/:slug" element={<BlogPost />} />
+              <Route path="/sprint-blueprint" element={<SprintBlueprint />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
