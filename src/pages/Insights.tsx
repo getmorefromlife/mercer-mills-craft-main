@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading";
 
-import matter from "gray-matter";
-
 interface Post {
   date: string;
   readTime: string;
@@ -15,14 +13,33 @@ interface Post {
   tags: string[];
 }
 
+function parseFrontmatter(raw: string): { data: Record<string, unknown>; content: string } {
+  const data: Record<string, unknown> = {};
+  const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!match) return { data, content: raw.trim() };
+  const lines = match[1].split("\n");
+  let currentKey = "";
+  for (const line of lines) {
+    const arrMatch = line.match(/^\s*-\s*(.+)$/);
+    const keyMatch = line.match(/^(\w+):\s*(.+)$/);
+    if (arrMatch && currentKey && Array.isArray(data[currentKey])) {
+      (data[currentKey] as string[]).push(arrMatch[1].trim());
+    } else if (keyMatch) {
+      currentKey = keyMatch[1];
+      data[currentKey] = keyMatch[2].trim();
+    }
+  }
+  return { data, content: match[2].trim() };
+}
+
 const rawPosts = import.meta.glob("/content/posts/*.md", { query: "?raw", import: "default", eager: true }) as Record<string, string>;
 const posts: Post[] = Object.values(rawPosts).map((raw) => {
-  const { data, content } = matter(raw);
+  const { data, content } = parseFrontmatter(raw);
   return {
     date: (data.date as string) || "",
     readTime: (data.readTime as string) || "",
     title: (data.title as string) || "",
-    excerpt: content.trim(),
+    excerpt: content,
     tags: (data.tags as string[]) || [],
   };
 }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
