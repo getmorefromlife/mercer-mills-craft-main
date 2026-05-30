@@ -26,6 +26,7 @@ const QaumiTaranahCinematic = lazy(() => import("./pages/QaumiTaranahCinematic")
 const FinancialCenter = lazy(() => import("./pages/FinancialCenter"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Insights = lazy(() => import("./pages/Insights"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -63,6 +64,7 @@ const App = () => (
               <Route path="/financial-center" element={<FinancialCenter />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/insights" element={<Insights />} />
+              <Route path="/insights/:slug" element={<BlogPost />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

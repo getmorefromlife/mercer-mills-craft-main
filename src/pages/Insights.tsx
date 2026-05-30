@@ -4,48 +4,16 @@ import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading";
-import { marked } from "marked";
+import { posts } from "@/lib/posts";
 
-interface Post {
-  date: string;
-  readTime: string;
-  title: string;
-  excerpt: string;
-  tags: string[];
-  bodyHtml: string;
+const TRUNCATE_LENGTH = 250;
+const TRUNCATE_HTML_LENGTH = 400;
+
+function truncateHtml(html: string): string | null {
+  if (html.length <= TRUNCATE_HTML_LENGTH) return null;
+  const truncated = html.slice(0, TRUNCATE_LENGTH) + "…";
+  return truncated;
 }
-
-function parseFrontmatter(raw: string): { data: Record<string, unknown>; content: string } {
-  const data: Record<string, unknown> = {};
-  const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-  if (!match) return { data, content: raw.trim() };
-  const lines = match[1].split("\n");
-  let currentKey = "";
-  for (const line of lines) {
-    const arrMatch = line.match(/^\s*-\s*(.+)$/);
-    const keyMatch = line.match(/^(\w+):\s*(.+)$/);
-    if (arrMatch && currentKey && Array.isArray(data[currentKey])) {
-      (data[currentKey] as string[]).push(arrMatch[1].trim());
-    } else if (keyMatch) {
-      currentKey = keyMatch[1];
-      data[currentKey] = keyMatch[2].trim();
-    }
-  }
-  return { data, content: match[2].trim() };
-}
-
-const rawPosts = import.meta.glob("/content/posts/*.md", { query: "?raw", import: "default", eager: true }) as Record<string, string>;
-const posts: Post[] = Object.values(rawPosts).map((raw) => {
-  const { data, content } = parseFrontmatter(raw);
-  return {
-    date: (data.date as string) || "",
-    readTime: (data.readTime as string) || "",
-    title: (data.title as string) || "",
-    excerpt: content.split("\n\n")[0].replace(/[#*`_~>\[\]()]/g, "").trim(),
-    tags: (data.tags as string[]) || [],
-    bodyHtml: marked.parse(content) as string,
-  };
-}).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
 const Insights = () => {
   return (
@@ -77,37 +45,42 @@ const Insights = () => {
       <section className="py-20 bg-secondary">
         <div className="container">
           <div className="max-w-4xl mx-auto space-y-8">
-            {posts.map((post, i) => (
-              <motion.article
-                key={post.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="bg-card border border-border rounded-xl p-8 hover:border-primary/40 transition-colors"
-              >
-                <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground mb-3">
-                  <span className="flex items-center gap-1.5">
-                    <Calendar className="h-3.5 w-3.5" /> {post.date}
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <Clock className="h-3.5 w-3.5" /> {post.readTime}
-                  </span>
-                </div>
-                <h2 className="font-serif text-2xl font-bold mb-3">{post.title}</h2>
-                <div className="text-muted-foreground text-sm leading-relaxed mb-4 prose prose-invert prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: post.bodyHtml }} />
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {post.tags.map((tag) => (
-                    <span key={tag} className="px-2.5 py-1 border border-primary/30 rounded text-[10px] font-body font-semibold text-primary uppercase tracking-wider">
-                      {tag}
+            {posts.map((post, i) => {
+              const truncated = truncateHtml(post.bodyHtml);
+              return (
+                <motion.article
+                  key={post.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.1 }}
+                  className="bg-card border border-border rounded-xl p-8 hover:border-primary/40 transition-colors"
+                >
+                  <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground mb-3">
+                    <span className="flex items-center gap-1.5">
+                      <Calendar className="h-3.5 w-3.5" /> {post.date}
                     </span>
-                  ))}
-                </div>
-                <button className="text-primary text-sm font-body font-semibold hover:underline inline-flex items-center gap-1">
-                  Read More <ArrowRight className="h-3.5 w-3.5" />
-                </button>
-              </motion.article>
-            ))}
+                    <span className="flex items-center gap-1.5">
+                      <Clock className="h-3.5 w-3.5" /> {post.readTime}
+                    </span>
+                  </div>
+                  <h2 className="font-serif text-2xl font-bold mb-3">{post.title}</h2>
+                  <div className="text-muted-foreground text-sm leading-relaxed mb-4 prose prose-invert prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: truncated ?? post.bodyHtml }} />
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {post.tags.map((tag) => (
+                      <span key={tag} className="px-2.5 py-1 border border-primary/30 rounded text-[10px] font-body font-semibold text-primary uppercase tracking-wider">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  {truncated && (
+                    <Link to={`/insights/${post.slug}`} className="text-primary text-sm font-body font-semibold hover:underline inline-flex items-center gap-1">
+                      Read More <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
+                  )}
+                </motion.article>
+              );
+            })}
           </div>
         </div>
       </section>
