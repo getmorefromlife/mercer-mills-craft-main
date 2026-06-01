@@ -1,7 +1,24 @@
-import { defineConfig } from "vite";
+import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { vitePrerenderPlugin } from "vite-prerender-plugin";
+
+function removePrerenderPreload(): Plugin {
+  return {
+    name: "remove-prerender-preload",
+    enforce: "post",
+    generateBundle(_, bundle) {
+      for (const asset of Object.values(bundle)) {
+        if (asset.type === "asset" && asset.fileName.endsWith(".html") && typeof asset.source === "string") {
+          asset.source = asset.source.replace(
+            /<link[^>]*rel="modulepreload"[^>]*href="[^"]*prerender-[^"]*"[^>]*>\n?/g,
+            ""
+          );
+        }
+      }
+    },
+  };
+}
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -20,7 +37,8 @@ export default defineConfig(({ mode }) => ({
       renderTarget: "#root",
       additionalPrerenderRoutes: ["/404"],
     }),
-  ].filter(Boolean),
+    removePrerenderPreload(),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
