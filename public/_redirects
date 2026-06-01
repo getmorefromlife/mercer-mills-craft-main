@@ -1,2 +1,5 @@
-/admin/*    /admin/index.html   200
-/*          /index.html         200
+/portfolio/obsidian-memoir      /portfolio    301
+/portfolio/silverline-chronicles  /portfolio    301
+/portfolio/apex-motion           /portfolio    301
+/admin/*      /admin/index.html   200
+/*            /index.html         200
