@@ -30,6 +30,32 @@ const BlogPost = () => {
       <Helmet>
         <title>{post.title} | Mercer &amp; Mills</title>
         <meta name="description" content={post.excerpt} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://mercerandmills.com/insights/${post.slug}`} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.excerpt} />
+        <meta property="og:image" content="https://mercerandmills.com/og-image.png" />
+        <meta property="og:image:alt" content={`${post.title} — Mercer & Mills`} />
+        <meta property="og:site_name" content="Mercer & Mills" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={`https://mercerandmills.com/insights/${post.slug}`} />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={post.excerpt} />
+        <meta name="twitter:image" content="https://mercerandmills.com/og-image.png" />
+        <meta name="twitter:image:alt" content={`${post.title} — Mercer & Mills`} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": post.title,
+          "description": post.excerpt,
+          "image": "https://mercerandmills.com/og-image.png",
+          "author": { "@type": "Organization", "name": "Mercer & Mills", "url": "https://mercerandmills.com" },
+          "publisher": { "@type": "Organization", "name": "Mercer & Mills", "url": "https://mercerandmills.com" },
+          "url": `https://mercerandmills.com/insights/${post.slug}`,
+          "mainEntityOfPage": { "@type": "WebPage", "@id": `https://mercerandmills.com/insights/${post.slug}` },
+          "datePublished": new Date(post.date).toISOString().split("T")[0],
+          "keywords": post.tags.join(", ")
+        })}</script>
       </Helmet>
       <section className="py-28 md:py-36">
         <div className="container">

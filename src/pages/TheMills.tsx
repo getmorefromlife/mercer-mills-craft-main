@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 import { BookOpen, Palette, Music, BarChart3, GraduationCap, CheckCircle, ArrowRight, Send, Trash2, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -227,6 +228,16 @@ const TheMills = () => {
                   );
                 })}
               </div>
+              {(activeMill.id === "literary" || activeMill.id === "visionary" || activeMill.id === "sonic" || activeMill.id === "structural" || activeMill.id === "academy") && (
+                <div className="lg:col-span-3 mt-4">
+                  <Link
+                    to={activeMill.id === "literary" ? "/services/the-literary-mill" : activeMill.id === "visionary" ? "/services/the-visionary-mill" : activeMill.id === "sonic" ? "/services/the-sonic-mill" : activeMill.id === "structural" ? "/services/the-structural-mill" : "/services/the-academy-mill"}
+                    className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors text-sm font-body font-semibold"
+                  >
+                    View Full Service Page <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              )}
             </div>
           </motion.div>
         </AnimatePresence>

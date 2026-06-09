@@ -29,6 +29,16 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Insights = lazy(() => import("./pages/Insights"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const SprintBlueprint = lazy(() => import("./pages/SprintBlueprint"));
+const TheLiteraryMill = lazy(() => import("./pages/services/TheLiteraryMill"));
+const TheVisionaryMill = lazy(() => import("./pages/services/TheVisionaryMill"));
+const TheSonicMill = lazy(() => import("./pages/services/TheSonicMill"));
+const TheStructuralMill = lazy(() => import("./pages/services/TheStructuralMill"));
+const TheAcademyMill = lazy(() => import("./pages/services/TheAcademyMill"));
+const CourseLaunchBlueprint = lazy(() => import("./pages/guides/CourseLaunchBlueprint"));
+const ProjectScopingTool = lazy(() => import("./pages/guides/ProjectScopingTool"));
+const PodcastLaunchSoundKit = lazy(() => import("./pages/guides/PodcastLaunchSoundKit"));
+const BrandIdentityStarterKit = lazy(() => import("./pages/guides/BrandIdentityStarterKit"));
+const FoundersManuscriptBlueprint = lazy(() => import("./pages/guides/FoundersManuscriptBlueprint"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -69,6 +79,16 @@ const App = () => (
               <Route path="/insights" element={<Insights />} />
               <Route path="/insights/:slug" element={<BlogPost />} />
               <Route path="/sprint-blueprint" element={<SprintBlueprint />} />
+              <Route path="/services/the-literary-mill" element={<TheLiteraryMill />} />
+              <Route path="/services/the-visionary-mill" element={<TheVisionaryMill />} />
+              <Route path="/services/the-sonic-mill" element={<TheSonicMill />} />
+              <Route path="/services/the-structural-mill" element={<TheStructuralMill />} />
+              <Route path="/services/the-academy-mill" element={<TheAcademyMill />} />
+              <Route path="/guides/course-launch-blueprint" element={<CourseLaunchBlueprint />} />
+              <Route path="/guides/project-scoping-tool" element={<ProjectScopingTool />} />
+              <Route path="/guides/podcast-launch-sound-kit" element={<PodcastLaunchSoundKit />} />
+              <Route path="/guides/brand-identity-starter-kit" element={<BrandIdentityStarterKit />} />
+              <Route path="/guides/founders-manuscript-blueprint" element={<FoundersManuscriptBlueprint />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

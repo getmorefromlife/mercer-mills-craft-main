@@ -25,6 +25,17 @@ const QaumiTaranahCinematic = () => {
       <Helmet>
         <title>Qaumi Taranah Cinematic | Portfolio | Mercer &amp; Mills</title>
         <meta name="description" content="A cinematic reimagining of Pakistan&apos;s national anthem — full audio production, mixing, and mastering by Mercer &amp; Mills." />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CreativeWork",
+          "headline": "Qaumi Taranah Cinematic — A Cinematic Reimagining of Pakistan's National Anthem",
+          "description": "A cinematic reimagining of Pakistan's national anthem — full audio production, mixing, and mastering by Mercer & Mills.",
+          "author": { "@type": "Organization", "name": "Mercer & Mills", "url": "https://mercerandmills.com" },
+          "about": "Audio Production",
+          "keywords": "Qaumi Taranah, national anthem, cinematic audio, music production, mixing, mastering",
+          "url": "https://mercerandmills.com/portfolio/qaumi-taranah-cinematic",
+          "datePublished": "2026-05-29"
+        })}</script>
       </Helmet>
       <section className="py-24">
       <div className="container">
@@ -79,6 +90,12 @@ const QaumiTaranahCinematic = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-6 h-6 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                <span className="font-serif text-xs font-bold text-primary">01</span>
+              </span>
+              <span className="font-body text-xs font-semibold text-primary uppercase tracking-wider">Discovery — Project Vision & Scope</span>
+            </div>
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary mb-6">
               The Vision & Historical Context
             </h2>
@@ -111,6 +128,12 @@ const QaumiTaranahCinematic = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-6 h-6 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                <span className="font-serif text-xs font-bold text-primary">02</span>
+              </span>
+              <span className="font-body text-xs font-semibold text-primary uppercase tracking-wider">Sprints — Production Sprint & Quality Gate</span>
+            </div>
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary mb-6">
               Technical & Creative Execution Breakdown
             </h2>
@@ -157,6 +180,12 @@ const QaumiTaranahCinematic = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-6 h-6 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                <span className="font-serif text-xs font-bold text-primary">04</span>
+              </span>
+              <span className="font-body text-xs font-semibold text-primary uppercase tracking-wider">Launch — Final Delivery & Distribution</span>
+            </div>
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary mb-6">
               Project Deliverables Checklist
             </h2>

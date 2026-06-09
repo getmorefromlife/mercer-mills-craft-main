@@ -87,7 +87,7 @@ const Insights = () => {
       </section>
 
       <section className="py-16 bg-secondary">
-        <div className="container max-w-2xl">
+        <div className="container max-w-4xl">
           <LeadMagnet />
         </div>
       </section>

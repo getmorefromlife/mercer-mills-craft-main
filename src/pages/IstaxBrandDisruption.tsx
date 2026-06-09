@@ -24,6 +24,17 @@ const IstaxBrandDisruption = () => {
       <Helmet>
         <title>ISTAX Brand Disruption | Portfolio | Mercer &amp; Mills</title>
         <meta name="description" content="A bold brand disruption strategy for ISTAX — redefining identity through strategic visual storytelling and market positioning by Mercer &amp; Mills." />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CreativeWork",
+          "headline": "ISTAX Brand Disruption — A Bold Brand Disruption Strategy for Pakistan's Premier Tax Consultancy",
+          "description": "A bold brand disruption strategy for ISTAX — redefining identity through strategic visual storytelling and market positioning by Mercer & Mills.",
+          "author": { "@type": "Organization", "name": "Mercer & Mills", "url": "https://mercerandmills.com" },
+          "about": "Brand Disruption",
+          "keywords": "ISTAX, brand disruption, tax consultancy branding, visual storytelling, market positioning",
+          "url": "https://mercerandmills.com/portfolio/istax-brand-disruption",
+          "datePublished": "2026-05-29"
+        })}</script>
       </Helmet>
       <section className="py-24">
       <div className="container">
@@ -60,6 +71,12 @@ const IstaxBrandDisruption = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-6 h-6 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                <span className="font-serif text-xs font-bold text-primary">01</span>
+              </span>
+              <span className="font-body text-xs font-semibold text-primary uppercase tracking-wider">Discovery — How We Scoped the Project</span>
+            </div>
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary mb-6">The Design Challenge</h2>
             <p className="text-muted-foreground leading-relaxed">
               Financial design in South Asia is notoriously saturated with cluttered layouts, uninspired stock photography, and aggressive, unpolished colors. ISTAX required an elite visual language that could live fluidly across two polarized environments: corporate executive boardrooms (demanding stark minimalism and clean trust elements) and digital social feeds (demanding breathtaking visual concepts that command a user to stop scrolling). The visual identity had to immediately communicate premium craftsmanship and flawless professional execution.
@@ -73,6 +90,12 @@ const IstaxBrandDisruption = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="bg-card border border-border rounded-xl p-8 md:p-12"
           >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-6 h-6 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                <span className="font-serif text-xs font-bold text-primary">02</span>
+              </span>
+              <span className="font-body text-xs font-semibold text-primary uppercase tracking-wider">Sprints — Design Sprint Breakdown</span>
+            </div>
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary mb-6">The Creative Masterstroke: The Interlocking Logo</h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
               We engineered the ISTAX brand mark entirely from scratch. The visual signature features an elegant, continuous interlocking geometric line art configuration forming the characters <em>IS</em>. Conceptually, this custom logomark represents the unbreakable mathematical interconnectivity between the two core pillars of financial health: <strong>Income + Tax Compliance</strong>. The fluid lines embody a seamless journey, assuring the client that their revenue and structural legal protections are perfectly balanced and operating in unison.
@@ -88,6 +111,12 @@ const IstaxBrandDisruption = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-6 h-6 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                <span className="font-serif text-xs font-bold text-primary">02</span>
+              </span>
+              <span className="font-body text-xs font-semibold text-primary uppercase tracking-wider">Sprints — Iterative Design & Review</span>
+            </div>
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary mb-6">The Dual-Layer Visual Execution</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-card border border-border rounded-lg p-6">
@@ -111,6 +140,12 @@ const IstaxBrandDisruption = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-6 h-6 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                <span className="font-serif text-xs font-bold text-primary">04</span>
+              </span>
+              <span className="font-body text-xs font-semibold text-primary uppercase tracking-wider">Launch — Delivery & Asset Handoff</span>
+            </div>
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary mb-6">Technical & Collateral Deliverables</h2>
             <ul className="space-y-4">
               {deliverables.map((item) => (

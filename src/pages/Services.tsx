@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { Code, Film, Globe, ArrowRight, CheckCircle, Zap } from "lucide-react";
+import { BookOpen, Palette, Music, BarChart3, GraduationCap, Code, Film, Globe, ArrowRight, CheckCircle, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading";
@@ -132,6 +132,47 @@ const Services = () => {
           ))}
         </div>
 
+        {/* The Five Mills */}
+        <div className="mb-24">
+          <SectionHeading
+            subtitle="Browse by Specialization"
+            title="The Five Mills"
+            description="Each mill is a specialized division with dedicated expertise. Click to explore services, process, and pricing."
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-12">
+            {[
+              { id: "literary", icon: BookOpen, title: "The Literary Mill", subtitle: "Ghostwriting & Publishing", to: "/services/the-literary-mill" },
+              { id: "visionary", icon: Palette, title: "The Visionary Mill", subtitle: "Animation & Design", to: "/services/the-visionary-mill" },
+              { id: "sonic", icon: Music, title: "The Sonic Mill", subtitle: "Music & Soundscapes", to: "/services/the-sonic-mill" },
+              { id: "structural", icon: BarChart3, title: "The Structural Mill", subtitle: "Agile Coaching & PM", to: "/services/the-structural-mill" },
+              { id: "academy", icon: GraduationCap, title: "The Academy Mill", subtitle: "Educational Architecture", to: "/services/the-academy-mill" },
+            ].map((mill) => {
+              const content = (
+                <motion.div
+                  key={mill.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4 }}
+                  className={`bg-card border border-border rounded-xl p-6 text-center h-full hover:border-primary/40 transition-all duration-300 ${mill.to ? "hover:shadow-gold cursor-pointer group" : ""}`}
+                >
+                  <mill.icon className="h-8 w-8 text-primary mx-auto mb-4" />
+                  <h3 className="font-serif text-lg font-bold mb-1">{mill.title}</h3>
+                  <p className="text-muted-foreground text-xs mb-4">{mill.subtitle}</p>
+                  {mill.to ? (
+                    <span className="inline-flex items-center gap-1 text-primary text-xs font-body font-semibold group-hover:gap-2 transition-all">
+                      View Services <ArrowRight className="h-3 w-3" />
+                    </span>
+                  ) : (
+                    <span className="text-muted-foreground/50 text-xs font-body">Coming Soon</span>
+                  )}
+                </motion.div>
+              );
+              return mill.to ? <Link key={mill.id} to={mill.to}>{content}</Link> : content;
+            })}
+          </div>
+        </div>
+
         {/* Process Overview */}
         <SectionHeading subtitle="How We Work" title="Our Process" description="A battle-tested methodology refined over years of enterprise delivery." />
         <div className="relative">
@@ -162,7 +203,7 @@ const Services = () => {
       </section>
 
       <section className="py-16 bg-secondary">
-        <div className="container max-w-2xl">
+        <div className="container max-w-4xl">
           <LeadMagnet />
         </div>
       </section>

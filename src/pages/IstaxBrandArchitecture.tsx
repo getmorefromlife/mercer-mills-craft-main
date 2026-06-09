@@ -39,6 +39,17 @@ const IstaxBrandArchitecture = () => {
       <Helmet>
         <title>ISTAX Brand Architecture | Portfolio | Mercer &amp; Mills</title>
         <meta name="description" content="Comprehensive brand architecture for ISTAX — structuring a scalable brand system across products, regions, and audiences by Mercer &amp; Mills." />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CreativeWork",
+          "headline": "ISTAX Brand Architecture — Structuring a Scalable Brand System Across Products, Regions, and Audiences",
+          "description": "Comprehensive brand architecture for ISTAX — structuring a scalable brand system across products, regions, and audiences by Mercer & Mills.",
+          "author": { "@type": "Organization", "name": "Mercer & Mills", "url": "https://mercerandmills.com" },
+          "about": "Brand Architecture",
+          "keywords": "ISTAX, brand architecture, tax consultancy, brand system, scalable branding",
+          "url": "https://mercerandmills.com/portfolio/istax-brand-architecture",
+          "datePublished": "2026-05-29"
+        })}</script>
       </Helmet>
       <section className="py-24">
       <div className="container">
@@ -85,6 +96,12 @@ const IstaxBrandArchitecture = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-6 h-6 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                <span className="font-serif text-xs font-bold text-primary">01</span>
+              </span>
+              <span className="font-body text-xs font-semibold text-primary uppercase tracking-wider">Discovery — How We Scoped the Project</span>
+            </div>
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary mb-6">The Challenge</h2>
             <p className="text-muted-foreground leading-relaxed">
               In Pakistan's financial hub, Karachi—a hyper-dynamic megacity built on diverse socio-economic layers—traditional tax consultancies are widely perceived as archaic, intimidating, and opaque. ISTAX Consultants set out to break this stereotype. They required a comprehensive brand identity framework capable of appealing simultaneously to three distinct corporate and civilian demographics: multi-tier salaried individuals seeking hassle-free individual filing, fast-scaling technology startups in need of agile financial modeling, and massive cross-border manufacturing operations requiring complex corporate retainerships. The core challenge was translating cold legal tax compliance into an inviting, high-trust digital ecosystem without losing financial authority.
@@ -98,6 +115,12 @@ const IstaxBrandArchitecture = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="bg-card border border-border rounded-xl p-8 md:p-12"
           >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-6 h-6 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                <span className="font-serif text-xs font-bold text-primary">02</span>
+              </span>
+              <span className="font-body text-xs font-semibold text-primary uppercase tracking-wider">Sprints — Strategy Sprint Breakdown</span>
+            </div>
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary mb-6">The Strategy & Core DNA</h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
               We decoupled ISTAX from legacy financial messaging by establishing a foundational philosophy centered on absolute transparency and modern accessibility. Over a high-velocity 9-day design and strategy sprint, we developed a brand ecosystem built around a singular verbal thesis: <em className="text-foreground font-semibold">Filing Made Easy. Every Tax, Every Time!</em> This positioning statement strips the institutional friction out of tax season, treating tax compliance not as a punitive burden, but as a strategic asset for wealth preservation and business velocity.
@@ -113,6 +136,12 @@ const IstaxBrandArchitecture = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-6 h-6 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                <span className="font-serif text-xs font-bold text-primary">02</span>
+              </span>
+              <span className="font-body text-xs font-semibold text-primary uppercase tracking-wider">Sprints — Iterative Audience Design</span>
+            </div>
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary mb-6">Demographic-Targeted Messaging Architecture</h2>
             <div className="space-y-6">
               {demographicTiers.map((tier) => (
@@ -130,6 +159,12 @@ const IstaxBrandArchitecture = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-6 h-6 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                <span className="font-serif text-xs font-bold text-primary">04</span>
+              </span>
+              <span className="font-body text-xs font-semibold text-primary uppercase tracking-wider">Launch — Final Deliverables & Handoff</span>
+            </div>
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary mb-6">The Deliverables Checklist</h2>
             <ul className="space-y-4">
               {deliverables.map((item) => (

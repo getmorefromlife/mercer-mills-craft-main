@@ -35,7 +35,7 @@ export default defineConfig(({ mode }) => ({
     vitePrerenderPlugin({
       prerenderScript: path.resolve(__dirname, "src/prerender.tsx"),
       renderTarget: "#root",
-      additionalPrerenderRoutes: ["/404"],
+      additionalPrerenderRoutes: ["/404", "/services/the-literary-mill", "/services/the-visionary-mill", "/services/the-sonic-mill", "/services/the-structural-mill", "/services/the-academy-mill", "/guides/course-launch-blueprint", "/guides/project-scoping-tool", "/guides/podcast-launch-sound-kit", "/guides/brand-identity-starter-kit", "/guides/founders-manuscript-blueprint"],
     }),
     removePrerenderPreload(),
   ],
