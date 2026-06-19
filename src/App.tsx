@@ -24,6 +24,8 @@ const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const IstaxBrandDisruption = lazy(() => import("./pages/IstaxBrandDisruption"));
 const IstaxBrandArchitecture = lazy(() => import("./pages/IstaxBrandArchitecture"));
 const QaumiTaranahCinematic = lazy(() => import("./pages/QaumiTaranahCinematic"));
+const Syedello = lazy(() => import("./pages/Syedello"));
+const SyedelloLogo = lazy(() => import("./pages/SyedelloLogo"));
 const FinancialCenter = lazy(() => import("./pages/FinancialCenter"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Insights = lazy(() => import("./pages/Insights"));
@@ -74,6 +76,8 @@ const App = () => (
               <Route path="/portfolio/istax-brand-disruption" element={<IstaxBrandDisruption />} />
               <Route path="/portfolio/istax-brand-architecture" element={<IstaxBrandArchitecture />} />
               <Route path="/portfolio/qaumi-taranah-cinematic" element={<QaumiTaranahCinematic />} />
+              <Route path="/portfolio/syedello" element={<Syedello />} />
+              <Route path="/portfolio/syedello-logo" element={<SyedelloLogo />} />
               <Route path="/financial-center" element={<FinancialCenter />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/insights" element={<Insights />} />

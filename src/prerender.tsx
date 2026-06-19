@@ -15,6 +15,8 @@ import Portfolio from "./pages/Portfolio";
 import IstaxBrandDisruption from "./pages/IstaxBrandDisruption";
 import IstaxBrandArchitecture from "./pages/IstaxBrandArchitecture";
 import QaumiTaranahCinematic from "./pages/QaumiTaranahCinematic";
+import Syedello from "./pages/Syedello";
+import SyedelloLogo from "./pages/SyedelloLogo";
 import FinancialCenter from "./pages/FinancialCenter";
 import Contact from "./pages/Contact";
 import Insights from "./pages/Insights";
@@ -62,6 +64,8 @@ export async function prerender({ url }: { url: string }) {
                 <Route path="/portfolio/istax-brand-disruption" element={<IstaxBrandDisruption />} />
                 <Route path="/portfolio/istax-brand-architecture" element={<IstaxBrandArchitecture />} />
                 <Route path="/portfolio/qaumi-taranah-cinematic" element={<QaumiTaranahCinematic />} />
+                <Route path="/portfolio/syedello" element={<Syedello />} />
+                <Route path="/portfolio/syedello-logo" element={<SyedelloLogo />} />
                 <Route path="/financial-center" element={<FinancialCenter />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/insights" element={<Insights />} />
@@ -96,6 +100,8 @@ export async function prerender({ url }: { url: string }) {
     "/portfolio/istax-brand-disruption",
     "/portfolio/istax-brand-architecture",
     "/portfolio/qaumi-taranah-cinematic",
+    "/portfolio/syedello",
+    "/portfolio/syedello-logo",
     "/financial-center",
     "/contact",
     "/insights",

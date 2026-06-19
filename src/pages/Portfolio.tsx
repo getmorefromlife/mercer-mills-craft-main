@@ -9,6 +9,8 @@ import istaxIdentity from "@/assets/istax-identity.png";
 import qaumiTaranah from "@/assets/Paak Sar Zameen.jpeg";
 
 const projects = [
+  { title: "Syedello — Logo Design", category: "Graphic Design", type: "Brand Identity", image: "/Syedello Logo.png", to: "/portfolio/syedello-logo" },
+  { title: "Syedello — Free PM App", category: "Web Application", type: "Kanban Board & Calendar", image: "/Syedello Card.png", to: "/portfolio/syedello" },
   { title: "ISTAX Market Disruption", category: "Brand Design", type: "Digital Project", image: istaxDesign, to: "/portfolio/istax-brand-disruption" },
   { title: "Qaumi Taranah: Epic Cinematic Edition", category: "Audio Production", type: "Digital Production & Orchestration", image: qaumiTaranah, to: "/portfolio/qaumi-taranah-cinematic" },
   { title: "The ISTAX Architecture", category: "Brand Identity", type: "Strategic Framework", image: istaxIdentity, to: "/portfolio/istax-brand-architecture" },
