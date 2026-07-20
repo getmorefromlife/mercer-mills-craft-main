@@ -92,8 +92,8 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>Mercer &amp; Mills | Digital Production Agency | California &amp; Global</title>
-        <meta name="description" content="California-based digital production agency with global operations. PMP-certified project management, web development, content production, and creative services for founders and enterprises." />
+        <title>Mercer &amp; Mills | Digital Production Agency | Remote &amp; Global</title>
+        <meta name="description" content="International remote digital production agency. PMP-certified project management, web development, content production, and creative services for founders and enterprises." />
       </Helmet>
       {/* Hero */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
@@ -109,7 +109,7 @@ const Index = () => {
             className="max-w-3xl"
           >
             <span className="text-primary font-body text-sm font-semibold uppercase tracking-[0.3em] mb-6 block">
-              California Innovation · Global Precision
+              Remote-First Innovation · Global Precision
             </span>
             <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-[1.1] mb-6">
               Digital Craftsmanship.{" "}
@@ -375,7 +375,7 @@ const Index = () => {
             <SectionHeading
               subtitle="Ready to Begin?"
               title="Let's Build Your Legacy"
-              description="Schedule a free 20-minute strategy call with our California-based team and discover what's possible."
+              description="Schedule a free 20-minute strategy call with our global remote team and discover what's possible."
             />
             <a href="https://calendly.com/getmorefromlife-uju2/20-min-strategy-call-m-m" target="_blank" rel="noopener noreferrer">
               <Button size="lg" className="bg-gold-gradient text-primary-foreground font-body font-semibold tracking-wide px-10 py-6 text-base hover:opacity-90 transition-opacity">

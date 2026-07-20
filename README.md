@@ -1,6 +1,6 @@
 # Mercer & Mills
 
-California-based digital production agency with global operations. Leveraging innovation and PMP-certified precision.
+International remote digital production agency. Leveraging innovation and PMP-certified precision.
 
 ## Technology Stack
 

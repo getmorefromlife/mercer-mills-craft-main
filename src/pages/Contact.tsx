@@ -353,7 +353,7 @@ const Contact = () => {
             <div className="bg-card border border-border rounded-xl p-8 space-y-8">
               <h3 className="font-serif text-2xl font-bold text-primary">Office Information</h3>
               {[
-                { icon: MapPin, label: "Location", value: "Los Angeles, California, USA" },
+                { icon: MapPin, label: "Location", value: "Remote — International Team" },
                 { icon: Clock, label: "Business Hours (PST)", value: "Monday – Friday: 9:00 AM – 6:00 PM\nSaturday: By Appointment\nSunday: Closed" },
                 { icon: Mail, label: "Email", value: "syedimonrizvipmp@gmail.com", href: "mailto:syedimonrizvipmp@gmail.com", copyable: true },
                 { icon: Phone, label: "Phone", value: "840-207-8720", href: "tel:18402078720" },

@@ -91,7 +91,7 @@ const consultants = [
 
 const values = [
   { title: "PMP-Certified Precision", desc: "Every project follows a governance framework that eliminates guesswork." },
-  { title: "California Innovation", desc: "We bring the creative energy and technical edge of Silicon Valley to every engagement." },
+  { title: "Remote-First Innovation", desc: "We bring the creative energy and technical edge of a distributed global team to every engagement." },
   { title: "Founder-First Approach", desc: "We understand the constraints of founders and structure engagements that respect both budget and timeline." },
   { title: "Global Talent, Single Point of Contact", desc: "You get one lead who coordinates a world-class team — not a roster of strangers to manage." },
 ];
@@ -187,7 +187,7 @@ const OurTeam = () => {
                   Beyond project governance, Syed is a practicing creative — a non-linear video editor, typography artist, graphic designer, composer, singer, recording artist, producer, filmmaker, and soundtrack composer. He personally leads the Visionary and Sonic Mills, bringing hands-on creative direction to every visual and audio deliverable the agency produces.
                 </p>
                 <p>
-                  Based in Los Angeles, California. Operating globally.
+                  Operating remotely across time zones. International team.
                 </p>
               </div>
             </motion.div>

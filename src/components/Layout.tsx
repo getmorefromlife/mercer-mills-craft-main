@@ -105,7 +105,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 </h3>
               </Link>
               <p className="text-muted-foreground text-sm leading-relaxed">
-                California-based digital production agency with global operations. Leveraging innovation and PMP-certified precision.
+                International remote digital production agency. Leveraging innovation and PMP-certified precision.
               </p>
             </div>
             <div>
@@ -131,7 +131,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           </div>
           <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-xs text-muted-foreground text-center md:text-left leading-relaxed">
-              © {new Date().getFullYear()} Mercer & Mills. All rights reserved. Mercer & Mills is a California-based entity. All contracts governed by the laws of the State of California.
+              © {new Date().getFullYear()} Mercer & Mills. All rights reserved. Mercer & Mills operates as an international remote company.
             </p>
             <Link to="/privacy-policy" className="text-xs text-muted-foreground hover:text-primary transition-colors">
               Privacy Policy
