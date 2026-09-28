@@ -26,7 +26,7 @@ const sections = [
   },
   {
     title: "Your Rights",
-    content: 'You have the right to request access to, correction of, or deletion of your personal data held by us. To exercise these rights, please contact us at <a href="mailto:syedimonrizvipmp@gmail.com" class="text-primary hover:underline">syedimonrizvipmp@gmail.com</a>. We will respond to your request within applicable legal timeframes.',
+    content: 'You have the right to request access to, correction of, or deletion of your personal data held by us. To exercise these rights, please contact us at <a href="mailto:partnerships@mercerandmills.com" class="text-blue-400 hover:underline">partnerships@mercerandmills.com</a>. We will respond to your request within applicable legal timeframes.',
   },
   {
     title: "Changes to This Policy",
@@ -34,7 +34,7 @@ const sections = [
   },
   {
     title: "Contact Us",
-    content: 'For questions about this privacy policy or our data practices, please contact us at <a href="mailto:syedimonrizvipmp@gmail.com" class="text-primary hover:underline">syedimonrizvipmp@gmail.com</a> or through our contact form.',
+    content: 'For questions about this privacy policy or our data practices, please contact us at <a href="mailto:partnerships@mercerandmills.com" class="text-blue-400 hover:underline">partnerships@mercerandmills.com</a> or through our onboarding audit diagnostic.',
   },
 ];
 

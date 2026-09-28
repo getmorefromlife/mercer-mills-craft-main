@@ -14,7 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ["Playfair Display", "Georgia", "serif"],
+        heading: ["Plus Jakarta Sans", "Inter", "system-ui", "sans-serif"],
+        sans: ["Plus Jakarta Sans", "Inter", "system-ui", "sans-serif"],
+        serif: ["Plus Jakarta Sans", "Inter", "system-ui", "sans-serif"],
         body: ["Inter", "system-ui", "sans-serif"],
       },
       colors: {
@@ -50,6 +52,23 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        electric: {
+          DEFAULT: "#3B82F6",
+          light: "#60A5FA",
+          dark: "#2563EB",
+        },
+        indigoAccent: {
+          DEFAULT: "#4F46E5",
+          light: "#818CF8",
+          dark: "#3730A3",
+        },
+        slateDark: {
+          DEFAULT: "#0B0F17",
+          950: "#0B0F17",
+          900: "#0F172A",
+          800: "#1E293B",
+          700: "#334155",
         },
         gold: {
           DEFAULT: "hsl(var(--gold))",

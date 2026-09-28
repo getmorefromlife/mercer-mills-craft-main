@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,53 +6,61 @@
 
 @layer base {
   :root {
-    --background: 210 100% 6%;
-    --foreground: 40 20% 95%;
+    /* Deep navy/slate background #0B0F17 */
+    --background: 222 47% 7%;
+    /* Crisp white #FFFFFF */
+    --foreground: 210 40% 98%;
 
-    --card: 210 80% 10%;
-    --card-foreground: 40 20% 95%;
+    /* Dark Slate Card #0F172A */
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 210 80% 10%;
-    --popover-foreground: 40 20% 95%;
+    --popover: 222 47% 10%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 43 64% 52%;
-    --primary-foreground: 210 100% 6%;
+    /* Electric Blue #3B82F6 */
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 60% 15%;
-    --secondary-foreground: 40 20% 95%;
+    /* Slate 800 #1E293B */
+    --secondary: 215 25% 17%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 40% 18%;
-    --muted-foreground: 210 20% 60%;
+    /* Subtle Muted Gray #94A3B8 */
+    --muted: 215 25% 14%;
+    --muted-foreground: 215 16% 65%;
 
-    --accent: 43 64% 52%;
-    --accent-foreground: 210 100% 6%;
+    /* Electric Indigo #4F46E5 */
+    --accent: 243 75% 59%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 210 30% 20%;
-    --input: 210 30% 20%;
-    --ring: 43 64% 52%;
+    /* Subtle 1px border slate-800 */
+    --border: 215 25% 20%;
+    --input: 215 25% 20%;
+    --ring: 217 91% 60%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --gold: 43 64% 52%;
-    --gold-light: 43 70% 65%;
-    --gold-dark: 43 60% 40%;
-    --midnight: 210 100% 12.5%;
-    --midnight-deep: 210 100% 6%;
-    --midnight-light: 210 60% 20%;
-    --offwhite: 40 20% 95%;
-    --offwhite-dim: 40 10% 80%;
+    --gold: 217 91% 60%;
+    --gold-light: 217 91% 70%;
+    --gold-dark: 222 84% 50%;
+    --midnight: 222 47% 11%;
+    --midnight-deep: 222 47% 7%;
+    --midnight-light: 215 25% 17%;
+    --offwhite: 210 40% 98%;
+    --offwhite-dim: 215 16% 75%;
 
-    --sidebar-background: 210 100% 8%;
-    --sidebar-foreground: 40 20% 95%;
-    --sidebar-primary: 43 64% 52%;
-    --sidebar-primary-foreground: 210 100% 6%;
-    --sidebar-accent: 210 60% 15%;
-    --sidebar-accent-foreground: 40 20% 95%;
-    --sidebar-border: 210 30% 20%;
-    --sidebar-ring: 43 64% 52%;
+    --sidebar-background: 222 47% 8%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 25% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 215 25% 20%;
+    --sidebar-ring: 217 91% 60%;
   }
 }
 
@@ -61,38 +69,66 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-background text-foreground font-body antialiased;
+    @apply bg-background text-foreground font-body antialiased selection:bg-blue-600/30 selection:text-white;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
+    @apply font-heading tracking-tight;
   }
 }
 
 @layer utilities {
-  .text-gradient-gold {
+  .text-gradient-electric {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(43 70% 65%), hsl(43 64% 52%), hsl(43 60% 40%));
+    background-image: linear-gradient(135deg, #60A5FA 0%, #3B82F6 50%, #818CF8 100%);
   }
 
-  .border-gold-gradient {
-    border-image: linear-gradient(135deg, hsl(43 70% 65%), hsl(43 64% 52%)) 1;
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #60A5FA 0%, #3B82F6 50%, #818CF8 100%);
+  }
+
+  .border-electric-gradient {
+    border-image: linear-gradient(135deg, #3B82F6, #4F46E5) 1;
+  }
+
+  .bg-electric-gradient {
+    background: linear-gradient(135deg, #2563EB 0%, #3B82F6 50%, #4F46E5 100%);
   }
 
   .bg-gold-gradient {
-    background: linear-gradient(135deg, hsl(43 70% 65%), hsl(43 64% 52%), hsl(43 60% 40%));
+    background: linear-gradient(135deg, #2563EB 0%, #3B82F6 50%, #4F46E5 100%);
   }
 
   .bg-midnight-gradient {
-    background: linear-gradient(180deg, hsl(210 100% 12.5%), hsl(210 100% 6%));
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(11, 15, 23, 0.95));
+  }
+
+  .shadow-electric {
+    box-shadow: 0 0 35px -5px rgba(59, 130, 246, 0.3);
+  }
+
+  .shadow-electric-lg {
+    box-shadow: 0 0 60px -10px rgba(59, 130, 246, 0.4);
   }
 
   .shadow-gold {
-    box-shadow: 0 0 30px -5px hsl(43 64% 52% / 0.2);
+    box-shadow: 0 0 35px -5px rgba(59, 130, 246, 0.3);
   }
 
   .shadow-gold-lg {
-    box-shadow: 0 0 60px -10px hsl(43 64% 52% / 0.3);
+    box-shadow: 0 0 60px -10px rgba(59, 130, 246, 0.4);
+  }
+
+  .linear-grid {
+    background-size: 32px 32px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   }
 }
+

@@ -1,391 +1,992 @@
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, BookOpen, Palette, Music, BarChart3, GraduationCap, Code, Film, Globe, ShieldCheck, Zap, CheckCircle } from "lucide-react";
+import {
+  ArrowRight,
+  ShieldCheck,
+  CheckCircle2,
+  XCircle,
+  FileText,
+  Video,
+  Sparkles,
+  Zap,
+  Lock,
+  Clock,
+  ExternalLink,
+  ChevronRight,
+  Play,
+  Download,
+  Star,
+  Layers,
+  Calendar,
+  Check,
+  Building,
+  HelpCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import heroBg from "@/assets/hero-bg.jpg";
+import AuditBookingModal, { CALENDLY_URL } from "@/components/AuditBookingModal";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
-const productizedOffers = [
+// Sample Academy Modules for the Interactive Walkthrough Preview
+const sampleModules = [
   {
-    icon: Film,
-    title: "Done-For-You Course Production",
-    for: "Founders, educators, and institutions launching or scaling a digital course.",
-    problem: "You have the expertise but no time to produce, edit, and launch a polished course.",
-    includes: ["Curriculum mapping & instructional design", "Full video/audio production & editing", "Course platform setup (Teachable, Thinkific, Kajabi)", "Sales page copy & landing page design", "Launch sequence email templates"],
-    timeline: "4–6 weeks",
-    price: "Starting at $3,500",
+    id: 1,
+    title: "Module 1: The 3-Minute Quickstart & Core Value Unlock",
+    duration: "3:42",
+    description: "Guides new users directly to their 'Aha!' moment within minutes of account creation.",
+    keyTakeaway: "Zero fluff. Gets user to configure their first core workspace action instantly.",
+    hasChecklist: true,
   },
   {
-    icon: Globe,
-    title: "Thought Leader Content Engine",
-    for: "Speakers, authors, founders, and executives who need consistent, high-caliber content.",
-    problem: "You need a steady pipeline of premium content but don't have the bandwidth to produce it.",
-    includes: ["Bi-weekly content production (articles, posts, scripts)", "Podcast/video episode editing & show notes", "Visual asset creation & brand consistency", "Distribution optimization (LinkedIn, YouTube, newsletter)", "Editorial calendar management"],
-    timeline: "Ongoing (monthly retainer)",
-    price: "Starting at $1,800/mo",
+    id: 2,
+    title: "Module 2: Team Permissions, Invites & Role Governance",
+    duration: "4:15",
+    description: "Eliminates IT tickets and onboarding delays by automating seat provisioning.",
+    keyTakeaway: "Best-practice permission matrices formatted as downloadable visual 1-pagers.",
+    hasChecklist: true,
   },
   {
-    icon: Code,
-    title: "Launch-Ready Digital Product Build",
-    for: "Founders and SMBs launching a digital product, landing page, or mini-funnel.",
-    problem: "You need a professional-grade digital product or landing page but don't have a technical team.",
-    includes: ["Custom landing page design & development", "Lead capture & email integration", "Payment gateway setup (Stripe, PayPal)", "Basic analytics & conversion tracking", "Mobile-optimized, SEO-ready build"],
-    timeline: "10–14 days",
-    price: "Starting at $2,200",
-  },
-];
-
-const quickstart = {
-  title: "10-Day Quickstart Sprint",
-  for: "Anyone who needs to ship a first digital asset fast—landing page, MVP, or content system.",
-  problem: "You need something real, fast, without committing to a full engagement.",
-  includes: ["Kickoff call & scope lock (Day 1)", "Design & development sprint (Days 2–8)", "Review & revision (Day 9)", "Delivery & handoff (Day 10)"],
-  price: "Flat $1,500",
-};
-
-const clientTypes = [
-  "Founders", "SMEs", "Course Creators", "Agencies", "Non-Profits", "Educational Institutions",
-];
-
-const mills = [
-  {
-    icon: BookOpen, title: "The Literary Mill", desc: "Ghostwriting & Publishing", color: "text-primary",
-    value: "We transform ideas into published works—books, lectures, and speeches that inform and inspire.",
-    examples: ["Ghostwriting non-fiction books & memoirs", "Scripting lecture series & academic talks", "Building sermon/speech libraries for religious leaders"],
+    id: 3,
+    title: "Module 3: Core Workflow Automation & Integration Hooks",
+    duration: "5:30",
+    description: "Connects key CRM, Slack, and webhook triggers to solidify product stickiness.",
+    keyTakeaway: "Pre-built template links that users click to install workflows with one tap.",
+    hasChecklist: true,
   },
   {
-    icon: Palette, title: "The Visionary Mill", desc: "Animation & Design", color: "text-primary",
-    value: "We create visual systems that communicate complex ideas with clarity and impact.",
-    examples: ["Explainer videos & whiteboard animations", "Course visual assets & slide decks", "Brand identity systems & marketing collateral"],
+    id: 4,
+    title: "Module 4: Team Daily Rituals & Power User Shortcuts",
+    duration: "3:18",
+    description: "Trains daily internal champions to advocate for your tool across departments.",
+    keyTakeaway: "Keyboard navigation cheatsheet and executive summary dashboard configuration.",
+    hasChecklist: true,
   },
   {
-    icon: Music, title: "The Sonic Mill", desc: "Music & Soundscapes", color: "text-primary",
-    value: "We engineer audio experiences that elevate digital products and brand presence.",
-    examples: ["Podcast intro/outro production & sound design", "Course background soundscapes & narration editing", "Custom music composition for digital media"],
+    id: 5,
+    title: "Module 5: ROI Reporting & Executive Value Dashboard",
+    duration: "4:05",
+    description: "Gives budget owners real-time visibility into usage metrics to safeguard renewals.",
+    keyTakeaway: "Quarterly review presentation template that CS teams use to upsell.",
+    hasChecklist: true,
   },
-  {
-    icon: BarChart3, title: "The Structural Mill", desc: "Agile Coaching & PM", color: "text-primary",
-    value: "We design the systems and workflows that keep complex projects on track.",
-    examples: ["Agile/PMO setup for growing teams", "Launch rescue & project recovery", "Process documentation & workflow automation"],
-  },
-  {
-    icon: GraduationCap, title: "The Academy Mill", desc: "Educational Architecture", color: "text-primary",
-    value: "We architect learning ecosystems—from curriculum to platform—for institutions and edtech.",
-    examples: ["Curriculum design & learning outcome mapping", "Academy setup for institutes & edtech startups", "Assessment frameworks & certification pathways"],
-  },
-];
-
-const techStack = [
-  "React", "Node.js", "Next.js", "TypeScript", "AWS", "Tailwind CSS", "Framer Motion", "Webflow", "Vite", "PostgreSQL",
-];
-
-const workflow = [
-  { step: "01", title: "Scoping", desc: "Deep discovery to align on vision, timeline, and deliverables." },
-  { step: "02", title: "Sprint Planning", desc: "Agile roadmap with milestone mapping and resource allocation." },
-  { step: "03", title: "Quality Assurance", desc: "Multi-layer review with PMP-certified governance gates." },
-  { step: "04", title: "Delivery", desc: "Strategic deployment with post-launch optimization." },
 ];
 
 const Index = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState<string>("General Audit");
+  const [activeSampleModule, setActiveSampleModule] = useState(sampleModules[0]);
+
+  // Section 7 Embedded Qualification Form state
+  const [embedCompanyUrl, setEmbedCompanyUrl] = useState("");
+  const [embedBottleneck, setEmbedBottleneck] = useState("");
+  const [embedTimeframe, setEmbedTimeframe] = useState("Next 14 days");
+  const [embedEmail, setEmbedEmail] = useState("");
+  const [embedQualified, setEmbedQualified] = useState(false);
+
+  const openAuditWithPackage = (pkg: string) => {
+    setSelectedPackage(pkg);
+    setModalOpen(true);
+  };
+
+  const handleEmbeddedSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      localStorage.setItem(
+        "mm_audit_qualification",
+        JSON.stringify({
+          companyUrl: embedCompanyUrl,
+          bottleneck: embedBottleneck,
+          timeframe: embedTimeframe,
+          email: embedEmail,
+          package: selectedPackage,
+          timestamp: new Date().toISOString(),
+        })
+      );
+    } catch {
+      // safe fallback
+    }
+    setEmbedQualified(true);
+  };
+
   return (
     <>
       <Helmet>
-        <title>Mercer &amp; Mills | Digital Production Agency | Remote &amp; Global</title>
-        <meta name="description" content="International remote digital production agency. PMP-certified project management, web development, content production, and creative services for founders and enterprises." />
+        <title>Mercer & Mills Knowledge Operations | Turnkey Client Academies in 14 Days</title>
+        <meta
+          name="description"
+          content="Turn your complex software and messy SOPs into a studio-grade client onboarding academy in 14 days under certified PMP sprint governance."
+        />
       </Helmet>
-      {/* Hero */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={heroBg} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-background/70" />
-        </div>
-        <div className="container relative z-10 py-32">
+
+      {/* ========================================================================= */}
+      {/* SECTION 2: HERO SECTION (Above the Fold)                                  */}
+      {/* ========================================================================= */}
+      <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden bg-[#0B0F17] linear-grid py-20 lg:py-28">
+        {/* Subtle radial glow overlay */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-blue-600/15 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-[400px] h-[300px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
+
+        <div className="container relative z-10 max-w-5xl mx-auto px-4 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-3xl"
+            transition={{ duration: 0.7 }}
+            className="flex flex-col items-center"
           >
-            <span className="text-primary font-body text-sm font-semibold uppercase tracking-[0.3em] mb-6 block">
-              Remote-First Innovation · Global Precision
-            </span>
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-[1.1] mb-6">
-              Digital Craftsmanship.{" "}
-              <span className="text-gradient-gold">Enterprise Execution.</span>
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-4 max-w-2xl">
-              We help founders, creators, and education brands turn complex ideas into world-class digital products, content, and courses.
-            </p>
-            <p className="text-base text-muted-foreground/80 leading-relaxed mb-10 max-w-2xl">
-              From solo founders to global teams, we adapt our production rigor to your stage.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <a href="https://calendly.com/getmorefromlife-uju2/20-min-strategy-call-m-m" target="_blank" rel="noopener noreferrer">
-                <Button size="lg" className="bg-gold-gradient text-primary-foreground font-body font-semibold tracking-wide px-8 py-6 text-base hover:opacity-90 transition-opacity">
-                  Book a 20-Minute Strategy Call <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </a>
-              <Link to="/portfolio">
-                <Button variant="outline" size="lg" className="border-primary/40 text-primary font-body font-semibold tracking-wide px-8 py-6 text-base hover:bg-primary/10">
-                  View Portfolio
-                </Button>
-              </Link>
+            {/* Pill Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/30 mb-8 shadow-sm">
+              <span className="text-sm">🏆</span>
+              <span>PMP®-Certified Knowledge Architecture</span>
             </div>
-            <p className="text-xs text-muted-foreground/60 mt-3">No cost, no obligation. <span className="mx-2">·</span> <a href="https://wa.me/15304235158" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Message us on WhatsApp</a></p>
+
+            {/* H1 Headline */}
+            <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.08] max-w-4xl mb-6">
+              Turn Your Complex Software &amp; Messy SOPs Into a{" "}
+              <span className="text-gradient-electric">Studio-Grade Client Academy</span> in 14 Days.
+            </h1>
+
+            {/* Subheadline */}
+            <p className="text-slate-400 text-lg sm:text-xl md:text-2xl leading-relaxed max-w-3xl mb-10 font-normal">
+              Eliminate customer churn, accelerate time-to-value, and stop repeating the same Zoom demos.
+              We take your scattered Google Docs and raw screen recordings and deliver a turnkey, interactive
+              onboarding academy—under certified PMP sprint governance.
+            </p>
+
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto mb-12">
+              <Button
+                size="lg"
+                onClick={() => openAuditWithPackage("Hero CTA")}
+                className="w-full sm:w-auto h-14 px-8 text-base font-semibold bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all flex items-center justify-center gap-2"
+              >
+                Book a 15-Minute Onboarding Audit
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+
+              <a
+                href="#sample-walkthrough"
+                className="w-full sm:w-auto inline-flex items-center justify-center h-14 px-8 text-base font-medium rounded-xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-slate-200 hover:text-white transition-all gap-2"
+              >
+                See Sample Academy Walkthrough ↓
+              </a>
+            </div>
+
+            {/* Trust & Credibility Bar */}
+            <div className="pt-6 border-t border-slate-800/80 w-full max-w-3xl flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs sm:text-sm text-slate-400 font-medium">
+              <div className="flex items-center gap-2 text-slate-300">
+                <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                <span>Guaranteed 14-Day Delivery SLA</span>
+              </div>
+              <div className="flex items-center gap-2 text-slate-300">
+                <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                <span>Enterprise Zero-Data-Training AI Governance</span>
+              </div>
+              <div className="flex items-center gap-2 text-slate-300">
+                <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                <span>Certified PMP®, PSM II, PAL I Leadership</span>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Social Proof */}
-      <section className="py-12 border-y border-border/40">
-        <div className="container">
-          <div className="max-w-4xl mx-auto">
-            <p className="text-xs text-primary font-body font-semibold uppercase tracking-[0.2em] mb-4 text-center">
-              Trusted by Founders &amp; Leaders
-            </p>
-            <div className="bg-midnight-gradient border border-border rounded-xl p-8 md:p-10 text-center">
-              <div className="flex justify-center gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="h-5 w-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              <blockquote className="font-serif text-lg md:text-xl text-foreground leading-relaxed italic mb-6">
-                "Syed delivered exceptional work. His communication, professionalism, and project management skills are top-notch. I'd highly recommend him to anyone looking for high-quality work delivered on time."
-              </blockquote>
+      {/* ========================================================================= */}
+      {/* SECTION 3: THE "ONBOARDING LEAK" COMPARISON (#problem)                    */}
+      {/* ========================================================================= */}
+      <section id="problem" className="py-24 bg-[#0B0F17] border-t border-slate-800/80 relative">
+        <div className="container max-w-5xl mx-auto px-4">
+          <SectionHeading
+            subtitle="THE COST OF FRICTION"
+            title="The $50,000 Revenue Leak in Your Onboarding Flow"
+            description="B2B SaaS and service firms lose up to 23% of new customers in the first 60 days simply because getting started is overwhelming."
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch mt-8">
+            {/* Column 1: The Outdated Way */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="rounded-2xl p-8 bg-[#0F172A]/70 border border-red-900/30 shadow-sm relative flex flex-col justify-between"
+            >
               <div>
-                <p className="font-body font-semibold text-sm text-foreground">Syed Zaidi</p>
-                <p className="text-xs text-muted-foreground">Founder, Istax Consultants</p>
+                <div className="flex items-center justify-between mb-6 pb-4 border-b border-red-950/60">
+                  <h3 className="font-heading text-lg font-bold text-slate-300">
+                    The Outdated Way
+                  </h3>
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-red-950/40 text-red-400 border border-red-900/40">
+                    High Churn &amp; Waste
+                  </span>
+                </div>
+
+                <ul className="space-y-5 text-slate-400 text-sm leading-relaxed">
+                  <li className="flex items-start gap-3.5">
+                    <XCircle className="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" />
+                    <span>
+                      <strong className="text-slate-200">Sending 45-page Google Docs</strong> that 90% of customers never read.
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3.5">
+                    <XCircle className="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" />
+                    <span>
+                      <strong className="text-slate-200">Customer Success teams trapped</strong> repeating identical 1-on-1 Zoom demos every week.
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3.5">
+                    <XCircle className="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" />
+                    <span>
+                      <strong className="text-slate-200">Confusion and slow time-to-value</strong> leading to poor feature adoption and Month 2 churn.
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3.5">
+                    <XCircle className="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" />
+                    <span>
+                      <strong className="text-slate-200">Waiting 8 weeks</strong> for bloated creative agencies to deliver static slides with hourly invoices.
+                    </span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="mt-8 pt-4 border-t border-red-950/40 text-xs text-red-300/80 font-medium">
+                Outcome: Lost expansion revenue, stressed CS managers, and wasted acquisition CAC.
+              </div>
+            </motion.div>
+
+            {/* Column 2: The Mercer & Mills Onboarding Engine */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="rounded-2xl p-8 bg-[#0F172A] border-2 border-blue-500/50 shadow-xl shadow-blue-900/20 relative flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-6 pb-4 border-b border-blue-900/40">
+                  <h3 className="font-heading text-lg font-bold text-white flex items-center gap-2">
+                    <span>The Mercer &amp; Mills Engine</span>
+                  </h3>
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/30">
+                    High Adoption &amp; Retention
+                  </span>
+                </div>
+
+                <ul className="space-y-5 text-slate-300 text-sm leading-relaxed">
+                  <li className="flex items-start gap-3.5">
+                    <CheckCircle2 className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>
+                      <strong className="text-white">5 to 7 bite-sized, interactive video modules</strong> completed in under 20 minutes total.
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3.5">
+                    <CheckCircle2 className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>
+                      <strong className="text-white">Self-serve customer mastery</strong> that frees your CS team to drive high-margin upsells.
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3.5">
+                    <CheckCircle2 className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>
+                      <strong className="text-white">Pedagogical curriculum structure</strong> driving 92%+ 90-day retention and rapid adoption.
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3.5">
+                    <CheckCircle2 className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>
+                      <strong className="text-white">PMP-certified 14-day sprint delivery.</strong> Fixed timeline, predictable cost, zero management friction.
+                    </span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="mt-8 pt-4 border-t border-blue-900/40 text-xs text-blue-300 font-medium">
+                Outcome: Customers activate on Day 1, recommend your software, and stay for years.
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 4: THE 14-DAY CORE SPRINT ARCHITECTURE (#sprint)                  */}
+      {/* ========================================================================= */}
+      <section id="sprint" className="py-24 bg-[#080C14] border-t border-slate-800/80 relative">
+        <div className="container max-w-5xl mx-auto px-4">
+          <SectionHeading
+            subtitle="HOW IT WORKS"
+            title="From Raw Documents to a Live Academy in 14 Business Days"
+            description="A battle-tested, three-phase sprint designed to demand minimal time from your team while delivering studio-grade polish."
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative mt-12">
+            {/* Step 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="p-8 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 font-heading font-bold text-lg mb-6">
+                  01
+                </div>
+                <div className="text-xs uppercase tracking-wider font-semibold text-blue-400 mb-2">
+                  Day 1
+                </div>
+                <h3 className="font-heading text-xl font-bold text-white mb-3">
+                  The Frictionless Dump
+                </h3>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  You drop your messy Google Docs, raw Zoom recordings, Loom clips, and product notes into our secure drive.
+                  That is the only work your team ever does.
+                </p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-slate-800/80 text-xs text-slate-500">
+                Time required from you: 45 minutes
+              </div>
+            </motion.div>
+
+            {/* Step 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="p-8 rounded-2xl bg-[#0F172A] border border-blue-500/30 shadow-lg shadow-blue-950/20 hover:border-blue-500/50 transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400 font-heading font-bold text-lg mb-6">
+                  02
+                </div>
+                <div className="text-xs uppercase tracking-wider font-semibold text-blue-400 mb-2">
+                  Days 2–12
+                </div>
+                <h3 className="font-heading text-xl font-bold text-white mb-3">
+                  AI-Accelerated Production &amp; Pedagogy
+                </h3>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  Our learning architects structure the curriculum. We script, record 4K screen walkthroughs,
+                  generate crystal-clear studio audio, and design interactive PDF action checklists.
+                </p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-slate-800/80 text-xs text-blue-400 font-medium">
+                PMP® Daily progress tracking &amp; milestones
+              </div>
+            </motion.div>
+
+            {/* Step 3 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="p-8 rounded-2xl bg-[#0F172A] border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 font-heading font-bold text-lg mb-6">
+                  03
+                </div>
+                <div className="text-xs uppercase tracking-wider font-semibold text-blue-400 mb-2">
+                  Day 14
+                </div>
+                <h3 className="font-heading text-xl font-bold text-white mb-3">
+                  Turnkey Deployment &amp; Launch
+                </h3>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  We deliver a live, branded Academy hosted in your preferred platform (Skool, Notion, Kajabi, Teachable, or custom portal), complete with copy-paste automated welcome email templates.
+                </p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-slate-800/80 text-xs text-slate-500">
+                100% turnkey handoff &amp; full IP transfer
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Interactive Academy Walkthrough Showcase (#sample-walkthrough) */}
+          <div id="sample-walkthrough" className="mt-20 pt-12 border-t border-slate-800/80">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-400 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full mb-3 inline-block">
+                INTERACTIVE PREVIEW
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-bold font-heading text-white mb-3">
+                See What Your Client Academy Will Look Like
+              </h3>
+              <p className="text-slate-400 text-sm">
+                Click any module below to inspect the lesson curriculum, 4K screen pacing, and downloadable action checklists your customers will experience.
+              </p>
+            </div>
+
+            {/* Portal Mockup UI */}
+            <div className="rounded-2xl border border-slate-800 bg-[#0F172A] overflow-hidden shadow-2xl shadow-blue-950/20">
+              {/* Window Header */}
+              <div className="bg-[#080C14] px-5 py-3.5 border-b border-slate-800 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                  <span className="ml-3 text-xs text-slate-400 font-mono hidden sm:inline">
+                    academy.yourbrand.com/client-onboarding
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-slate-400">
+                  <span className="inline-block w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                  <span>Interactive Prototype</span>
+                </div>
+              </div>
+
+              {/* Portal Content: Split View */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[460px]">
+                {/* Left: Module List (4 cols) */}
+                <div className="lg:col-span-5 border-r border-slate-800 p-5 bg-[#0B0F17]/70 space-y-2">
+                  <div className="pb-3 border-b border-slate-800 flex items-center justify-between">
+                    <span className="text-xs uppercase font-semibold text-slate-400 tracking-wider">
+                      Curriculum (5 Modules)
+                    </span>
+                    <span className="text-xs text-blue-400 font-medium">21 Min Total</span>
+                  </div>
+
+                  <div className="space-y-2 mt-3">
+                    {sampleModules.map((mod) => (
+                      <button
+                        key={mod.id}
+                        onClick={() => setActiveSampleModule(mod)}
+                        className={`w-full text-left p-3.5 rounded-xl border transition-all flex items-start gap-3 ${
+                          activeSampleModule.id === mod.id
+                            ? "bg-blue-600/15 border-blue-500/50 text-white shadow-sm"
+                            : "bg-[#0F172A]/50 border-slate-800/80 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                        }`}
+                      >
+                        <div
+                          className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 ${
+                            activeSampleModule.id === mod.id
+                              ? "bg-blue-500 text-white"
+                              : "bg-slate-800 text-slate-400"
+                          }`}
+                        >
+                          {mod.id}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-xs sm:text-sm font-semibold truncate leading-tight">
+                            {mod.title}
+                          </div>
+                          <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-500">
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3 h-3" /> {mod.duration}
+                            </span>
+                            <span>•</span>
+                            <span>PDF Checklist</span>
+                          </div>
+                        </div>
+                        <ChevronRight
+                          className={`w-4 h-4 mt-1 flex-shrink-0 transition-transform ${
+                            activeSampleModule.id === mod.id ? "text-blue-400 translate-x-0.5" : "text-slate-600"
+                          }`}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right: Active Player & Takeaways (7 cols) */}
+                <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-6">
+                  {/* Fake 4K Video Player */}
+                  <div className="relative rounded-xl border border-slate-800 bg-[#080C14] aspect-video flex flex-col items-center justify-center overflow-hidden group">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
+                    <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                      4K Studio Master · Crisp Audio
+                    </div>
+                    <div className="relative z-10 text-center space-y-3 px-4">
+                      <div className="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center mx-auto shadow-lg shadow-blue-500/30 group-hover:scale-105 transition-transform cursor-pointer">
+                        <Play className="w-6 h-6 ml-1" />
+                      </div>
+                      <p className="text-xs text-slate-300 font-medium max-w-sm">
+                        High-definition screen capture with guided narration &amp; animated visual callouts
+                      </p>
+                    </div>
+
+                    {/* Fake Scrub Bar */}
+                    <div className="absolute bottom-3 left-4 right-4 flex items-center gap-3 text-[10px] text-slate-400 font-mono">
+                      <span>0:00</span>
+                      <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                        <div className="w-1/3 h-full bg-blue-500" />
+                      </div>
+                      <span>{activeSampleModule.duration}</span>
+                    </div>
+                  </div>
+
+                  {/* Module Details & Deliverables */}
+                  <div className="space-y-4">
+                    <h4 className="font-heading text-lg font-bold text-white">
+                      {activeSampleModule.title}
+                    </h4>
+                    <p className="text-sm text-slate-400 leading-relaxed">
+                      {activeSampleModule.description}
+                    </p>
+
+                    <div className="p-4 rounded-xl bg-[#080C14] border border-slate-800/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <div className="text-xs text-slate-300">
+                        <span className="font-semibold text-blue-400 block mb-0.5">Pedagogical Design Gate:</span>
+                        {activeSampleModule.keyTakeaway}
+                      </div>
+
+                      <Button
+                        size="sm"
+                        onClick={() => openAuditWithPackage("Sample Checklist Download")}
+                        className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs gap-1.5 whitespace-nowrap"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        Sample Action PDF
+                      </Button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Productized Services */}
-      <section className="py-24 bg-secondary" id="services">
-        <div className="container">
-          <SectionHeading subtitle="How We Work" title="Productized Offers" description="Clear scopes, fixed timelines, transparent pricing—designed to get you from idea to launch without the friction." />
+      {/* ========================================================================= */}
+      {/* SECTION 5: TRANSPARENT PRODUCTIZED PRICING (#pricing)                     */}
+      {/* ========================================================================= */}
+      <section id="pricing" className="py-24 bg-[#0B0F17] border-t border-slate-800/80 relative">
+        <div className="container max-w-5xl mx-auto px-4">
+          <SectionHeading
+            subtitle="INVESTMENT"
+            title="Predictable Pricing. Zero Hourly Billing."
+            description="Flat-fee sprints with clear deliverables and guaranteed SLAs. Choose the tier that fits your stage."
+          />
 
-          <div className="space-y-8 mb-16">
-            {productizedOffers.map((offer, i) => (
-              <motion.div
-                key={offer.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="bg-card border border-border rounded-xl p-8 md:p-10"
-              >
-                <div className="flex flex-col lg:flex-row lg:items-start gap-8">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-4 mb-4">
-                      <offer.icon className="h-8 w-8 text-primary flex-shrink-0" />
-                      <h2 className="font-serif text-2xl font-bold">{offer.title}</h2>
-                    </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12 items-stretch">
+            {/* CARD 1: The Architecture Blueprint */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="rounded-2xl p-8 bg-[#0F172A] border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition-all"
+            >
+              <div>
+                <div className="text-xs uppercase font-semibold text-slate-400 tracking-wider mb-2">
+                  Diagnosis &amp; Prototype
+                </div>
+                <h3 className="font-heading text-xl font-bold text-white mb-2">
+                  The Architecture Blueprint
+                </h3>
+                <p className="text-xs text-slate-400 mb-6">
+                  Ideal for teams needing an immediate diagnosis and curriculum roadmap.
+                </p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 mt-6">
-                      <div>
-                        <h4 className="font-body text-xs font-semibold text-primary uppercase tracking-wider mb-1">Who it's for</h4>
-                        <p className="text-muted-foreground text-sm">{offer.for}</p>
-                      </div>
-                      <div>
-                        <h4 className="font-body text-xs font-semibold text-primary uppercase tracking-wider mb-1">Problem it solves</h4>
-                        <p className="text-muted-foreground text-sm">{offer.problem}</p>
-                      </div>
-                    </div>
-
-                    <div className="mt-5">
-                      <h4 className="font-body text-xs font-semibold text-primary uppercase tracking-wider mb-2">What's included</h4>
-                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1.5">
-                        {offer.includes.map((item) => (
-                          <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
-                            <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                <div className="mb-6">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-extrabold font-heading text-white">$750</span>
+                    <span className="text-xs text-slate-400 font-medium">one-time</span>
                   </div>
+                  <div className="text-[11px] text-slate-500 mt-1">100% upfront · 72-Hour Delivery SLA</div>
+                </div>
 
-                  <div className="lg:w-64 flex flex-col items-start lg:items-end gap-3 lg:pt-10">
-                    <div className="text-right">
-                      <p className="font-body text-xs text-muted-foreground uppercase tracking-wider">{offer.timeline}</p>
-                      <p className="font-serif text-2xl font-bold text-primary mt-1">{offer.price}</p>
-                    </div>
-                    <a href="https://calendly.com/getmorefromlife-uju2/20-min-strategy-call-m-m" target="_blank" rel="noopener noreferrer">
-                      <Button size="default" className="bg-gold-gradient text-primary-foreground font-body font-semibold tracking-wide hover:opacity-90 transition-opacity w-full whitespace-nowrap">
-                        Book a 20-Minute Strategy Call <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </a>
+                <div className="space-y-3 pt-4 border-t border-slate-800/80 text-xs sm:text-sm text-slate-300">
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>Complete Onboarding Friction Audit</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>5–7 Module Pedagogical Curriculum Map</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>1 Fully Produced Prototype Video &amp; Checklist</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>72-Hour Guaranteed Delivery SLA</span>
+                  </div>
+                  <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/25 text-xs text-blue-300 mt-3">
+                    <strong>Bonus:</strong> 100% of this fee is credited toward the Full Sprint upon upgrade.
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </div>
+              </div>
 
-          {/* Quickstart Sprint */}
+              <div className="pt-8">
+                <Button
+                  onClick={() => openAuditWithPackage("Architecture Blueprint ($750)")}
+                  className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm h-12 rounded-xl transition-all border border-slate-700"
+                >
+                  Start Blueprint Sprint
+                </Button>
+              </div>
+            </motion.div>
+
+            {/* CARD 2: The 14-Day Turnkey Academy (FEATURED) */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="rounded-2xl p-8 bg-[#0F172A] border-2 border-blue-500 shadow-xl shadow-blue-900/30 flex flex-col justify-between relative transform lg:-translate-y-2"
+            >
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-600 text-white shadow-md">
+                Most Popular · Complete Engine
+              </div>
+
+              <div>
+                <div className="text-xs uppercase font-semibold text-blue-400 tracking-wider mb-2 mt-2">
+                  Turnkey Infrastructure
+                </div>
+                <h3 className="font-heading text-xl font-bold text-white mb-2">
+                  The 14-Day Turnkey Academy
+                </h3>
+                <p className="text-xs text-slate-400 mb-6">
+                  The complete, plug-and-play onboarding infrastructure.
+                </p>
+
+                <div className="mb-6">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-extrabold font-heading text-white">$3,500</span>
+                    <span className="text-xs text-slate-400 font-medium">flat fee</span>
+                  </div>
+                  <div className="text-[11px] text-blue-300 mt-1">50% deposit / 50% on completion</div>
+                </div>
+
+                <div className="space-y-3 pt-4 border-t border-slate-800/80 text-xs sm:text-sm text-slate-300">
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>Up to 7 Studio-Grade Video Modules (4K Screen capture + Crisp Audio)</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>Downloadable PDF Action Checklists &amp; Quizzes</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>Turnkey Portal Setup (Skool, Notion, Teachable, or Kajabi)</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>PMP® Daily Sprint Tracking &amp; Dedicated PM Governance</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>Plug-and-Play Customer Welcome Email Sequences</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span className="font-semibold text-white">14-Day Delivery SLA Guarantee</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-8">
+                <Button
+                  onClick={() => openAuditWithPackage("14-Day Turnkey Academy ($3,500)")}
+                  className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm h-12 rounded-xl shadow-lg shadow-blue-500/25 transition-all"
+                >
+                  Book 14-Day Sprint
+                </Button>
+              </div>
+            </motion.div>
+
+            {/* CARD 3: Knowledge Operations Care Plan */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="rounded-2xl p-8 bg-[#0F172A] border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition-all"
+            >
+              <div>
+                <div className="text-xs uppercase font-semibold text-slate-400 tracking-wider mb-2">
+                  Ongoing Continuity
+                </div>
+                <h3 className="font-heading text-xl font-bold text-white mb-2">
+                  Knowledge Operations Care Plan
+                </h3>
+                <p className="text-xs text-slate-400 mb-6">
+                  Ongoing maintenance as your product, features, and SOPs evolve.
+                </p>
+
+                <div className="mb-6">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-extrabold font-heading text-white">$1,500</span>
+                    <span className="text-xs text-slate-400 font-medium">/ month</span>
+                  </div>
+                  <div className="text-[11px] text-slate-500 mt-1">Recurring continuity · Cancel anytime</div>
+                </div>
+
+                <div className="space-y-3 pt-4 border-t border-slate-800/80 text-xs sm:text-sm text-slate-300">
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>Up to 2 New/Updated Training Modules per Month</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>Ongoing LMS Management &amp; Monthly Completion Analytics</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>Rapid 48-Hour SOP Updates for New Features</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <span>Quarterly Churn &amp; Onboarding Optimization Review</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-8">
+                <Button
+                  onClick={() => openAuditWithPackage("Care Plan Retainer ($1,500/mo)")}
+                  className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm h-12 rounded-xl transition-all border border-slate-700"
+                >
+                  Inquire for Retainer
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 6: ENTERPRISE DATA PRIVACY & GOVERNANCE (#governance)             */}
+      {/* ========================================================================= */}
+      <section id="governance" className="py-24 bg-[#080C14] border-t border-slate-800/80 relative">
+        <div className="container max-w-4xl mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="bg-midnight-gradient border border-primary/30 rounded-xl p-8 md:p-10 text-center"
+            transition={{ duration: 0.6 }}
+            className="rounded-3xl p-8 sm:p-12 bg-gradient-to-b from-[#0F172A] to-[#0B0F17] border border-blue-500/30 shadow-2xl relative overflow-hidden"
           >
-            <Zap className="h-8 w-8 text-primary mx-auto mb-4" />
-            <h2 className="font-serif text-2xl font-bold mb-3">{quickstart.title}</h2>
-            <p className="text-muted-foreground text-sm max-w-2xl mx-auto mb-2">{quickstart.for}</p>
-            <p className="text-muted-foreground text-sm max-w-2xl mx-auto mb-5">{quickstart.problem}</p>
-            <div className="flex flex-wrap justify-center gap-4 mb-6">
-              {quickstart.includes.map((item) => (
-                <div key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
-                  {item}
-                </div>
-              ))}
+            {/* Glow background */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 flex-shrink-0">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <div>
+                <span className="text-xs uppercase font-semibold tracking-wider text-blue-400">
+                  Data Security &amp; IP Protection
+                </span>
+                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                  Enterprise Data Security. Zero Model Training.
+                </h2>
+              </div>
             </div>
-            <div className="flex flex-col items-center gap-3">
-              <p className="font-serif text-xl font-bold text-primary">{quickstart.price}</p>
-              <a href="https://calendly.com/getmorefromlife-uju2/20-min-strategy-call-m-m" target="_blank" rel="noopener noreferrer">
-                <Button size="lg" className="bg-gold-gradient text-primary-foreground font-body font-semibold tracking-wide px-10 py-6 text-base hover:opacity-90 transition-opacity">
-                  Book a 20-Minute Strategy Call <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </a>
-              <p className="text-xs text-muted-foreground/60">No cost, no obligation. <span className="mx-2">·</span> <a href="https://wa.me/15304235158" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">WhatsApp</a></p>
+
+            <p className="text-slate-300 text-base sm:text-lg leading-relaxed mb-8">
+              We operate under strict PMP-certified governance. All proprietary client workflows, product data,
+              and internal transcripts are processed exclusively within private, encrypted commercial environments
+              where AI foundation model training is permanently disabled. Your IP is 100% confidential and is never
+              leaked to public machine learning models.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-3 pt-6 border-t border-slate-800/80">
+              <span className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1.5">
+                <Lock className="w-3.5 h-3.5 text-blue-400" />
+                Zero Data Retention / Training
+              </span>
+              <span className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-blue-400" />
+                Mutual NDA Guaranteed
+              </span>
+              <span className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+                SOC2-Aligned Protocols
+              </span>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Who We Work With */}
-      <section className="py-20">
-        <div className="container">
-          <SectionHeading subtitle="Our Clients" title="Who We Work With" description="We partner with ambitious organizations and individuals at every stage." />
-          <div className="flex flex-wrap justify-center gap-x-12 gap-y-4">
-            {clientTypes.map((type) => (
-              <span key={type} className="font-serif text-xl md:text-2xl font-bold text-muted-foreground/60 hover:text-primary transition-colors">
-                {type}
-              </span>
+      {/* Social Proof / Verified Testimonial */}
+      <section className="py-16 bg-[#0B0F17] border-t border-slate-800/80">
+        <div className="container max-w-4xl mx-auto px-4 text-center">
+          <div className="flex items-center justify-center gap-1 text-yellow-400 mb-4">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-4 h-4 fill-yellow-400" />
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Expanded Five Mills */}
-      <section className="py-24 bg-secondary">
-        <div className="container">
-          <SectionHeading subtitle="Our Expertise" title="The Five Mills" description="Five specialized divisions working in concert to deliver exceptional results." />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mills.map((mill, i) => (
-              <motion.div
-                key={mill.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-              >
-                <Link to="/the-mills" className="block group h-full">
-                  <div className="bg-card border border-border rounded-lg p-8 h-full hover:border-primary/40 hover:shadow-gold transition-all duration-300 flex flex-col">
-                    <mill.icon className={`h-10 w-10 ${mill.color} mb-4`} />
-                    <h3 className="font-serif text-xl font-bold mb-1">{mill.title}</h3>
-                    <p className="text-primary font-body text-xs font-semibold uppercase tracking-[0.15em] mb-3">{mill.desc}</p>
-                    <p className="text-muted-foreground text-sm leading-relaxed mb-4">{mill.value}</p>
-                    <ul className="space-y-1.5 mt-auto">
-                      {mill.examples.map((ex) => (
-                        <li key={ex} className="flex items-start gap-2 text-muted-foreground text-xs">
-                          <span className="h-1.5 w-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />
-                          {ex}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PMP Credentials & Human Line */}
-      <section className="py-16">
-        <div className="container text-center">
-          <div className="flex flex-wrap justify-center gap-4 mb-6">
-            {["PMP", "PSM II", "PAL I"].map((cert) => (
-              <span key={cert} className="px-4 py-2 border border-primary/30 rounded text-sm font-body font-semibold text-primary tracking-wider">
-                {cert}
-              </span>
-            ))}
-          </div>
-          <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl mx-auto">
-            "You bring the vision, we engineer the execution with{' '}
-            <span className="text-foreground font-semibold">PMP-certified rigor</span>."
-          </p>
-        </div>
-      </section>
-
-      {/* Tech Stack & Methodology */}
-      <section className="py-24 bg-secondary">
-        <div className="container">
-          <SectionHeading subtitle="Engineering Standards" title="Tech Stack & Methodology" description="Modern tooling paired with battle-tested project governance." />
-
-          <div className="mb-16">
-            <h3 className="font-serif text-xl font-bold text-center mb-8 text-primary">Our Technology Ecosystem</h3>
-            <div className="flex flex-wrap justify-center gap-3">
-              {techStack.map((tech) => (
-                <span key={tech} className="px-4 py-2 bg-card border border-border rounded-lg text-sm font-body font-medium text-muted-foreground hover:border-primary/40 hover:text-primary transition-colors">
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-
+          <blockquote className="font-heading text-lg sm:text-xl text-slate-200 leading-relaxed italic max-w-2xl mx-auto mb-6">
+            "Syed delivered exceptional work. His communication, professionalism, and project management skills are top-notch. I'd highly recommend him to anyone looking for high-quality work delivered on time."
+          </blockquote>
           <div>
-            <h3 className="font-serif text-xl font-bold text-center mb-8 text-primary">PMP-Certified Workflow</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {workflow.map((item) => (
-                <motion.div
-                  key={item.step}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: parseInt(item.step) * 0.1 }}
-                  className="text-center"
-                >
-                  <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto mb-4">
-                    <span className="font-serif text-lg font-bold text-primary">{item.step}</span>
+            <p className="font-semibold text-sm text-white">Syed Zaidi</p>
+            <p className="text-xs text-slate-400">Founder, Istax Consultants</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 7: FINAL CALL TO ACTION & EMBEDDED BOOKING (#audit)              */}
+      {/* ========================================================================= */}
+      <section id="audit" className="py-24 bg-[#080C14] border-t border-slate-800/80 relative">
+        <div className="container max-w-4xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <span className="text-xs font-semibold uppercase tracking-wider text-blue-400 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full mb-3 inline-block">
+              GET STARTED
+            </span>
+            <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
+              Ready to Eliminate Onboarding Churn?
+            </h2>
+            <p className="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+              Book a 15-minute diagnostic call with Syed Imon Rizvi, PMP®. We will review your current documentation and map out your custom 14-day sprint.
+            </p>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="rounded-3xl p-6 sm:p-10 bg-[#0F172A] border border-slate-800 shadow-2xl"
+          >
+            {!embedQualified ? (
+              <form onSubmit={handleEmbeddedSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Field 1: Company Website URL */}
+                  <div className="space-y-2">
+                    <Label htmlFor="embed-company" className="text-xs uppercase font-semibold tracking-wider text-slate-300">
+                      1. Company Website or App URL *
+                    </Label>
+                    <Input
+                      id="embed-company"
+                      required
+                      placeholder="https://yourcompany.com"
+                      value={embedCompanyUrl}
+                      onChange={(e) => setEmbedCompanyUrl(e.target.value)}
+                      className="bg-[#0B0F17] border-slate-800 text-white placeholder:text-slate-600 focus-visible:ring-blue-500 h-12"
+                    />
                   </div>
-                  <h4 className="font-serif text-base font-bold mb-2">{item.title}</h4>
-                  <p className="text-muted-foreground text-xs leading-relaxed">{item.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+
+                  {/* Field 3: Launch timeframe */}
+                  <div className="space-y-2">
+                    <Label className="text-xs uppercase font-semibold tracking-wider text-slate-300">
+                      3. Desired Launch Timeframe *
+                    </Label>
+                    <div className="grid grid-cols-2 gap-2 h-12">
+                      {["Next 14 days", "Next 30 days"].map((tf) => (
+                        <button
+                          type="button"
+                          key={tf}
+                          onClick={() => setEmbedTimeframe(tf)}
+                          className={`rounded-lg border text-xs font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                            embedTimeframe === tf
+                              ? "border-blue-500 bg-blue-500/20 text-white"
+                              : "border-slate-800 bg-[#0B0F17] text-slate-400 hover:text-white"
+                          }`}
+                        >
+                          {tf}
+                          {embedTimeframe === tf && <Check className="w-3.5 h-3.5 text-blue-400" />}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Field 2: Biggest Onboarding Bottleneck */}
+                <div className="space-y-2">
+                  <Label htmlFor="embed-bottleneck" className="text-xs uppercase font-semibold tracking-wider text-slate-300">
+                    2. What is your biggest onboarding bottleneck right now? *
+                  </Label>
+                  <Textarea
+                    id="embed-bottleneck"
+                    required
+                    rows={3}
+                    placeholder="e.g., Users sign up but drop off before setting up their first integration; our support team spends 15 hours a week giving the exact same demo."
+                    value={embedBottleneck}
+                    onChange={(e) => setEmbedBottleneck(e.target.value)}
+                    className="bg-[#0B0F17] border-slate-800 text-white placeholder:text-slate-600 focus-visible:ring-blue-500 resize-none text-sm"
+                  />
+                </div>
+
+                {/* Email (Optional) */}
+                <div className="space-y-2">
+                  <Label htmlFor="embed-email" className="text-xs uppercase font-semibold tracking-wider text-slate-300">
+                    Your Work Email (Optional for instant calendar invite)
+                  </Label>
+                  <Input
+                    id="embed-email"
+                    type="email"
+                    placeholder="founder@yourcompany.com"
+                    value={embedEmail}
+                    onChange={(e) => setEmbedEmail(e.target.value)}
+                    className="bg-[#0B0F17] border-slate-800 text-white placeholder:text-slate-600 focus-visible:ring-blue-500 h-12 text-sm"
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full h-14 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-base rounded-xl shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2"
+                >
+                  Step 2: Choose Your 15-Minute Slot on the Calendar
+                  <ArrowRight className="w-5 h-5" />
+                </Button>
+
+                <div className="flex items-center justify-center gap-6 text-xs text-slate-500 pt-2">
+                  <span>✓ 100% Free Diagnostic</span>
+                  <span>✓ Zero Sales Pressure</span>
+                  <span>✓ PMP® Scoping Document Included</span>
+                </div>
+              </form>
+            ) : (
+              <div className="space-y-6">
+                <div className="p-4 rounded-xl bg-[#0B0F17] border border-slate-800 flex items-center justify-between text-xs">
+                  <div className="text-slate-300">
+                    <span className="text-blue-400 font-semibold">Diagnostic details recorded:</span>{" "}
+                    {embedCompanyUrl || "General"} · {embedTimeframe}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setEmbedQualified(false)}
+                    className="text-slate-400 hover:text-slate-200 underline"
+                  >
+                    Edit details
+                  </button>
+                </div>
+
+                {/* Embedded Calendar Widget */}
+                <div className="border border-slate-800 rounded-2xl overflow-hidden bg-[#0B0F17]">
+                  <iframe
+                    src={`${CALENDLY_URL}?embed_domain=${encodeURIComponent(
+                      typeof window !== "undefined" ? window.location.hostname : "mercerandmills.com"
+                    )}&embed_type=Inline`}
+                    width="100%"
+                    height="650"
+                    title="15-Minute Diagnostic Call with Syed Imon Rizvi, PMP"
+                    className="border-0 w-full"
+                  />
+                </div>
+
+                <div className="text-center pt-2">
+                  <a
+                    href={CALENDLY_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-blue-400 hover:text-blue-300 inline-flex items-center gap-1.5"
+                  >
+                    Having trouble viewing the calendar? Open in a full window
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+            )}
+          </motion.div>
         </div>
       </section>
 
-      <TestimonialsSection />
-
-      {/* Final CTA */}
-      <section className="py-24">
-        <div className="container">
-          <div className="bg-midnight-gradient border border-border rounded-2xl p-12 md:p-20 text-center shadow-gold-lg">
-            <SectionHeading
-              subtitle="Ready to Begin?"
-              title="Let's Build Your Legacy"
-              description="Schedule a free 20-minute strategy call with our global remote team and discover what's possible."
-            />
-            <a href="https://calendly.com/getmorefromlife-uju2/20-min-strategy-call-m-m" target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="bg-gold-gradient text-primary-foreground font-body font-semibold tracking-wide px-10 py-6 text-base hover:opacity-90 transition-opacity">
-                Book a 20-Minute Strategy Call <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </a>
-            <p className="text-xs text-muted-foreground/60 mt-3">No cost, no obligation. <span className="mx-2">·</span> <a href="https://wa.me/15304235158" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">WhatsApp</a></p>
-          </div>
-        </div>
-      </section>
+      {/* Global Booking Modal */}
+      <AuditBookingModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        defaultPackage={selectedPackage}
+      />
     </>
   );
 };

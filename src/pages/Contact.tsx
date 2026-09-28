@@ -155,7 +155,7 @@ const Contact = () => {
       </Helmet>
       <section className="py-24">
       <div className="container">
-        <SectionHeading subtitle="Get in Touch" title="Contact Us" description="Tell us what you need. Select from our services below and we'll respond with a custom quote within 24 hours." />
+        <SectionHeading subtitle="Get in Touch" title="Contact Us" description="Tell us what you need. Select from our productized services below and we'll respond with a sprint roadmap within 24 hours." />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
@@ -355,7 +355,7 @@ const Contact = () => {
               {[
                 { icon: MapPin, label: "Location", value: "Remote — International Team" },
                 { icon: Clock, label: "Business Hours (PST)", value: "Monday – Friday: 9:00 AM – 6:00 PM\nSaturday: By Appointment\nSunday: Closed" },
-                { icon: Mail, label: "Email", value: "syedimonrizvipmp@gmail.com", href: "mailto:syedimonrizvipmp@gmail.com", copyable: true },
+                { icon: Mail, label: "Email", value: "partnerships@mercerandmills.com", href: "mailto:partnerships@mercerandmills.com", copyable: true },
                 { icon: Phone, label: "Phone", value: "840-207-8720", href: "tel:18402078720" },
                 { icon: MessageCircle, label: "WhatsApp", value: "+1 (530) 423-5158", href: "https://wa.me/15304235158" },
               ].map((item) => (

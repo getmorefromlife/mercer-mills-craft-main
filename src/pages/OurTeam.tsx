@@ -130,7 +130,7 @@ const OurTeam = () => {
               <span className="text-gradient-gold">A Network of Experts.</span>
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-              You're not hiring a faceless agency. You're working directly with a PMP-certified principal who assembles the exact freelance team your project needs — no overhead, no bureaucracy, no runaround.
+              You're not hiring a faceless agency. You're working directly with a PMP-certified principal who assembles the exact specialist team your project needs — no overhead, no bureaucracy, no runaround.
             </p>
           </motion.div>
         </div>
@@ -178,7 +178,7 @@ const OurTeam = () => {
               </div>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
-                  With PMP-certified project management credentials and over a decade of experience leading digital production across three continents, Syed founded Mercer & Mills to bridge the gap between freelance talent and enterprise-grade execution.
+                  With PMP-certified project management credentials and over a decade of experience leading digital production across three continents, Syed founded Mercer & Mills to bridge the gap between fragmented contractor talent and enterprise-grade execution.
                 </p>
                 <p>
                   His philosophy is simple: <strong className="text-foreground">clients don't need another agency — they need a reliable lead who can assemble the right team, enforce quality standards, and deliver on time.</strong> Every project at Mercer & Mills is personally overseen by Syed, ensuring PMP-level governance without the agency markup.
@@ -257,13 +257,13 @@ const OurTeam = () => {
           <SectionHeading
             subtitle="How It Works"
             title="The Mercer & Mills Model"
-            description="We combine a single point of accountability with a curated network of independent experts — giving you agency-quality deliverables at freelance-friendly terms."
+            description="We combine a single point of accountability with dedicated production specialists — giving you agency-quality deliverables under predictable productized sprint terms."
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mt-12">
             {[
               { step: "01", title: "You Meet Your Lead", desc: "Syed personally handles every discovery call. No sales team, no account manager shuffle — just a direct conversation with the person who will run your project." },
               { step: "02", title: "We Assemble the Team", desc: "Based on your scope, we pull the right experts from our network — ghostwriters, designers, engineers, sound producers, or curriculum architects." },
-              { step: "03", title: "One Invoice, One Point of Contact", desc: "You never manage multiple freelancers. Syed coordinates the team, enforces milestones, and delivers a single finished product on time and on budget." },
+              { step: "03", title: "One Invoice, One Point of Contact", desc: "You never manage multiple contractors. Syed coordinates the sprint, enforces milestones, and delivers a single finished product on time and on budget." },
             ].map((item, i) => (
               <motion.div
                 key={item.step}

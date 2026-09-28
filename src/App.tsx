@@ -41,15 +41,17 @@ const ProjectScopingTool = lazy(() => import("./pages/guides/ProjectScopingTool"
 const PodcastLaunchSoundKit = lazy(() => import("./pages/guides/PodcastLaunchSoundKit"));
 const BrandIdentityStarterKit = lazy(() => import("./pages/guides/BrandIdentityStarterKit"));
 const FoundersManuscriptBlueprint = lazy(() => import("./pages/guides/FoundersManuscriptBlueprint"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const AIGovernance = lazy(() => import("./pages/AIGovernance"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
 const LoadingFallback = () => (
-  <div className="flex min-h-screen items-center justify-center bg-background">
+  <div className="flex min-h-screen items-center justify-center bg-[#0B0F17]">
     <div className="text-center">
-      <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-      <p className="text-muted-foreground text-sm">Loading...</p>
+      <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+      <p className="text-slate-400 text-sm">Loading...</p>
     </div>
   </div>
 );
@@ -67,11 +69,11 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/r/:name" element={<ReferralRedirect />} />
-              <Route path="/our-team" element={<OurTeam />} />
-              <Route path="/services" element={<Services />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/the-mills" element={<TheMills />} />
-              <Route path="/the-mercer-method" element={<TheMercerMethod />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/ai-governance" element={<AIGovernance />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/our-team" element={<OurTeam />} />
               <Route path="/portfolio" element={<Portfolio />} />
               <Route path="/portfolio/istax-brand-disruption" element={<IstaxBrandDisruption />} />
               <Route path="/portfolio/istax-brand-architecture" element={<IstaxBrandArchitecture />} />
@@ -79,20 +81,16 @@ const App = () => (
               <Route path="/portfolio/syedello" element={<Syedello />} />
               <Route path="/portfolio/syedello-logo" element={<SyedelloLogo />} />
               <Route path="/financial-center" element={<FinancialCenter />} />
-              <Route path="/contact" element={<Contact />} />
               <Route path="/insights" element={<Insights />} />
               <Route path="/insights/:slug" element={<BlogPost />} />
               <Route path="/sprint-blueprint" element={<SprintBlueprint />} />
-              <Route path="/services/the-literary-mill" element={<TheLiteraryMill />} />
-              <Route path="/services/the-visionary-mill" element={<TheVisionaryMill />} />
-              <Route path="/services/the-sonic-mill" element={<TheSonicMill />} />
-              <Route path="/services/the-structural-mill" element={<TheStructuralMill />} />
-              <Route path="/services/the-academy-mill" element={<TheAcademyMill />} />
-              <Route path="/guides/course-launch-blueprint" element={<CourseLaunchBlueprint />} />
-              <Route path="/guides/project-scoping-tool" element={<ProjectScopingTool />} />
-              <Route path="/guides/podcast-launch-sound-kit" element={<PodcastLaunchSoundKit />} />
-              <Route path="/guides/brand-identity-starter-kit" element={<BrandIdentityStarterKit />} />
-              <Route path="/guides/founders-manuscript-blueprint" element={<FoundersManuscriptBlueprint />} />
+              
+              {/* Purged five mills redirects to home */}
+              <Route path="/the-mills" element={<Navigate to="/" replace />} />
+              <Route path="/the-mercer-method" element={<Navigate to="/#sprint" replace />} />
+              <Route path="/services" element={<Navigate to="/#sprint" replace />} />
+              <Route path="/services/*" element={<Navigate to="/#sprint" replace />} />
+              <Route path="/guides/*" element={<Navigate to="/#sprint" replace />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

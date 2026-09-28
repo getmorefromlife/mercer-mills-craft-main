@@ -35,6 +35,8 @@ import ProjectScopingTool from "./pages/guides/ProjectScopingTool";
 import PodcastLaunchSoundKit from "./pages/guides/PodcastLaunchSoundKit";
 import BrandIdentityStarterKit from "./pages/guides/BrandIdentityStarterKit";
 import FoundersManuscriptBlueprint from "./pages/guides/FoundersManuscriptBlueprint";
+import TermsOfService from "./pages/TermsOfService";
+import AIGovernance from "./pages/AIGovernance";
 import { posts } from "@/lib/posts";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -55,11 +57,10 @@ export async function prerender({ url }: { url: string }) {
             <Layout>
               <Routes>
                 <Route path="/" element={<Index />} />
-                <Route path="/our-team" element={<OurTeam />} />
-                <Route path="/services" element={<Services />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/the-mills" element={<TheMills />} />
-                <Route path="/the-mercer-method" element={<TheMercerMethod />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/ai-governance" element={<AIGovernance />} />
+                <Route path="/our-team" element={<OurTeam />} />
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/portfolio/istax-brand-disruption" element={<IstaxBrandDisruption />} />
                 <Route path="/portfolio/istax-brand-architecture" element={<IstaxBrandArchitecture />} />
@@ -71,16 +72,6 @@ export async function prerender({ url }: { url: string }) {
                 <Route path="/insights" element={<Insights />} />
                 <Route path="/insights/:slug" element={<BlogPost />} />
                 <Route path="/sprint-blueprint" element={<SprintBlueprint />} />
-                <Route path="/services/the-literary-mill" element={<TheLiteraryMill />} />
-                <Route path="/services/the-visionary-mill" element={<TheVisionaryMill />} />
-                <Route path="/services/the-sonic-mill" element={<TheSonicMill />} />
-                <Route path="/services/the-structural-mill" element={<TheStructuralMill />} />
-                <Route path="/services/the-academy-mill" element={<TheAcademyMill />} />
-                <Route path="/guides/course-launch-blueprint" element={<CourseLaunchBlueprint />} />
-                <Route path="/guides/project-scoping-tool" element={<ProjectScopingTool />} />
-                <Route path="/guides/podcast-launch-sound-kit" element={<PodcastLaunchSoundKit />} />
-                <Route path="/guides/brand-identity-starter-kit" element={<BrandIdentityStarterKit />} />
-                <Route path="/guides/founders-manuscript-blueprint" element={<FoundersManuscriptBlueprint />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Layout>
@@ -91,11 +82,10 @@ export async function prerender({ url }: { url: string }) {
   );
 
   const links = new Set<string>([
-    "/our-team",
-    "/services",
     "/privacy-policy",
-    "/the-mills",
-    "/the-mercer-method",
+    "/terms-of-service",
+    "/ai-governance",
+    "/our-team",
     "/portfolio",
     "/portfolio/istax-brand-disruption",
     "/portfolio/istax-brand-architecture",
@@ -106,16 +96,6 @@ export async function prerender({ url }: { url: string }) {
     "/contact",
     "/insights",
     "/sprint-blueprint",
-    "/services/the-literary-mill",
-    "/services/the-visionary-mill",
-    "/services/the-sonic-mill",
-    "/services/the-structural-mill",
-    "/services/the-academy-mill",
-    "/guides/course-launch-blueprint",
-    "/guides/project-scoping-tool",
-    "/guides/podcast-launch-sound-kit",
-    "/guides/brand-identity-starter-kit",
-    "/guides/founders-manuscript-blueprint",
   ]);
   for (const post of posts) {
     links.add(`/insights/${post.slug}`);
