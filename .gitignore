@@ -25,3 +25,6 @@ dist-ssr
 .backups/
 *.bundle
 .vercel
+
+# Local Netlify folder
+.netlify

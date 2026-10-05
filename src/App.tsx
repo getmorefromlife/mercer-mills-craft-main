@@ -17,10 +17,7 @@ const ReferralRedirect = () => {
 };
 
 const OurTeam = lazy(() => import("./pages/OurTeam"));
-const TheMills = lazy(() => import("./pages/TheMills"));
-const TheMercerMethod = lazy(() => import("./pages/TheMercerMethod"));
 const Portfolio = lazy(() => import("./pages/Portfolio"));
-const Services = lazy(() => import("./pages/Services"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const IstaxBrandDisruption = lazy(() => import("./pages/IstaxBrandDisruption"));
 const IstaxBrandArchitecture = lazy(() => import("./pages/IstaxBrandArchitecture"));
@@ -34,16 +31,6 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Insights = lazy(() => import("./pages/Insights"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const SprintBlueprint = lazy(() => import("./pages/SprintBlueprint"));
-const TheLiteraryMill = lazy(() => import("./pages/services/TheLiteraryMill"));
-const TheVisionaryMill = lazy(() => import("./pages/services/TheVisionaryMill"));
-const TheSonicMill = lazy(() => import("./pages/services/TheSonicMill"));
-const TheStructuralMill = lazy(() => import("./pages/services/TheStructuralMill"));
-const TheAcademyMill = lazy(() => import("./pages/services/TheAcademyMill"));
-const CourseLaunchBlueprint = lazy(() => import("./pages/guides/CourseLaunchBlueprint"));
-const ProjectScopingTool = lazy(() => import("./pages/guides/ProjectScopingTool"));
-const PodcastLaunchSoundKit = lazy(() => import("./pages/guides/PodcastLaunchSoundKit"));
-const BrandIdentityStarterKit = lazy(() => import("./pages/guides/BrandIdentityStarterKit"));
-const FoundersManuscriptBlueprint = lazy(() => import("./pages/guides/FoundersManuscriptBlueprint"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const AIGovernance = lazy(() => import("./pages/AIGovernance"));
 const NotFound = lazy(() => import("./pages/NotFound"));
