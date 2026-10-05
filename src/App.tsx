@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import Layout from "@/components/Layout";
 import ScrollToTop from "@/components/ScrollToTop";
+import AdminGate from "@/components/AdminGate";
 import Index from "./pages/Index";
 
 const ReferralRedirect = () => {
@@ -83,12 +84,55 @@ const App = () => (
               <Route path="/portfolio/syedello" element={<Syedello />} />
               <Route path="/portfolio/syedello-logo" element={<SyedelloLogo />} />
               <Route path="/financial-center" element={<FinancialCenter />} />
-              <Route path="/invoice-generator" element={<InvoiceGenerator />} />
-              <Route path="/admin/invoice" element={<InvoiceGenerator />} />
-              <Route path="/billing" element={<InvoiceGenerator />} />
-              <Route path="/agreement-generator" element={<AgreementGenerator />} />
-              <Route path="/admin/agreement" element={<AgreementGenerator />} />
-              <Route path="/agreement" element={<AgreementGenerator />} />
+              <Route path="/admin" element={<Navigate to="/admin/invoice" replace />} />
+              <Route
+                path="/invoice-generator"
+                element={
+                  <AdminGate>
+                    <InvoiceGenerator />
+                  </AdminGate>
+                }
+              />
+              <Route
+                path="/admin/invoice"
+                element={
+                  <AdminGate>
+                    <InvoiceGenerator />
+                  </AdminGate>
+                }
+              />
+              <Route
+                path="/billing"
+                element={
+                  <AdminGate>
+                    <InvoiceGenerator />
+                  </AdminGate>
+                }
+              />
+              <Route
+                path="/agreement-generator"
+                element={
+                  <AdminGate>
+                    <AgreementGenerator />
+                  </AdminGate>
+                }
+              />
+              <Route
+                path="/admin/agreement"
+                element={
+                  <AdminGate>
+                    <AgreementGenerator />
+                  </AdminGate>
+                }
+              />
+              <Route
+                path="/agreement"
+                element={
+                  <AdminGate>
+                    <AgreementGenerator />
+                  </AdminGate>
+                }
+              />
               <Route path="/insights" element={<Insights />} />
               <Route path="/insights/:slug" element={<BlogPost />} />
               <Route path="/sprint-blueprint" element={<SprintBlueprint />} />

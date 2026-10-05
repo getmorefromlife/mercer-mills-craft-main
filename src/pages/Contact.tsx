@@ -70,6 +70,12 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [lastSubmittedInfo, setLastSubmittedInfo] = useState<{
+    name: string;
+    email: string;
+    company: string;
+    package: string;
+  } | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem("mm_ref");
@@ -93,6 +99,14 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const submissionSnapshot = {
+      name: formData.name,
+      email: formData.email,
+      company: formData.companyUrl,
+      package: selectedPackage,
+    };
+    setLastSubmittedInfo(submissionSnapshot);
+
     const compiledMessage = `--- Knowledge Operations Inquiry ---
 Sprint Package: ${selectedPackage}
 Desired Timeframe: ${timeframe}
@@ -104,6 +118,25 @@ ${formData.bottleneck}`;
     const SERVICE_ID = "service_s7renj5";
     const TEMPLATE_ID = "template_xa53n4r";
     const PUBLIC_KEY = "PtqOQs6UI94KMGudX";
+
+    // Optional webhook for Make.com / Telegram / Zapier instant notifications
+    const customWebhook = typeof window !== "undefined" ? localStorage.getItem("mm_webhook_url") : null;
+    if (customWebhook) {
+      try {
+        fetch(customWebhook, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...submissionSnapshot,
+            timeframe,
+            details: formData.bottleneck,
+            timestamp: new Date().toISOString(),
+          }),
+        }).catch((err) => console.warn("Webhook dispatch error:", err));
+      } catch (err) {
+        console.warn("Webhook error:", err);
+      }
+    }
 
     emailjs
       .send(
@@ -193,7 +226,11 @@ ${formData.bottleneck}`;
                     </a>
                     <div className="flex gap-2">
                       <a
-                        href="https://wa.me/15304235158"
+                        href={`https://wa.me/15304235158?text=${encodeURIComponent(
+                          `Hi Mercer & Mills team, I just submitted an inquiry for ${
+                            lastSubmittedInfo?.package || "the Client Academy Sprint"
+                          } on behalf of ${lastSubmittedInfo?.company || "our team"}.`
+                        )}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-xs text-slate-300 hover:text-white transition-colors"
@@ -202,13 +239,17 @@ ${formData.bottleneck}`;
                         US WhatsApp
                       </a>
                       <a
-                        href="https://wa.me/923303658220"
+                        href={`https://wa.me/923303658220?text=${encodeURIComponent(
+                          `Hi Syed Imon Rizvi, I just submitted an inquiry on Mercer & Mills for ${
+                            lastSubmittedInfo?.package || "the Client Academy Sprint"
+                          } on behalf of ${lastSubmittedInfo?.company || "our team"}.`
+                        )}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-xs text-slate-300 hover:text-emerald-400 transition-colors"
                       >
                         <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
-                        Pakistan WhatsApp
+                        Founder WhatsApp
                       </a>
                     </div>
                   </div>

@@ -23,35 +23,29 @@ export default function FinancialCenter() {
             description="Transparent, direct B2B settlement channels. We support direct international bank wires, fast digital transfers via Wise or Remitly, and milestone-governed invoicing."
           />
 
-          {/* Quick Action: Invoicing Generator Banner */}
-          <div className="mb-12 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-blue-950/60 via-[#0F172A] to-blue-900/30 border border-blue-500/30 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-            <div className="space-y-2">
-              <span className="text-xs font-semibold uppercase tracking-wider text-blue-400 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full inline-block">
-                CLIENT &amp; PARTNER BILLING
-              </span>
-              <h3 className="text-xl sm:text-2xl font-bold font-heading text-white">
-                Mercer &amp; Mills Custom Invoice Engine
-              </h3>
-              <p className="text-sm text-slate-300 max-w-xl leading-relaxed">
-                Generate an official, print-ready PDF invoice with itemized sprint deliverables, FBR NTN verification, and direct international wire coordinates in 30 seconds.
-              </p>
+          {/* Corporate Trust Notice */}
+          <div className="mb-12 p-6 rounded-2xl bg-[#0F172A] border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 flex-shrink-0">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white font-heading">
+                  Verified Cross-Border Settlement Channels
+                </h3>
+                <p className="text-xs text-slate-400">
+                  Direct bank wires and international transfers are processed with official Electronic Proceeds Realization (e-PRC) compliance under FBR NTN: 6622762.
+                </p>
+              </div>
             </div>
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-shrink-0">
-              <Link
-                to="/invoice-generator"
-                className="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-600/30"
-              >
-                <FileText className="w-4 h-4" />
-                Invoice Engine <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-              <Link
-                to="/agreement-generator"
-                className="px-5 py-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white font-semibold text-xs flex items-center justify-center gap-2 transition-all"
-              >
-                <FileCheck className="w-4 h-4 text-blue-400" />
-                Agreement &amp; NDA
-              </Link>
-            </div>
+            <a
+              href="https://iris.fbr.gov.pk/#verifications"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-xl bg-slate-900 border border-slate-700 hover:border-slate-600 text-xs font-semibold text-slate-200 hover:text-white inline-flex items-center gap-1.5 transition-colors flex-shrink-0"
+            >
+              Verify FBR NTN ↗
+            </a>
           </div>
 
           {/* Payment Methods Grid */}

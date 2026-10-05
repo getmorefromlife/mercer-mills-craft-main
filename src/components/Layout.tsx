@@ -222,11 +222,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/financial-center" className="hover:text-blue-400 transition-colors">
-                    Financial Center &amp; Invoicing
-                  </Link>
-                </li>
-                <li>
                   <button
                     onClick={() => setIsAuditModalOpen(true)}
                     className="hover:text-blue-400 text-blue-400/90 font-medium transition-colors"
