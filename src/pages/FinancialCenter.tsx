@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { CreditCard, Landmark, ShieldCheck, FileText, ArrowRight, CheckCircle2, Globe, ExternalLink } from "lucide-react";
+import { CreditCard, Landmark, ShieldCheck, FileText, FileCheck, ArrowRight, CheckCircle2, Globe, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import SectionHeading from "@/components/SectionHeading";
 
@@ -36,13 +36,22 @@ export default function FinancialCenter() {
                 Generate an official, print-ready PDF invoice with itemized sprint deliverables, FBR NTN verification, and direct international wire coordinates in 30 seconds.
               </p>
             </div>
-            <Link
-              to="/invoice-generator"
-              className="px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-600/30 flex-shrink-0"
-            >
-              <FileText className="w-4 h-4" />
-              Launch Invoice Engine <ArrowRight className="w-4 h-4" />
-            </Link>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-shrink-0">
+              <Link
+                to="/invoice-generator"
+                className="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-600/30"
+              >
+                <FileText className="w-4 h-4" />
+                Invoice Engine <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+              <Link
+                to="/agreement-generator"
+                className="px-5 py-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white font-semibold text-xs flex items-center justify-center gap-2 transition-all"
+              >
+                <FileCheck className="w-4 h-4 text-blue-400" />
+                Agreement &amp; NDA
+              </Link>
+            </div>
           </div>
 
           {/* Payment Methods Grid */}

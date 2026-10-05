@@ -216,12 +216,21 @@ Direct Desk: +1 (530) 423-5158 | +92 330 365 8220
           {/* Back & Title Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-6 no-print">
             <div>
-              <Link
-                to="/financial-center"
-                className="inline-flex items-center gap-2 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors mb-2"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" /> Back to Financial Center
-              </Link>
+              <div className="flex items-center gap-3 mb-2">
+                <Link
+                  to="/financial-center"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-slate-300 transition-colors"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" /> Financial Center
+                </Link>
+                <span className="text-slate-600">•</span>
+                <Link
+                  to="/agreement-generator"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors"
+                >
+                  Go to Agreement &amp; NDA Generator →
+                </Link>
+              </div>
               <h1 className="text-2xl sm:text-3xl font-heading font-bold text-white flex items-center gap-3">
                 <FileText className="w-7 h-7 text-blue-500" />
                 Executive Invoice Engine

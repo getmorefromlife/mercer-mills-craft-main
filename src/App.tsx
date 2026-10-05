@@ -28,6 +28,7 @@ const Syedello = lazy(() => import("./pages/Syedello"));
 const SyedelloLogo = lazy(() => import("./pages/SyedelloLogo"));
 const FinancialCenter = lazy(() => import("./pages/FinancialCenter"));
 const InvoiceGenerator = lazy(() => import("./pages/InvoiceGenerator"));
+const AgreementGenerator = lazy(() => import("./pages/AgreementGenerator"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Insights = lazy(() => import("./pages/Insights"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
@@ -85,6 +86,9 @@ const App = () => (
               <Route path="/invoice-generator" element={<InvoiceGenerator />} />
               <Route path="/admin/invoice" element={<InvoiceGenerator />} />
               <Route path="/billing" element={<InvoiceGenerator />} />
+              <Route path="/agreement-generator" element={<AgreementGenerator />} />
+              <Route path="/admin/agreement" element={<AgreementGenerator />} />
+              <Route path="/agreement" element={<AgreementGenerator />} />
               <Route path="/insights" element={<Insights />} />
               <Route path="/insights/:slug" element={<BlogPost />} />
               <Route path="/sprint-blueprint" element={<SprintBlueprint />} />
