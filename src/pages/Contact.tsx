@@ -138,18 +138,25 @@ ${formData.bottleneck}`;
       }
     }
 
+    const templateParams = {
+      user_name: formData.name,
+      from_name: formData.name,
+      name: formData.name,
+      user_email: formData.email,
+      from_email: formData.email,
+      reply_to: formData.email,
+      email: formData.email,
+      to_email: "syedimonrizvipmp@gmail.com",
+      to_name: "Syed Imon Rizvi",
+      company: formData.companyUrl,
+      package: selectedPackage,
+      timeframe: timeframe,
+      message: compiledMessage,
+      subject: `New Client Sprint Inquiry: ${selectedPackage} (${formData.name})`,
+    };
+
     emailjs
-      .send(
-        SERVICE_ID,
-        TEMPLATE_ID,
-        {
-          user_name: formData.name,
-          user_email: formData.email,
-          company: formData.companyUrl,
-          message: compiledMessage,
-        },
-        PUBLIC_KEY
-      )
+      .send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
       .then(() => {
         toast.success("Thank you for reaching out. Syed Imon Rizvi will review your details and respond within 24 hours.");
         setIsSubmitted(true);
