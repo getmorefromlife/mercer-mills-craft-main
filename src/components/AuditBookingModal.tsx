@@ -181,6 +181,15 @@ export const AuditBookingModal: React.FC<AuditBookingModalProps> = ({
                   </>
                 )}
               </Button>
+              <div className="text-center pt-2">
+                <button
+                  type="button"
+                  onClick={() => setStep("calendar")}
+                  className="text-xs text-slate-400 hover:text-blue-400 transition-colors underline"
+                >
+                  Or skip details and view available calendar slots directly →
+                </button>
+              </div>
             </div>
 
             <div className="flex items-center justify-center gap-4 text-xs text-slate-500 pt-1">

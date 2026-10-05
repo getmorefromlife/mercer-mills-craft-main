@@ -1,85 +1,75 @@
 import { Helmet } from "react-helmet-async";
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Clock, Mail, Phone, Copy, BookOpen, Palette, Music, BarChart3, GraduationCap, CheckCircle, ChevronDown, Trash2, MessageCircle } from "lucide-react";
+import {
+  MapPin,
+  Clock,
+  Mail,
+  Phone,
+  Copy,
+  CheckCircle2,
+  MessageCircle,
+  Calendar,
+  ArrowRight,
+  ShieldCheck,
+  Sparkles,
+  Globe,
+  User,
+  Send,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import SectionHeading from "@/components/SectionHeading";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { toast } from "sonner";
 import emailjs from "@emailjs/browser";
 
-const mills = [
+const sprintPackages = [
   {
-    id: "literary",
-    icon: BookOpen,
-    title: "The Literary Mill",
-    services: [
-      "Ghostwriting non-fiction books & memoirs",
-      "Scripting lecture series & academic talks",
-      "Building sermon/speech libraries",
-      "Manuscript development & editing",
-      "Publishing strategy & book marketing",
-    ],
+    id: "turnkey-academy",
+    title: "14-Day Turnkey Client Academy",
+    price: "$3,500",
+    badge: "Full Sprint",
+    desc: "Complete 5-7 module onboarding video curriculum, LMS integration, interactive job aids, and activation email sequence.",
   },
   {
-    id: "visionary",
-    icon: Palette,
-    title: "The Visionary Mill",
-    services: [
-      "Explainer videos & whiteboard animations",
-      "Course visual assets & slide decks",
-      "Brand identity systems & marketing collateral",
-      "Motion graphics & 3D animation",
-      "UI/UX design for digital products",
-    ],
+    id: "blueprint-audit",
+    title: "Onboarding Architecture Blueprint",
+    price: "$750",
+    badge: "72-Hour Delivery",
+    desc: "Comprehensive friction audit, 5-7 module curriculum map, and 1 produced pilot module (100% credited toward full sprint).",
   },
   {
-    id: "sonic",
-    icon: Music,
-    title: "The Sonic Mill",
-    services: [
-      "Podcast intro/outro production & sound design",
-      "Course background soundscapes & narration editing",
-      "Custom music composition for digital media",
-      "Sonic branding & audio identity",
-      "Audio post-production & mastering",
-    ],
+    id: "care-plan",
+    title: "Knowledge Operations Care Plan",
+    price: "$1,500/mo",
+    badge: "Continuity",
+    desc: "Ongoing curriculum updates, up to 2 new/updated modules/mo, LMS administration, and monthly completion analytics.",
   },
   {
-    id: "structural",
-    icon: BarChart3,
-    title: "The Structural Mill",
-    services: [
-      "Agile/PMO setup for growing teams",
-      "Launch rescue & project recovery",
-      "Process documentation & workflow automation",
-      "Sprint planning & stakeholder management",
-      "Risk mitigation & quality assurance",
-    ],
-  },
-  {
-    id: "academy",
-    icon: GraduationCap,
-    title: "The Academy Mill",
-    services: [
-      "Curriculum design & learning outcome mapping",
-      "Academy setup for institutes & edtech startups",
-      "Assessment frameworks & certification pathways",
-      "Homeschooling frameworks & value-based foundations",
-      "Ethical & leadership training programs",
-    ],
+    id: "custom-enterprise",
+    title: "Enterprise / Custom Knowledge Sprint",
+    price: "Custom",
+    badge: "Bespoke",
+    desc: "Multi-product academies, SOC2-compliant LMS installations, or custom enterprise workflow modernization.",
   },
 ];
 
 const Contact = () => {
   const form = useRef<HTMLFormElement>(null);
-  const [formData, setFormData] = useState({ name: "", email: "", company: "", message: "", referralCode: "" });
-  const [selectedServices, setSelectedServices] = useState<Set<string>>(new Set());
+  const [selectedPackage, setSelectedPackage] = useState("14-Day Turnkey Client Academy");
+  const [timeframe, setTimeframe] = useState("Next 14 Business Days");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    companyUrl: "",
+    bottleneck: "",
+    referralCode: "",
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [step, setStep] = useState(1);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("mm_ref");
@@ -88,59 +78,59 @@ const Contact = () => {
     }
   }, []);
 
-  const selectedCount = selectedServices.size;
-
-  const toggleService = (service: string) => {
-    setSelectedServices((prev) => {
-      const next = new Set(prev);
-      if (next.has(service)) next.delete(service);
-      else next.add(service);
-      return next;
-    });
-  };
-
   const copyToClipboard = (text: string, label: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      toast.success(`${label} copied to clipboard`);
-    }).catch(() => {
-      toast.error("Failed to copy");
-    });
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        toast.success(`${label} copied to clipboard`);
+      })
+      .catch(() => {
+        toast.error("Failed to copy");
+      });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    let messageWithServices = formData.message;
-    const parts: string[] = [];
-    if (selectedCount > 0) {
-      parts.push(`--- Services Requested ---\n${Array.from(selectedServices).join("\n")}`);
-    }
-    if (formData.referralCode.trim()) {
-      parts.push(`--- Referral Code ---\n${formData.referralCode.trim()}`);
-    }
-    if (parts.length > 0) {
-      messageWithServices = `${parts.join("\n\n")}\n\n--- Project Details ---\n${formData.message}`;
-    }
+    const compiledMessage = `--- Knowledge Operations Inquiry ---
+Sprint Package: ${selectedPackage}
+Desired Timeframe: ${timeframe}
+Company / App URL: ${formData.companyUrl}
+${formData.referralCode.trim() ? `Referral Code: ${formData.referralCode.trim()}\n` : ""}
+--- Onboarding Bottleneck & Project Details ---
+${formData.bottleneck}`;
 
     const SERVICE_ID = "service_s7renj5";
     const TEMPLATE_ID = "template_xa53n4r";
     const PUBLIC_KEY = "PtqOQs6UI94KMGudX";
 
-    emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-      user_name: formData.name,
-      user_email: formData.email,
-      company: formData.company,
-      message: messageWithServices,
-    }, PUBLIC_KEY)
+    emailjs
+      .send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        {
+          user_name: formData.name,
+          user_email: formData.email,
+          company: formData.companyUrl,
+          message: compiledMessage,
+        },
+        PUBLIC_KEY
+      )
       .then(() => {
-        toast.success("Thank you for reaching out. Our team will respond within 24 hours.");
-        setFormData({ name: "", email: "", company: "", message: "", referralCode: "" });
-        setSelectedServices(new Set());
+        toast.success("Thank you for reaching out. Syed Imon Rizvi will review your details and respond within 24 hours.");
+        setIsSubmitted(true);
+        setFormData({
+          name: "",
+          email: "",
+          companyUrl: "",
+          bottleneck: "",
+          referralCode: "",
+        });
       })
       .catch((error) => {
         console.error("EmailJS Error:", error);
-        toast.error("Failed to send message. Please try again or email us directly.");
+        toast.error("Failed to send message. Please email syedimonrizvipmp@gmail.com directly or book on Calendly.");
       })
       .finally(() => {
         setIsSubmitting(false);
@@ -150,245 +140,494 @@ const Contact = () => {
   return (
     <ErrorBoundary>
       <Helmet>
-        <title>Contact | Mercer &amp; Mills | Book a Free Strategy Call</title>
-        <meta name="description" content="Get in touch with Mercer &amp; Mills. Book a 20-minute strategy call, send us a message, or connect via WhatsApp. No cost, no obligation." />
+        <title>Contact &amp; Book Sprint | Mercer &amp; Mills Knowledge Operations</title>
+        <meta
+          name="description"
+          content="Initiate your 14-day client academy sprint or schedule a 20-minute diagnostic with Syed Imon Rizvi, PMP®. Remote Global Delivery Hub."
+        />
       </Helmet>
-      <section className="py-24">
-      <div className="container">
-        <SectionHeading subtitle="Get in Touch" title="Contact Us" description="Tell us what you need. Select from our productized services below and we'll respond with a sprint roadmap within 24 hours." />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
-          <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <form ref={form} onSubmit={handleSubmit} className="space-y-6">
-              {/* Step Indicator */}
-              <div className="flex items-center justify-between mb-2">
-                {[
-                  { num: 1, label: "Services" },
-                  { num: 2, label: "Project Details" },
-                  { num: 3, label: "Contact & Submit" },
-                ].map((s) => (
-                  <div key={s.num} className="flex items-center gap-2">
-                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-body font-semibold ${step === s.num ? "bg-gold-gradient text-primary-foreground" : step > s.num ? "bg-primary/20 text-primary" : "bg-secondary text-muted-foreground"}`}>
-                      {step > s.num ? <CheckCircle className="h-4 w-4" /> : s.num}
-                    </div>
-                    <span className={`text-xs font-body hidden sm:inline ${step === s.num ? "text-foreground font-semibold" : "text-muted-foreground"}`}>
-                      {s.label}
-                    </span>
-                    {s.num < 3 && <div className={`hidden sm:block w-8 h-px ${step > s.num ? "bg-primary/40" : "bg-border"}`} />}
+      <section className="py-16 md:py-24 bg-[#0B0F17] text-white">
+        <div className="container px-4">
+          <SectionHeading
+            subtitle="Initiate Your Sprint"
+            title="Contact &amp; Scoping Inquiries"
+            description="Select your knowledge operations sprint package below. We will review your product notes and return a customized execution roadmap within 24 hours."
+          />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mt-12">
+            {/* Left Column: Focused Knowledge Operations Sprint Form */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="lg:col-span-7"
+            >
+              {isSubmitted ? (
+                <div className="bg-[#0F172A] border border-blue-500/40 rounded-2xl p-8 sm:p-10 space-y-6 text-center shadow-2xl">
+                  <div className="w-16 h-16 rounded-full bg-blue-500/15 border border-blue-500/30 flex items-center justify-center mx-auto text-blue-400">
+                    <CheckCircle2 className="w-8 h-8" />
                   </div>
-                ))}
-              </div>
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-bold text-white font-heading">
+                      Sprint Scope Inquiry Received
+                    </h3>
+                    <p className="text-slate-400 text-sm max-w-md mx-auto leading-relaxed">
+                      Thank you! Syed Imon Rizvi, PMP® will personally review your onboarding requirements and return a customized execution roadmap within 24 hours.
+                    </p>
+                  </div>
 
-              <div className="bg-card border border-border rounded-xl p-6">
-                {step === 1 && (
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-serif text-lg font-bold text-primary">Services You Need</h3>
-                      {selectedCount > 0 && (
-                        <button onClick={() => setSelectedServices(new Set())} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors">
-                          <Trash2 className="h-3 w-3" /> Clear
-                        </button>
-                      )}
+                  <div className="p-6 rounded-xl bg-[#0B0F17] border border-slate-800 space-y-4 max-w-md mx-auto text-left">
+                    <h4 className="text-xs uppercase font-semibold tracking-wider text-slate-300">
+                      Need Immediate Answers or Want to Lock in Your Sprint Slot?
+                    </h4>
+                    <a
+                      href="https://calendly.com/getmorefromlife-uju2/20-min-strategy-call-m-m"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm rounded-lg shadow-md shadow-blue-500/20 transition-all"
+                    >
+                      <Calendar className="w-4 h-4" />
+                      Pick Your 20-Min Slot on Calendly
+                      <ArrowRight className="w-4 h-4" />
+                    </a>
+                    <div className="flex gap-2">
+                      <a
+                        href="https://wa.me/15304235158"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-xs text-slate-300 hover:text-white transition-colors"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5 text-blue-400" />
+                        US WhatsApp
+                      </a>
+                      <a
+                        href="https://wa.me/923303658220"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-xs text-slate-300 hover:text-emerald-400 transition-colors"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
+                        Pakistan WhatsApp
+                      </a>
                     </div>
+                  </div>
 
-                    {selectedCount > 0 && (
-                      <div className="flex flex-wrap gap-2 mb-4 pb-4 border-b border-border">
-                        {Array.from(selectedServices).map((s) => (
-                          <span key={s} className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full text-xs text-primary font-body">
-                            {s}
-                            <button onClick={() => toggleService(s)} className="hover:text-foreground transition-colors">&times;</button>
+                  <button
+                    type="button"
+                    onClick={() => setIsSubmitted(false)}
+                    className="text-xs text-slate-500 hover:text-slate-300 underline"
+                  >
+                    Submit another inquiry
+                  </button>
+                </div>
+              ) : (
+                <form
+                  ref={form}
+                  onSubmit={handleSubmit}
+                  className="bg-[#0F172A] border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl"
+                >
+                {/* 1. Sprint Package Selection */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Label className="text-xs uppercase font-semibold tracking-wider text-slate-300">
+                      1. Select Your Sprint Package *
+                    </Label>
+                    <span className="text-xs text-blue-400 font-medium">Flat-fee · Zero hourly creep</span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {sprintPackages.map((pkg) => (
+                      <button
+                        type="button"
+                        key={pkg.id}
+                        onClick={() => setSelectedPackage(pkg.title)}
+                        className={`p-4 rounded-xl border text-left transition-all relative ${
+                          selectedPackage === pkg.title
+                            ? "border-blue-500 bg-blue-500/10 text-white shadow-md shadow-blue-500/10"
+                            : "border-slate-800 bg-[#0B0F17]/70 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-blue-400 border border-slate-700">
+                            {pkg.badge}
                           </span>
-                        ))}
-                      </div>
-                    )}
-
-                    <div className="space-y-2">
-                      {mills.map((mill) => (
-                        <details key={mill.id} className="bg-secondary border border-border rounded-lg group">
-                          <summary className="flex items-center gap-2 px-3 py-2.5 cursor-pointer list-none hover:bg-primary/5 rounded-lg transition-colors">
-                            <mill.icon className="h-4 w-4 text-primary" />
-                            <span className="font-body text-sm font-semibold text-foreground flex-1">{mill.title}</span>
-                            <ChevronDown className="h-4 w-4 text-muted-foreground group-open:rotate-180 transition-transform" />
-                          </summary>
-                          <div className="px-3 pb-3 space-y-1.5 border-t border-border pt-2 mt-0">
-                            {mill.services.map((service) => {
-                              const checked = selectedServices.has(service);
-                              return (
-                                <div
-                                  key={service}
-                                  className={`flex items-start gap-3 p-3 rounded-md transition-colors cursor-pointer hover:bg-primary/5 ${checked ? "bg-primary/10" : ""}`}
-                                  onClick={() => toggleService(service)}
-                                >
-                                  <Checkbox checked={checked} className="mt-0.5" />
-                                  <span className={`text-xs font-body leading-relaxed ${checked ? "text-foreground font-medium" : "text-muted-foreground"}`}>
-                                    {service}
-                                  </span>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </details>
-                      ))}
-                    </div>
-
-                    <div className="mt-6 flex justify-end">
-                      <button
-                        type="button"
-                        onClick={() => setStep(2)}
-                        className="px-6 py-2.5 bg-gold-gradient text-primary-foreground font-body font-semibold text-sm rounded-lg hover:opacity-90 transition-opacity inline-flex items-center gap-2"
-                      >
-                        Next Step <ChevronDown className="h-4 w-4 -rotate-90" />
+                          <span className="text-sm font-bold text-white font-mono">{pkg.price}</span>
+                        </div>
+                        <h4 className="text-sm font-semibold text-white mb-1 flex items-center justify-between">
+                          {pkg.title}
+                          {selectedPackage === pkg.title && (
+                            <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0 ml-1" />
+                          )}
+                        </h4>
+                        <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">{pkg.desc}</p>
                       </button>
-                    </div>
+                    ))}
                   </div>
-                )}
+                </div>
 
-                {step === 2 && (
-                  <div>
-                    <h3 className="font-serif text-lg font-bold text-primary mb-4">Project Details</h3>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="text-sm font-body font-medium text-muted-foreground mb-2 block">Tell Us About Your Project</label>
-                        <Textarea
-                          required
-                          name="message"
-                          value={formData.message}
-                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                          className="bg-card border-border focus:border-primary min-h-[140px]"
-                          placeholder="Describe your project, goals, timeline, and any budget considerations..."
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-body font-medium text-muted-foreground mb-2 block">Company / Organization</label>
-                        <Input
-                          name="company"
-                          value={formData.company}
-                          onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                          className="bg-card border-border focus:border-primary"
-                          placeholder="Your Organization"
-                        />
-                      </div>
-                    </div>
-                    <div className="mt-6 flex justify-between">
+                {/* 2. Target Timeframe */}
+                <div className="space-y-2 pt-2">
+                  <Label className="text-xs uppercase font-semibold tracking-wider text-slate-300">
+                    2. Desired Delivery Timeframe *
+                  </Label>
+                  <div className="grid grid-cols-3 gap-2.5">
+                    {["Next 14 Business Days", "Next 30 Days", "Flexible / Scoping"].map((tf) => (
                       <button
                         type="button"
-                        onClick={() => setStep(1)}
-                        className="px-6 py-2.5 border border-border text-muted-foreground font-body font-semibold text-sm rounded-lg hover:bg-secondary transition-colors"
+                        key={tf}
+                        onClick={() => setTimeframe(tf)}
+                        className={`py-2.5 px-3 rounded-lg border text-xs font-semibold text-center transition-all ${
+                          timeframe === tf
+                            ? "border-blue-500 bg-blue-500/15 text-white"
+                            : "border-slate-800 bg-[#0B0F17] text-slate-400 hover:text-white"
+                        }`}
                       >
-                        Back
+                        {tf}
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => setStep(3)}
-                        className="px-6 py-2.5 bg-gold-gradient text-primary-foreground font-body font-semibold text-sm rounded-lg hover:opacity-90 transition-opacity inline-flex items-center gap-2"
-                      >
-                        Next Step <ChevronDown className="h-4 w-4 -rotate-90" />
-                      </button>
-                    </div>
+                    ))}
                   </div>
-                )}
+                </div>
 
-                {step === 3 && (
-                  <div>
-                    <h3 className="font-serif text-lg font-bold text-primary mb-4">Contact Information</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                      <div>
-                        <label className="text-sm font-body font-medium text-muted-foreground mb-2 block">Full Name</label>
-                        <Input
-                          required
-                          name="user_name"
-                          value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          className="bg-card border-border focus:border-primary"
-                          placeholder="John Mercer"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-body font-medium text-muted-foreground mb-2 block">Email</label>
-                        <Input
-                          required
-                          type="email"
-                          name="user_email"
-                          value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className="bg-card border-border focus:border-primary"
-                          placeholder="john@company.com"
-                        />
-                      </div>
-                    </div>
-                    <div className="mb-4">
-                      <label className="text-sm font-body font-medium text-muted-foreground mb-2 block">Referral Code <span className="text-muted-foreground/60 font-normal">(optional)</span></label>
+                {/* 3. Company Website & Project Scope */}
+                <div className="space-y-2 pt-2">
+                  <Label htmlFor="companyUrl" className="text-xs uppercase font-semibold tracking-wider text-slate-300">
+                    3. Company Website, App, or Documentation Link *
+                  </Label>
+                  <div className="relative">
+                    <Globe className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+                    <Input
+                      id="companyUrl"
+                      required
+                      placeholder="https://yourcompany.com or app link"
+                      value={formData.companyUrl}
+                      onChange={(e) => setFormData({ ...formData, companyUrl: e.target.value })}
+                      className="pl-10 bg-[#0B0F17] border-slate-800 text-white placeholder:text-slate-600 focus-visible:ring-blue-500"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="bottleneck" className="text-xs uppercase font-semibold tracking-wider text-slate-300">
+                    4. Current Onboarding Bottleneck &amp; Project Requirements *
+                  </Label>
+                  <Textarea
+                    id="bottleneck"
+                    required
+                    rows={4}
+                    placeholder="Describe your current onboarding pain points (e.g., users drop off before activating, support team repeating the same 1-on-1 demos, outdated Notion SOPs, or preparing a new software launch)..."
+                    value={formData.bottleneck}
+                    onChange={(e) => setFormData({ ...formData, bottleneck: e.target.value })}
+                    className="bg-[#0B0F17] border-slate-800 text-white placeholder:text-slate-600 focus-visible:ring-blue-500 resize-none text-sm leading-relaxed"
+                  />
+                </div>
+
+                {/* 5. Contact Information */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="name" className="text-xs uppercase font-semibold tracking-wider text-slate-300">
+                      Your Name *
+                    </Label>
+                    <div className="relative">
+                      <User className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
                       <Input
-                        name="referral_code"
-                        value={formData.referralCode}
-                        onChange={(e) => setFormData({ ...formData, referralCode: e.target.value })}
-                        className="bg-card border-border focus:border-primary"
-                        placeholder="e.g. AE-MERCER-2026"
+                        id="name"
+                        required
+                        placeholder="John Smith"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className="pl-10 bg-[#0B0F17] border-slate-800 text-white placeholder:text-slate-600 focus-visible:ring-blue-500"
                       />
                     </div>
-                    <div className="mt-6 flex justify-between">
-                      <button
-                        type="button"
-                        onClick={() => setStep(2)}
-                        className="px-6 py-2.5 border border-border text-muted-foreground font-body font-semibold text-sm rounded-lg hover:bg-secondary transition-colors"
-                      >
-                        Back
-                      </button>
-                      <Button
-                        type="submit"
-                        size="lg"
-                        disabled={isSubmitting}
-                        className="bg-gold-gradient text-primary-foreground font-body font-semibold tracking-wide px-10 py-6 text-base hover:opacity-90 transition-opacity"
-                      >
-                        {isSubmitting ? "Sending..." : "Submit Inquiry"}
-                      </Button>
-                    </div>
                   </div>
-                )}
-              </div>
-            </form>
-          </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <div className="bg-card border border-border rounded-xl p-8 space-y-8">
-              <h3 className="font-serif text-2xl font-bold text-primary">Office Information</h3>
-              {[
-                { icon: MapPin, label: "Location", value: "Remote — International Team" },
-                { icon: Clock, label: "Business Hours (PST)", value: "Monday – Friday: 9:00 AM – 6:00 PM\nSaturday: By Appointment\nSunday: Closed" },
-                { icon: Mail, label: "Email", value: "partnerships@mercerandmills.com", href: "mailto:partnerships@mercerandmills.com", copyable: true },
-                { icon: Phone, label: "Phone", value: "840-207-8720", href: "tel:18402078720" },
-                { icon: MessageCircle, label: "WhatsApp", value: "+1 (530) 423-5158", href: "https://wa.me/15304235158" },
-              ].map((item) => (
-                <div key={item.label} className="flex gap-4">
-                  <item.icon className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-body font-semibold text-sm text-foreground mb-1">{item.label}</h4>
-                    <div className="flex items-center gap-2">
-                      {item.href ? (
-                        <a href={item.href} className="text-muted-foreground text-sm whitespace-pre-line hover:text-primary transition-colors break-all">
-                          {item.value}
-                        </a>
-                      ) : (
-                        <p className="text-muted-foreground text-sm whitespace-pre-line">{item.value}</p>
-                      )}
-                      {item.copyable && (
-                        <button
-                          onClick={() => copyToClipboard(item.value, item.label)}
-                          className="text-muted-foreground hover:text-primary transition-colors flex-shrink-0"
-                          aria-label="Copy email"
-                        >
-                          <Copy className="h-3.5 w-3.5" />
-                        </button>
-                      )}
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-xs uppercase font-semibold tracking-wider text-slate-300">
+                      Work Email *
+                    </Label>
+                    <div className="relative">
+                      <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+                      <Input
+                        id="email"
+                        required
+                        type="email"
+                        placeholder="founder@company.com"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="pl-10 bg-[#0B0F17] border-slate-800 text-white placeholder:text-slate-600 focus-visible:ring-blue-500"
+                      />
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </motion.div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="referralCode" className="text-xs uppercase font-semibold tracking-wider text-slate-400">
+                    Referral Code <span className="text-slate-600 font-normal">(optional)</span>
+                  </Label>
+                  <Input
+                    id="referralCode"
+                    placeholder="e.g. MM-FOUNDER-2026"
+                    value={formData.referralCode}
+                    onChange={(e) => setFormData({ ...formData, referralCode: e.target.value })}
+                    className="bg-[#0B0F17] border-slate-800 text-white placeholder:text-slate-600 focus-visible:ring-blue-500 text-sm"
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <div className="pt-2">
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full h-14 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-base rounded-xl shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2"
+                  >
+                    {isSubmitting ? (
+                      "Transmitting Project Scope..."
+                    ) : (
+                      <>
+                        Submit Sprint Scope Inquiry
+                        <Send className="w-4 h-4" />
+                      </>
+                    )}
+                  </Button>
+                </div>
+
+                <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-500 pt-1">
+                  <span className="flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+                    Mutual NDA Guaranteed
+                  </span>
+                  <span>·</span>
+                  <span className="flex items-center gap-1">
+                    <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+                    24-Hour Roadmap Turnaround
+                  </span>
+                  <span>·</span>
+                  <span>Direct PMP® Review</span>
+                </div>
+              </form>
+              )}
+            </motion.div>
+
+            {/* Right Column: Instant Calendar Booking & Office Directory */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="lg:col-span-5 space-y-6"
+            >
+              {/* Direct Calendar Card */}
+              <div className="bg-gradient-to-br from-blue-950/40 via-[#0F172A] to-[#0F172A] border border-blue-500/30 rounded-2xl p-6 sm:p-8 space-y-4 shadow-xl shadow-blue-950/20">
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/30">
+                    <Calendar className="w-3.5 h-3.5" />
+                    Instant Calendar Scheduling
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white font-heading">
+                  Prefer to Talk Directly?
+                </h3>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  Skip the form and choose an open 20-minute slot on our live calendar to discuss your onboarding sprint directly with Syed Imon Rizvi, PMP®.
+                </p>
+                <div className="pt-2">
+                  <a
+                    href="https://calendly.com/getmorefromlife-uju2/20-min-strategy-call-m-m"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm rounded-xl shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 transition-all"
+                  >
+                    <Calendar className="w-4 h-4" />
+                    Select Date &amp; Time on Calendly
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
+
+              {/* Office & Direct Contact Information */}
+              <div className="bg-[#0F172A] border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6">
+                <div>
+                  <h3 className="text-lg font-bold text-white font-heading">
+                    Direct Contact &amp; Governance
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-1">
+                    Leadership point of contact for international and regional clients
+                  </p>
+                </div>
+
+                <div className="space-y-5 divide-y divide-slate-800/80">
+                  {/* Leadership Lead */}
+                  <div className="flex items-start gap-3.5 pt-1">
+                    <User className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-xs uppercase font-semibold tracking-wider text-slate-400">
+                        Lead Knowledge Architect
+                      </h4>
+                      <p className="text-sm font-semibold text-white">
+                        Syed Imon Rizvi, PMP®, PSM II, PAL I
+                      </p>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        Certified Project Management Professional (PMI USA)
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* North America & Global Line */}
+                  <div className="flex items-start gap-3.5 pt-4">
+                    <Phone className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-xs uppercase font-semibold tracking-wider text-slate-400">
+                          North America &amp; Global Line
+                        </h4>
+                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                          Direct &amp; WhatsApp
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 mt-1">
+                        <a
+                          href="https://wa.me/15304235158"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-slate-200 hover:text-blue-400 font-mono transition-colors"
+                        >
+                          +1 (530) 423-5158
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => copyToClipboard("+15304235158", "US Line")}
+                          className="text-slate-500 hover:text-slate-300"
+                          aria-label="Copy US Line"
+                        >
+                          <Copy className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                      <p className="text-[11px] text-slate-500 mt-0.5">
+                        Recommended for US, Canadian &amp; European clients
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Direct Desk / Pakistan WhatsApp Line */}
+                  <div className="flex items-start gap-3.5 pt-4">
+                    <MessageCircle className="h-5 w-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-xs uppercase font-semibold tracking-wider text-slate-400">
+                          Founder Direct Desk (WhatsApp)
+                        </h4>
+                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                          Pakistan &amp; Regional
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 mt-1">
+                        <a
+                          href="https://wa.me/923303658220"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-slate-200 hover:text-emerald-400 font-mono transition-colors"
+                        >
+                          +92 330 365 8220
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => copyToClipboard("+923303658220", "Pakistan WhatsApp")}
+                          className="text-slate-500 hover:text-slate-300"
+                          aria-label="Copy Pakistan WhatsApp"
+                        >
+                          <Copy className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                      <p className="text-[11px] text-slate-500 mt-0.5">
+                        Direct cell &amp; WhatsApp line for Syed Imon Rizvi
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Partnerships Email */}
+                  <div className="flex items-start gap-3.5 pt-4">
+                    <Mail className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <h4 className="text-xs uppercase font-semibold tracking-wider text-slate-400">
+                        Official Inquiries &amp; MSAs
+                      </h4>
+                      <div className="flex items-center gap-2 mt-1">
+                        <a
+                          href="mailto:syedimonrizvipmp@gmail.com"
+                          className="text-sm text-slate-200 hover:text-blue-400 font-mono transition-colors"
+                        >
+                          syedimonrizvipmp@gmail.com
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => copyToClipboard("syedimonrizvipmp@gmail.com", "Email")}
+                          className="text-slate-500 hover:text-slate-300"
+                          aria-label="Copy Email"
+                        >
+                          <Copy className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Commercial Registration */}
+                  <div className="flex items-start gap-3.5 pt-4">
+                    <ShieldCheck className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-xs uppercase font-semibold tracking-wider text-slate-400">
+                        Commercial Tax &amp; Entity Registration
+                      </h4>
+                      <p className="text-sm text-slate-300">
+                        Federal Board of Revenue (FBR), Pakistan
+                      </p>
+                      <p className="text-xs text-slate-400 mt-0.5">
+                        NTN: <span className="font-mono text-white font-semibold">6622762</span>
+                      </p>
+                      <a
+                        href="https://iris.fbr.gov.pk/#verifications"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-blue-400 hover:text-blue-300 underline inline-flex items-center gap-1 mt-1"
+                      >
+                        Verify Official FBR Status on IRIS Portal ↗
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Location & Hours */}
+                  <div className="flex items-start gap-3.5 pt-4">
+                    <MapPin className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-xs uppercase font-semibold tracking-wider text-slate-400">
+                        Operations Model
+                      </h4>
+                      <p className="text-sm text-slate-300">
+                        Remote Global Delivery Hub (Pakistan)
+                      </p>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        Serving B2B SaaS &amp; Service Clients in North America, UK, Europe &amp; MENA
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3.5 pt-4">
+                    <Clock className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-xs uppercase font-semibold tracking-wider text-slate-400">
+                        Business Hours
+                      </h4>
+                      <p className="text-xs text-slate-300">
+                        Monday – Friday: 9:00 AM – 6:00 PM PST
+                      </p>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        Async Slack / Loom sprint updates with 24-hour SLA
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
     </ErrorBoundary>
   );
 };

@@ -97,9 +97,9 @@ const AIGovernance = () => {
               We frequently coordinate with enterprise legal and security teams. Contact us directly to review your vendor security questionnaire or custom DPA.
             </p>
             <div>
-              <a href="mailto:partnerships@mercerandmills.com">
+              <a href="mailto:syedimonrizvipmp@gmail.com">
                 <Button className="bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm">
-                  Email Governance Team (partnerships@mercerandmills.com)
+                  Email Governance Team (syedimonrizvipmp@gmail.com)
                 </Button>
               </a>
             </div>

@@ -22,6 +22,7 @@ import {
   Check,
   Building,
   HelpCircle,
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading";
@@ -30,47 +31,75 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-// Sample Academy Modules for the Interactive Walkthrough Preview
+// Mercer & Mills Client Academy Experience Modules for the Interactive Walkthrough Preview
 const sampleModules = [
   {
     id: 1,
-    title: "Module 1: The 3-Minute Quickstart & Core Value Unlock",
-    duration: "3:42",
-    description: "Guides new users directly to their 'Aha!' moment within minutes of account creation.",
-    keyTakeaway: "Zero fluff. Gets user to configure their first core workspace action instantly.",
+    title: "Module 1: Day 1 Kickoff & The 45-Min Frictionless Asset Dump",
+    duration: "3:45",
+    description: "How we onboard you in 45 minutes: drop your raw Google Docs, Loom links, and messy Notion SOPs into our secure vault. Zero meetings, zero homework.",
+    keyTakeaway: "Secure cloud vault credentials & mutual NDA execution packet.",
+    checklistName: "Day 1 Asset Checklist (PDF)",
     hasChecklist: true,
   },
   {
     id: 2,
-    title: "Module 2: Team Permissions, Invites & Role Governance",
-    duration: "4:15",
-    description: "Eliminates IT tickets and onboarding delays by automating seat provisioning.",
-    keyTakeaway: "Best-practice permission matrices formatted as downloadable visual 1-pagers.",
+    title: "Module 2: Day 3 Architecture — Your Friction Audit & Curriculum Map",
+    duration: "4:12",
+    description: "We pinpoint your software's top 3 drop-off choke points and deliver a clear 5-7 module curriculum map structured for under-20-minute client mastery.",
+    keyTakeaway: "PMP® Work Breakdown Structure (WBS) & Pedagogy Matrix sign-off.",
+    checklistName: "Sample Curriculum Blueprint (PDF)",
     hasChecklist: true,
   },
   {
     id: 3,
-    title: "Module 3: Core Workflow Automation & Integration Hooks",
-    duration: "5:30",
-    description: "Connects key CRM, Slack, and webhook triggers to solidify product stickiness.",
-    keyTakeaway: "Pre-built template links that users click to install workflows with one tap.",
+    title: "Module 3: Day 7 Staging — First 4K Video & Voiceover Prototype",
+    duration: "5:20",
+    description: "You review your first fully produced lesson with high-definition screen pacing, dynamic zooms, crystal-clear voiceover, and action checklists.",
+    keyTakeaway: "Milestone 1 sign-off gate before entering full-scale production.",
+    checklistName: "Studio Style Guide (PDF)",
     hasChecklist: true,
   },
   {
     id: 4,
-    title: "Module 4: Team Daily Rituals & Power User Shortcuts",
-    duration: "3:18",
-    description: "Trains daily internal champions to advocate for your tool across departments.",
-    keyTakeaway: "Keyboard navigation cheatsheet and executive summary dashboard configuration.",
+    title: "Module 4: Day 11 Portal Setup — LMS Integration & Configuration",
+    duration: "3:50",
+    description: "We configure your turnkey student portal in your preferred LMS (Kajabi, Skool, Teachable, Notion, or custom portal) styled to match your exact brand.",
+    keyTakeaway: "Zero IT headache: complete portal administration and user access provisioning.",
+    checklistName: "Portal Setup Specs (PDF)",
     hasChecklist: true,
   },
   {
     id: 5,
-    title: "Module 5: ROI Reporting & Executive Value Dashboard",
+    title: "Module 5: Day 14 Go-Live — Automated Welcome Sequences & Handover",
     duration: "4:05",
-    description: "Gives budget owners real-time visibility into usage metrics to safeguard renewals.",
-    keyTakeaway: "Quarterly review presentation template that CS teams use to upsell.",
+    description: "Complete 100% intellectual property transfer, raw 4K source files, plug-and-play welcome email sequences, and Care Plan onboarding.",
+    keyTakeaway: "Full IP Assignment Agreement and automated client activation sequence.",
+    checklistName: "Go-Live Launch Kit (PDF)",
     hasChecklist: true,
+  },
+];
+
+const faqs = [
+  {
+    q: "How does payment and invoicing work?",
+    a: "All sprint engagements follow a predictable 50/50 milestone structure: a 50% deposit locks your start date on our production calendar, and the remaining 50% is billed upon Day 14 delivery and sign-off. We provide formal commercial invoices with company registration (FBR NTN: 6622762) and automated digital receipts.",
+  },
+  {
+    q: "What payment methods do you accept for international clients?",
+    a: "We accommodate global B2B procurement with multiple options: all major corporate credit/debit cards (Visa, MasterCard, Amex), US domestic ACH bank transfers, Wise, and direct international bank wires (SWIFT / IBAN).",
+  },
+  {
+    q: "Do we sign a mutual Non-Disclosure Agreement (NDA)?",
+    a: "Yes, 100%. Before you share access to sandbox environments, raw Loom clips, or proprietary SOPs, we execute a bilateral, US-standard mutual NDA. Upon final milestone payment, 100% of all intellectual property, scripts, voiceovers, and courseware transfer exclusively to your company.",
+  },
+  {
+    q: "How much time is required from our internal team?",
+    a: "Approximately 45 minutes on Day 1 to upload your existing product notes, documentation links, and raw screen captures into our secure drive. Our learning architects handle all scriptwriting, video recording, and LMS integration. You then spend ~30 minutes on Day 13 for final review.",
+  },
+  {
+    q: "What happens if our software UI or product features change later?",
+    a: "You retain all original 4K video project files, MP4 exports, and Figma/slide templates to edit internally at any time. Alternatively, you can enroll in our $1,500/month Knowledge Operations Care Plan for continuous monthly video refreshes and LMS governance.",
   },
 ];
 
@@ -78,6 +107,7 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<string>("General Audit");
   const [activeSampleModule, setActiveSampleModule] = useState(sampleModules[0]);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   // Section 7 Embedded Qualification Form state
   const [embedCompanyUrl, setEmbedCompanyUrl] = useState("");
@@ -413,10 +443,10 @@ const Index = () => {
                 INTERACTIVE PREVIEW
               </span>
               <h3 className="text-2xl sm:text-3xl font-bold font-heading text-white mb-3">
-                See What Your Client Academy Will Look Like
+                See How Mercer &amp; Mills Solves Onboarding: The 14-Day Experience
               </h3>
               <p className="text-slate-400 text-sm">
-                Click any module below to inspect the lesson curriculum, 4K screen pacing, and downloadable action checklists your customers will experience.
+                We practice what we preach. Click through our actual 5-phase client onboarding architecture to see how we eliminate friction for YOU from Day 1 to Day 14 under certified PMP® governance.
               </p>
             </div>
 
@@ -429,7 +459,7 @@ const Index = () => {
                   <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
                   <div className="w-3 h-3 rounded-full bg-green-500/80" />
                   <span className="ml-3 text-xs text-slate-400 font-mono hidden sm:inline">
-                    academy.yourbrand.com/client-onboarding
+                    academy.mercerandmills.com/client-onboarding
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-slate-400">
@@ -535,11 +565,11 @@ const Index = () => {
 
                       <Button
                         size="sm"
-                        onClick={() => openAuditWithPackage("Sample Checklist Download")}
+                        onClick={() => openAuditWithPackage(`Checklist: ${activeSampleModule.checklistName}`)}
                         className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs gap-1.5 whitespace-nowrap"
                       >
                         <Download className="w-3.5 h-3.5" />
-                        Sample Action PDF
+                        {activeSampleModule.checklistName || "Download Action PDF"}
                       </Button>
                     </div>
                   </div>
@@ -824,6 +854,51 @@ const Index = () => {
       </section>
 
       {/* ========================================================================= */}
+      {/* SECTION 6B: EXECUTIVE B2B FAQ (Billing, NDAs, Workflows)                  */}
+      {/* ========================================================================= */}
+      <section className="py-20 bg-[#0B0F17] border-t border-slate-800/80">
+        <div className="container max-w-4xl mx-auto px-4">
+          <SectionHeading
+            subtitle="TRANSPARENT OPERATIONS"
+            title="Frequently Asked Questions"
+            description="Clear answers regarding billing, international payment rails, IP ownership, and sprint workflows."
+          />
+
+          <div className="space-y-4 mt-12">
+            {faqs.map((faq, idx) => {
+              const isOpen = openFaqIndex === idx;
+              return (
+                <div
+                  key={idx}
+                  className="rounded-2xl border border-slate-800 bg-[#0F172A] overflow-hidden transition-colors"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                    className="w-full p-6 text-left flex items-center justify-between gap-4 hover:bg-slate-800/30 transition-colors"
+                  >
+                    <span className="font-heading font-semibold text-base sm:text-lg text-white">
+                      {faq.q}
+                    </span>
+                    <ChevronDown
+                      className={`w-5 h-5 text-blue-400 flex-shrink-0 transition-transform duration-200 ${
+                        isOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  {isOpen && (
+                    <div className="px-6 pb-6 pt-1 text-slate-400 text-sm leading-relaxed border-t border-slate-800/60">
+                      {faq.a}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
       {/* SECTION 7: FINAL CALL TO ACTION & EMBEDDED BOOKING (#audit)              */}
       {/* ========================================================================= */}
       <section id="audit" className="py-24 bg-[#080C14] border-t border-slate-800/80 relative">
@@ -928,6 +1003,16 @@ const Index = () => {
                   Step 2: Choose Your 15-Minute Slot on the Calendar
                   <ArrowRight className="w-5 h-5" />
                 </Button>
+
+                <div className="text-center pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setEmbedQualified(true)}
+                    className="text-xs text-slate-400 hover:text-blue-400 transition-colors underline"
+                  >
+                    Prefer to pick a time first? View available slots directly →
+                  </button>
+                </div>
 
                 <div className="flex items-center justify-center gap-6 text-xs text-slate-500 pt-2">
                   <span>✓ 100% Free Diagnostic</span>

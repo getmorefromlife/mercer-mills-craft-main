@@ -78,6 +78,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 {link.label}
               </a>
             ))}
+            <Link
+              to="/contact"
+              className="text-sm font-medium tracking-wide text-slate-300 hover:text-white transition-colors"
+            >
+              Contact
+            </Link>
           </nav>
 
           {/* Header CTA */}
@@ -121,6 +127,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     {link.label}
                   </a>
                 ))}
+                <Link
+                  to="/contact"
+                  onClick={() => setMobileOpen(false)}
+                  className="text-sm font-medium text-slate-200 hover:text-blue-400 transition-colors py-1"
+                >
+                  Contact &amp; Inquiries
+                </Link>
                 <div className="pt-3 border-t border-slate-800">
                   <Button
                     onClick={() => {
@@ -172,10 +185,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <p className="flex items-center gap-2 text-slate-400">
                   <Mail className="w-3.5 h-3.5 text-blue-400" />
                   <a
-                    href="mailto:partnerships@mercerandmills.com"
+                    href="mailto:syedimonrizvipmp@gmail.com"
                     className="text-slate-300 hover:text-blue-400 transition-colors underline"
                   >
-                    partnerships@mercerandmills.com
+                    syedimonrizvipmp@gmail.com
                   </a>
                 </p>
               </div>
@@ -199,6 +212,16 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   </li>
                 ))}
                 <li>
+                  <Link to="/contact" className="hover:text-blue-400 transition-colors">
+                    Contact &amp; Inquiries
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/our-team" className="hover:text-blue-400 transition-colors">
+                    Our Leadership &amp; Team
+                  </Link>
+                </li>
+                <li>
                   <button
                     onClick={() => setIsAuditModalOpen(true)}
                     className="hover:text-blue-400 text-blue-400/90 font-medium transition-colors"
@@ -212,7 +235,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             {/* Col 3: Standards & Governance */}
             <div>
               <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-200 mb-4">
-                Governance & Standards
+                Governance &amp; Standards
               </h4>
               <div className="flex flex-wrap gap-2 mb-4">
                 {["PMP® Certified", "PSM II", "PAL I", "SOC2-Aligned"].map((badge) => (
@@ -224,16 +247,29 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   </span>
                 ))}
               </div>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className="text-xs text-slate-400 leading-relaxed mb-3">
                 Enterprise zero-data-retention AI protocols. Your proprietary workflow IP is never trained on public models.
               </p>
+              <div className="pt-2 border-t border-slate-800/80 text-[11px] text-slate-400 space-y-1">
+                <p>
+                  <span className="text-slate-300 font-medium">Commercial Entity:</span> FBR NTN 6622762
+                </p>
+                <a
+                  href="https://iris.fbr.gov.pk/#verifications"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-400 hover:text-blue-300 underline inline-flex items-center gap-1 text-[11px]"
+                >
+                  Verify Official FBR Registration ↗
+                </a>
+              </div>
             </div>
           </div>
 
           {/* Bottom Bar */}
           <div className="mt-12 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
             <p className="text-center md:text-left">
-              Remote Global Delivery Hub | Copyright © {new Date().getFullYear()} Mercer & Mills. All Rights Reserved.
+              Remote Global Delivery Hub · Registered Commercial Entity (NTN: 6622762) | Copyright © {new Date().getFullYear()} Mercer &amp; Mills. All Rights Reserved.
             </p>
             <div className="flex items-center gap-6">
               <Link to="/privacy-policy" className="hover:text-slate-300 transition-colors">

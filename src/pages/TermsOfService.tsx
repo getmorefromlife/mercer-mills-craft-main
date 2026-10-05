@@ -57,12 +57,31 @@ const TermsOfService = () => {
             </section>
 
             <section className="p-8 rounded-2xl bg-[#0F172A] border border-slate-800 space-y-3">
-              <h2 className="text-xl font-bold text-white font-heading">4. Contact & Inquiries</h2>
+              <h2 className="text-xl font-bold text-white font-heading">4. Corporate Entity &amp; Commercial Registration</h2>
+              <p>
+                Mercer &amp; Mills is a legally registered commercial entity with the Federal Board of Revenue (FBR), Pakistan (National Tax Number / NTN: <strong className="text-white">6622762</strong>). Official registration status is publicly verifiable through the government IRIS portal at{" "}
+                <a
+                  href="https://iris.fbr.gov.pk/#verifications"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-400 hover:text-blue-300 underline"
+                >
+                  iris.fbr.gov.pk/#verifications
+                </a>
+                .
+              </p>
+              <p className="text-slate-400">
+                All client relationships are governed under international remote services agreements with mutual confidentiality (NDA) and full intellectual property assignment upon completion.
+              </p>
+            </section>
+
+            <section className="p-8 rounded-2xl bg-[#0F172A] border border-slate-800 space-y-3">
+              <h2 className="text-xl font-bold text-white font-heading">5. Contact &amp; Inquiries</h2>
               <p>
                 For questions regarding terms, billing, or master service agreements (MSAs), please contact:
               </p>
               <p className="font-semibold text-blue-400">
-                partnerships@mercerandmills.com
+                syedimonrizvipmp@gmail.com
               </p>
             </section>
           </div>
