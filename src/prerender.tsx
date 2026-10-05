@@ -18,6 +18,7 @@ import QaumiTaranahCinematic from "./pages/QaumiTaranahCinematic";
 import Syedello from "./pages/Syedello";
 import SyedelloLogo from "./pages/SyedelloLogo";
 import FinancialCenter from "./pages/FinancialCenter";
+import InvoiceGenerator from "./pages/InvoiceGenerator";
 import Contact from "./pages/Contact";
 import Insights from "./pages/Insights";
 import Services from "./pages/Services";
@@ -68,6 +69,8 @@ export async function prerender({ url }: { url: string }) {
                 <Route path="/portfolio/syedello" element={<Syedello />} />
                 <Route path="/portfolio/syedello-logo" element={<SyedelloLogo />} />
                 <Route path="/financial-center" element={<FinancialCenter />} />
+                <Route path="/invoice-generator" element={<InvoiceGenerator />} />
+                <Route path="/admin/invoice" element={<InvoiceGenerator />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/insights" element={<Insights />} />
                 <Route path="/insights/:slug" element={<BlogPost />} />
@@ -93,6 +96,7 @@ export async function prerender({ url }: { url: string }) {
     "/portfolio/syedello",
     "/portfolio/syedello-logo",
     "/financial-center",
+    "/invoice-generator",
     "/contact",
     "/insights",
     "/sprint-blueprint",
