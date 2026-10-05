@@ -40,6 +40,7 @@ const sampleModules = [
     description: "How we onboard you in 45 minutes: drop your raw Google Docs, Loom links, and messy Notion SOPs into our secure vault. Zero meetings, zero homework.",
     keyTakeaway: "Secure cloud vault credentials & mutual NDA execution packet.",
     checklistName: "Day 1 Asset Checklist (PDF)",
+    downloadUrl: "/downloads/day-1-asset-checklist.pdf",
     hasChecklist: true,
   },
   {
@@ -49,6 +50,7 @@ const sampleModules = [
     description: "We pinpoint your software's top 3 drop-off choke points and deliver a clear 5-7 module curriculum map structured for under-20-minute client mastery.",
     keyTakeaway: "PMP® Work Breakdown Structure (WBS) & Pedagogy Matrix sign-off.",
     checklistName: "Sample Curriculum Blueprint (PDF)",
+    downloadUrl: "/downloads/sample-curriculum-blueprint.pdf",
     hasChecklist: true,
   },
   {
@@ -58,6 +60,7 @@ const sampleModules = [
     description: "You review your first fully produced lesson with high-definition screen pacing, dynamic zooms, crystal-clear voiceover, and action checklists.",
     keyTakeaway: "Milestone 1 sign-off gate before entering full-scale production.",
     checklistName: "Studio Style Guide (PDF)",
+    downloadUrl: "/downloads/studio-style-guide.pdf",
     hasChecklist: true,
   },
   {
@@ -67,6 +70,7 @@ const sampleModules = [
     description: "We configure your turnkey student portal in your preferred LMS (Kajabi, Skool, Teachable, Notion, or custom portal) styled to match your exact brand.",
     keyTakeaway: "Zero IT headache: complete portal administration and user access provisioning.",
     checklistName: "Portal Setup Specs (PDF)",
+    downloadUrl: "/downloads/portal-setup-specs.pdf",
     hasChecklist: true,
   },
   {
@@ -76,6 +80,7 @@ const sampleModules = [
     description: "Complete 100% intellectual property transfer, raw 4K source files, plug-and-play welcome email sequences, and Care Plan onboarding.",
     keyTakeaway: "Full IP Assignment Agreement and automated client activation sequence.",
     checklistName: "Go-Live Launch Kit (PDF)",
+    downloadUrl: "/downloads/go-live-launch-kit.pdf",
     hasChecklist: true,
   },
 ];
@@ -563,14 +568,16 @@ const Index = () => {
                         {activeSampleModule.keyTakeaway}
                       </div>
 
-                      <Button
-                        size="sm"
-                        onClick={() => openAuditWithPackage(`Checklist: ${activeSampleModule.checklistName}`)}
-                        className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs gap-1.5 whitespace-nowrap"
+                      <a
+                        href={activeSampleModule.downloadUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        download
+                        className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs border border-blue-500 shadow-md shadow-blue-500/20 transition-all whitespace-nowrap"
                       >
                         <Download className="w-3.5 h-3.5" />
                         {activeSampleModule.checklistName || "Download Action PDF"}
-                      </Button>
+                      </a>
                     </div>
                   </div>
                 </div>

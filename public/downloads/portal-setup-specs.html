@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M&M-TECH-04 | Turnkey LMS Architecture Specs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0B0F17;
+      color: #E2E8F0;
+      line-height: 1.6;
+      padding: 32px 16px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #0F172A;
+      border: 1px solid #1E293B;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    .header {
+      border-bottom: 1px solid #1E293B;
+      padding-bottom: 24px;
+      margin-bottom: 28px;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .brand {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+    .brand span { color: #38BDF8; }
+    .badge {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(37, 99, 235, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38BDF8;
+    }
+    h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+    }
+    .doc-meta { font-size: 12px; color: #94A3B8; font-weight: 500; }
+    .section {
+      background: #111827;
+      border: 1px solid #1E293B;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #38BDF8;
+      border-bottom: 1px solid #1E293B;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+    .platform-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .tag {
+      font-size: 12px;
+      padding: 6px 12px;
+      background: #1E293B;
+      border-radius: 6px;
+      color: #CBD5E1;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .spec-list { list-style: none; }
+    .spec-item {
+      font-size: 13px;
+      color: #CBD5E1;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(30, 41, 59, 0.5);
+    }
+    .spec-item:last-child { border-bottom: none; }
+    .spec-item strong { color: #FFFFFF; }
+    .protocol-box {
+      background: rgba(37, 99, 235, 0.08);
+      border-left: 4px solid #2563EB;
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      font-size: 13px;
+      color: #E2E8F0;
+    }
+    .btn-print {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      background: #2563EB;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .btn-print:hover { background: #1D4ED8; }
+    @media print {
+      body { background: #FFF !important; color: #000 !important; padding: 0 !important; }
+      .container { border: none !important; box-shadow: none !important; padding: 0 !important; max-width: 100% !important; background: #FFF !important; }
+      .btn-print { display: none !important; }
+      .brand, h1, .section-title, .doc-meta { color: #000 !important; }
+      .section { background: #FFF !important; border: 1px solid #CBD5E1 !important; color: #000 !important; }
+      .spec-item, .spec-item strong { color: #000 !important; }
+      .tag { border: 1px solid #CBD5E1 !important; color: #000 !important; background: transparent !important; }
+      .protocol-box { background: #F1F5F9 !important; border-left: 4px solid #000 !important; color: #000 !important; }
+      .badge { border: 1px solid #000 !important; color: #000 !important; background: transparent !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button class="btn-print" onclick="window.print()">Print / Save as PDF</button>
+
+    <div class="header">
+      <div class="top-bar">
+        <div class="brand">Mercer <span>&</span> Mills</div>
+        <div class="badge">Zero-Maintenance Deployment</div>
+      </div>
+      <h1>Turnkey LMS Architecture Specs</h1>
+      <div class="doc-meta">DOCUMENT: M&amp;M-TECH-04 | LMS INTEGRATION &amp; PLATFORM SPECIFICATIONS</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Supported Platforms</div>
+      <div class="platform-tags">
+        <div class="tag">Notion Knowledge Hubs (Custom Dark-Mode)</div>
+        <div class="tag">Skool Community Classrooms</div>
+        <div class="tag">Dedicated LMS: Kajabi, Teachable, Circle, Thinkific</div>
+        <div class="tag">Enterprise In-App Embeds (Custom iframe / HTML5)</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Technical Specifications</div>
+      <ul class="spec-list">
+        <li class="spec-item"><strong>Video Streaming:</strong> Adaptive bitrate streaming (HLS) with global CDN distribution</li>
+        <li class="spec-item"><strong>Playback Controls:</strong> 1x, 1.25x, 1.5x, 2x speed toggle; persistent chapter markers</li>
+        <li class="spec-item"><strong>Asset Storage:</strong> Cloud-hosted vector PDFs with persistent CDN download mirrors</li>
+        <li class="spec-item"><strong>Progress Tracking:</strong> Module completion state persistence; visual progress bar indicator</li>
+        <li class="spec-item"><strong>User Access:</strong> Role-based authentication (Admin, Manager, Standard User)</li>
+      </ul>
+    </div>
+
+    <div class="protocol-box">
+      <strong>Deployment Protocol:</strong> Mercer &amp; Mills configures all curriculum hierarchies, asset attachments, and user access permissions prior to client hand-off. Zero technical configuration required by client.
+    </div>
+  </div>
+</body>
+</html>
