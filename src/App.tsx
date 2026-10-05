@@ -27,6 +27,7 @@ const QaumiTaranahCinematic = lazy(() => import("./pages/QaumiTaranahCinematic")
 const Syedello = lazy(() => import("./pages/Syedello"));
 const SyedelloLogo = lazy(() => import("./pages/SyedelloLogo"));
 const FinancialCenter = lazy(() => import("./pages/FinancialCenter"));
+const InvoiceGenerator = lazy(() => import("./pages/InvoiceGenerator"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Insights = lazy(() => import("./pages/Insights"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
@@ -81,6 +82,9 @@ const App = () => (
               <Route path="/portfolio/syedello" element={<Syedello />} />
               <Route path="/portfolio/syedello-logo" element={<SyedelloLogo />} />
               <Route path="/financial-center" element={<FinancialCenter />} />
+              <Route path="/invoice-generator" element={<InvoiceGenerator />} />
+              <Route path="/admin/invoice" element={<InvoiceGenerator />} />
+              <Route path="/billing" element={<InvoiceGenerator />} />
               <Route path="/insights" element={<Insights />} />
               <Route path="/insights/:slug" element={<BlogPost />} />
               <Route path="/sprint-blueprint" element={<SprintBlueprint />} />
