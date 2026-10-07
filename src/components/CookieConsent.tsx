@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const GA_ID = "G-75CB5TQHJ4";
-const TAWKTO_SRC = "https://embed.tawk.to/6a199173c95c7a1c33ced845/1jppu0c14";
 
 const loadGA4 = () => {
   const existing = document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${GA_ID}"]`);
@@ -22,21 +21,6 @@ const loadGA4 = () => {
   gtag("config", GA_ID);
 };
 
-const loadTawkTo = () => {
-  const existing = document.querySelector(`script[src*="${TAWKTO_SRC}"]`);
-  if (existing) return;
-
-  const s1 = document.createElement("script");
-  s1.async = true;
-  s1.src = TAWKTO_SRC;
-  s1.charset = "UTF-8";
-  s1.setAttribute("crossorigin", "*");
-  document.body.appendChild(s1);
-
-  (window as any).Tawk_API = (window as any).Tawk_API || {};
-  (window as any).Tawk_LoadStart = new Date();
-};
-
 const CookieConsent = () => {
   const [visible, setVisible] = useState(false);
 
@@ -44,7 +28,6 @@ const CookieConsent = () => {
     const consent = localStorage.getItem("mm_cookie_consent");
     if (consent === "accepted") {
       loadGA4();
-      loadTawkTo();
     } else if (!consent) {
       setVisible(true);
     }
@@ -53,7 +36,6 @@ const CookieConsent = () => {
   const accept = () => {
     localStorage.setItem("mm_cookie_consent", "accepted");
     loadGA4();
-    loadTawkTo();
     setVisible(false);
   };
 

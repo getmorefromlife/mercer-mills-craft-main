@@ -28,6 +28,11 @@ import {
   ArrowRight,
   Eye,
   Edit3,
+  Clock,
+  CheckCircle2,
+  AlertCircle,
+  BookOpen,
+  Layers,
 } from "lucide-react";
 import { useClientProfile } from "@/hooks/useClientProfile";
 
@@ -148,6 +153,108 @@ type ActiveTab =
   | "lms"
   | "golive"
   | "dispatch";
+
+interface PhaseGuideProps {
+  phaseNumber: string;
+  phaseName: string;
+  stepNumber: number;
+  totalSteps?: number;
+  dayBadge: string;
+  docCode: string;
+  title: string;
+  whenToSend: string;
+  whyItMatters: string;
+  sopSteps: string[];
+  nextTabId?: ActiveTab;
+  nextTabLabel?: string;
+  onNavigateNext?: (tab: ActiveTab) => void;
+}
+
+function PhaseGuideBanner({
+  phaseNumber,
+  phaseName,
+  stepNumber,
+  totalSteps = 7,
+  dayBadge,
+  docCode,
+  title,
+  whenToSend,
+  whyItMatters,
+  sopSteps,
+  nextTabId,
+  nextTabLabel,
+  onNavigateNext,
+}: PhaseGuideProps) {
+  return (
+    <div className="rounded-2xl border border-blue-500/30 bg-gradient-to-r from-blue-950/40 via-[#0F172A] to-slate-900/60 p-5 space-y-4 no-print shadow-lg">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-blue-600 text-white shadow-sm">
+            {phaseNumber}: {phaseName}
+          </span>
+          <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            TIMING: {dayBadge}
+          </span>
+          <span className="px-2 py-1 rounded-md text-[10px] font-mono font-semibold bg-slate-800 text-slate-300 border border-slate-700">
+            {docCode}
+          </span>
+        </div>
+        <span className="text-xs font-semibold text-slate-400">
+          Workflow Step {stepNumber} of {totalSteps}
+        </span>
+      </div>
+
+      <div className="space-y-2">
+        <h4 className="text-sm font-heading font-bold text-white flex items-center gap-2">
+          <BookOpen className="w-4 h-4 text-blue-400" />
+          Dispatch Playbook: {title}
+        </h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+          <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+            <span className="text-[10px] uppercase font-bold text-blue-400 flex items-center gap-1">
+              <Clock className="w-3 h-3" /> When to Send &amp; Trigger Event:
+            </span>
+            <p className="text-slate-300 leading-relaxed">{whenToSend}</p>
+          </div>
+          <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+            <span className="text-[10px] uppercase font-bold text-emerald-400 flex items-center gap-1">
+              <CheckCircle2 className="w-3 h-3" /> Strategic Rationale &amp; Value:
+            </span>
+            <p className="text-slate-300 leading-relaxed">{whyItMatters}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 space-y-2">
+        <span className="text-[10px] uppercase font-bold text-amber-400 flex items-center gap-1">
+          <AlertCircle className="w-3 h-3" /> Standard Operating Procedure (SOP) Action Steps:
+        </span>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+          {sopSteps.map((step, i) => (
+            <div key={i} className="flex items-start gap-2 bg-slate-900/60 p-2 rounded-lg border border-slate-800/50">
+              <span className="w-4 h-4 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">
+                {i + 1}
+              </span>
+              <span className="text-slate-300 text-[11px] leading-tight">{step}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {nextTabId && onNavigateNext && (
+        <div className="flex justify-end pt-1">
+          <button
+            onClick={() => onNavigateNext(nextTabId)}
+            className="px-3.5 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 hover:text-white border border-blue-500/30 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm"
+          >
+            Next Step in Sequence: {nextTabLabel || "Next Doc"} <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function AdminHub() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -489,17 +596,86 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
             </div>
           </div>
 
+          {/* Master 4-Stage Sprint Lifecycle Stepper Bar */}
+          <div className="rounded-2xl bg-[#0B1120] border border-slate-800 p-4 no-print space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+              <span className="font-heading font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                <Layers className="w-4 h-4 text-blue-400" />
+                Chronological Client Onboarding Lifecycle (14-Day PMP® Agile SLA)
+              </span>
+              <span className="text-[11px] text-slate-400">
+                Click any phase to jump to its corresponding operational documents
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              {[
+                {
+                  stage: "Phase 1: Day 0",
+                  name: "Commercial & Legal Lock",
+                  sub: "Deposit Invoice & Mutual NDA",
+                  targetTab: "invoice" as ActiveTab,
+                  active: activeTab === "invoice" || activeTab === "agreement",
+                },
+                {
+                  stage: "Phase 2: Day 1",
+                  name: "Asset Vault Ingestion",
+                  sub: "45-Min SOP & Video Intake",
+                  targetTab: "intake" as ActiveTab,
+                  active: activeTab === "intake",
+                },
+                {
+                  stage: "Phase 3: Days 4–7",
+                  name: "Pedagogy & Style QA",
+                  sub: "5-Module Map & 4K Style Guide",
+                  targetTab: "curriculum" as ActiveTab,
+                  active: activeTab === "curriculum" || activeTab === "styleguide",
+                },
+                {
+                  stage: "Phase 4: Days 10–14",
+                  name: "Go-Live & IP Handoff",
+                  sub: "LMS Staging & 100% IP Transfer",
+                  targetTab: "lms" as ActiveTab,
+                  active: activeTab === "lms" || activeTab === "golive",
+                },
+              ].map((phase, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleTabChange(phase.targetTab)}
+                  className={`p-3 rounded-xl text-left transition-all border ${
+                    phase.active
+                      ? "bg-blue-600/20 border-blue-500 shadow-md shadow-blue-500/10"
+                      : "bg-slate-900/60 border-slate-800/80 hover:border-slate-700"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold font-mono uppercase text-blue-400">
+                      {phase.stage}
+                    </span>
+                    <span
+                      className={`w-2 h-2 rounded-full ${
+                        phase.active ? "bg-blue-400 animate-pulse" : "bg-slate-700"
+                      }`}
+                    />
+                  </div>
+                  <p className="font-bold text-white text-xs mt-1 truncate">{phase.name}</p>
+                  <p className="text-[11px] text-slate-400 mt-0.5 truncate">{phase.sub}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Navigation Tabs */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-800 no-print">
             {[
-              { id: "invoice", label: "1. Commercial Invoice", icon: FileText },
-              { id: "agreement", label: "2. Sprint Agreement & NDA", icon: FileCheck },
-              { id: "intake", label: "3. Day 1 Intake Checklist", icon: ListChecks },
-              { id: "curriculum", label: "4. Curriculum Blueprint", icon: Compass },
-              { id: "styleguide", label: "5. Studio Style Guide", icon: Palette },
-              { id: "lms", label: "6. LMS Architecture Specs", icon: Server },
-              { id: "golive", label: "7. Go-Live & IP Transfer", icon: Rocket },
-              { id: "dispatch", label: "8. Client Dispatch Center", icon: Send },
+              { id: "invoice", label: "1. Commercial Invoice", day: "Day 0", icon: FileText },
+              { id: "agreement", label: "2. Sprint Agreement & NDA", day: "Day 0", icon: FileCheck },
+              { id: "intake", label: "3. Day 1 Intake Checklist", day: "Day 1", icon: ListChecks },
+              { id: "curriculum", label: "4. Curriculum Blueprint", day: "Day 4", icon: Compass },
+              { id: "styleguide", label: "5. Studio Style Guide", day: "Day 7", icon: Palette },
+              { id: "lms", label: "6. LMS Architecture Specs", day: "Day 10", icon: Server },
+              { id: "golive", label: "7. Go-Live & IP Transfer", day: "Day 14", icon: Rocket },
+              { id: "dispatch", label: "8. Client Dispatch Center", day: "Dispatch", icon: Send },
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -507,12 +683,19 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
                 <button
                   key={tab.id}
                   onClick={() => handleTabChange(tab.id as ActiveTab)}
-                  className={`px-4 py-2.5 rounded-xl font-semibold text-xs flex items-center gap-2 whitespace-nowrap transition-all ${
+                  className={`px-3.5 py-2.5 rounded-xl font-semibold text-xs flex items-center gap-2 whitespace-nowrap transition-all ${
                     isActive
                       ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
                       : "bg-[#0F172A] text-slate-400 border border-slate-800 hover:text-white hover:border-slate-700"
                   }`}
                 >
+                  <span
+                    className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold ${
+                      isActive ? "bg-white/20 text-white" : "bg-slate-800 text-amber-400"
+                    }`}
+                  >
+                    {tab.day}
+                  </span>
                   <Icon className="w-3.5 h-3.5" />
                   {tab.label}
                 </button>
@@ -522,7 +705,27 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
 
           {/* Tab 1: Commercial Invoice */}
           {activeTab === "invoice" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="space-y-6">
+              <PhaseGuideBanner
+                phaseNumber="PHASE 1"
+                phaseName="Commercial &amp; Legal Governance"
+                stepNumber={1}
+                totalSteps={7}
+                dayBadge="Day 0 (Pre-Kickoff)"
+                docCode="MM-INV"
+                title="Milestone 1 Upfront Deposit Invoice (50%)"
+                whenToSend="Send immediately upon verbal agreement or initial discovery call before scheduling the production kickoff."
+                whyItMatters="Locks the 14-day production calendar, reserves studio engineering resources, and enforces 50/50 payment milestone terms."
+                sopSteps={[
+                  "Verify client corporate billing name and authorized contact email in the Master Profile banner above.",
+                  "Select sprint preset ($3,500 Turnkey / $750 Blueprint / $1,500 Retainer) or add custom line items.",
+                  "Click 'Print Current Doc as PDF' or copy direct bank wire / Wise instructions to dispatch to client.",
+                ]}
+                nextTabId="agreement"
+                nextTabLabel="2. Sprint Agreement &amp; NDA"
+                onNavigateNext={handleTabChange}
+              />
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Left Edit Controls */}
               <div className="lg:col-span-5 space-y-6 no-print">
                 <div className="p-5 rounded-2xl bg-[#0F172A] border border-slate-800 space-y-4 text-xs">
@@ -843,11 +1046,32 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
                 </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
           {/* Tab 2: Sprint Agreement & NDA */}
           {activeTab === "agreement" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="space-y-6">
+              <PhaseGuideBanner
+                phaseNumber="PHASE 1"
+                phaseName="Commercial &amp; Legal Governance"
+                stepNumber={2}
+                totalSteps={7}
+                dayBadge="Day 0 (Pre-Kickoff)"
+                docCode="MM-AGR"
+                title="Master Services Agreement &amp; Mutual NDA"
+                whenToSend="Send alongside the Commercial Invoice before receiving any proprietary client SOPs or demo videos."
+                whyItMatters="Legally binds the PMP® 14-day delivery SLA, establishes Enterprise Zero-Retention AI Data Privacy, and guarantees 100% IP transfer upon Milestone 2."
+                sopSteps={[
+                  "Confirm Effective Date and signer credentials in the Master Profile above.",
+                  "Click 'Open SignWell' or 'Open PandaDoc' to dispatch for instant binding e-signature.",
+                  "Verify dual signature receipt prior to releasing Day 1 Ingestion Cloud Vault access.",
+                ]}
+                nextTabId="intake"
+                nextTabLabel="3. Day 1 Intake Checklist"
+                onNavigateNext={handleTabChange}
+              />
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Left Agreement Controls */}
               <div className="lg:col-span-5 space-y-6 no-print">
                 <div className="p-5 rounded-2xl bg-[#0F172A] border border-slate-800 space-y-4 text-xs">
@@ -1055,11 +1279,32 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
                 </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
           {/* Tab 3: Day 1 Intake Checklist */}
           {activeTab === "intake" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="space-y-6">
+              <PhaseGuideBanner
+                phaseNumber="PHASE 2"
+                phaseName="Asset Vault Ingestion"
+                stepNumber={3}
+                totalSteps={7}
+                dayBadge="Day 1 (Sprint Kickoff)"
+                docCode="MM-SOW-01"
+                title="Day 1 Client Intake &amp; Asset Vault Checklist"
+                whenToSend="Send on Day 1 immediately after Milestone 1 deposit confirmation."
+                whyItMatters="Eliminates meeting fatigue and homework for the client by providing a simple 45-minute checklist to upload unedited demo recordings, raw SOPs, and brand assets."
+                sopSteps={[
+                  "Share client cloud vault links (/01_Documentation, /02_Recordings, /03_Branding).",
+                  "Customize any client-specific credential requirements in the checklist editor.",
+                  "Verify client staging access (dummy test account) before beginning curriculum scoping on Day 2.",
+                ]}
+                nextTabId="curriculum"
+                nextTabLabel="4. Curriculum Blueprint"
+                onNavigateNext={handleTabChange}
+              />
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Left Intake Editor */}
               <div className="lg:col-span-5 space-y-6 no-print">
                 <div className="p-5 rounded-2xl bg-[#0F172A] border border-slate-800 space-y-4 text-xs">
@@ -1161,11 +1406,32 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
                 </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
           {/* Tab 4: Curriculum Blueprint */}
           {activeTab === "curriculum" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="space-y-6">
+              <PhaseGuideBanner
+                phaseNumber="PHASE 3"
+                phaseName="Pedagogy &amp; Production QA"
+                stepNumber={4}
+                totalSteps={7}
+                dayBadge="Day 4 (Mid-Sprint Alignment)"
+                docCode="MM-ARCH-02"
+                title="5-Module Curriculum Architecture Blueprint"
+                whenToSend="Send on Day 4 after ingesting client SOPs and prior to 4K video recording."
+                whyItMatters="Aligns stakeholders on learning outcomes, under-20-minute client Time-to-Value (TTV), and cognitive retention gates, preventing production rework."
+                sopSteps={[
+                  "Review raw Loom demos and refine the 5 module titles, durations, and outcomes.",
+                  "Obtain written or asynchronous client sign-off on the curriculum sequence.",
+                  "Lock module scripts into production queue for Day 5–7 video capture.",
+                ]}
+                nextTabId="styleguide"
+                nextTabLabel="5. Studio Style Guide"
+                onNavigateNext={handleTabChange}
+              />
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Left Curriculum Editor */}
               <div className="lg:col-span-5 space-y-6 no-print">
                 <div className="p-5 rounded-2xl bg-[#0F172A] border border-slate-800 space-y-4 text-xs">
@@ -1279,8 +1545,6 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
                     ))}
                   </div>
 
-                  <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 text-center text-[10px] text-slate-600">
-                    Bloom&rsquo;s Revised Taxonomy · Cognitive Retention Standard · Guaranteed Under-20-Min Client TTV
                   </div>
                 </div>
               </div>
@@ -1289,7 +1553,27 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
 
           {/* Tab 5: Studio Style Guide */}
           {activeTab === "styleguide" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="space-y-6">
+              <PhaseGuideBanner
+                phaseNumber="PHASE 3"
+                phaseName="Pedagogy &amp; Production QA"
+                stepNumber={5}
+                totalSteps={7}
+                dayBadge="Day 7 (Production Benchmark)"
+                docCode="MM-STD-03"
+                title="Studio Production Style Guide &amp; Standards"
+                whenToSend="Send on Day 7 alongside the initial prototype preview video."
+                whyItMatters="Proves studio benchmarks: Native 4K UHD 60 FPS, dynamic 1.4x UI zoom, -14.0 LUFS audio mastering, and PMP® peer review criteria."
+                sopSteps={[
+                  "Deliver Module 1 prototype video with this style guide attached.",
+                  "Confirm client audio/visual sign-off within 48 hours.",
+                  "Proceed with full batch rendering of Modules 2 through 5.",
+                ]}
+                nextTabId="lms"
+                nextTabLabel="6. LMS Architecture Specs"
+                onNavigateNext={handleTabChange}
+              />
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Left Controls */}
               <div className="lg:col-span-5 space-y-6 no-print">
                 <div className="p-5 rounded-2xl bg-[#0F172A] border border-slate-800 space-y-4 text-xs">
@@ -1380,11 +1664,32 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
                 </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
           {/* Tab 6: LMS Setup Specs */}
           {activeTab === "lms" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="space-y-6">
+              <PhaseGuideBanner
+                phaseNumber="PHASE 4"
+                phaseName="Staging, Go-Live &amp; IP Hand-Off"
+                stepNumber={6}
+                totalSteps={7}
+                dayBadge="Day 10 (Portal Staging)"
+                docCode="MM-TECH-04"
+                title="Turnkey LMS Architecture &amp; Provisioning Specs"
+                whenToSend="Send on Day 10 during the portal staging review."
+                whyItMatters="Confirms zero-IT LMS setup (Notion, Skool, Kajabi, Teachable, or custom HLS embeds) and validates team permission hierarchies."
+                sopSteps={[
+                  "Deploy staged client academy portal in live preview environment.",
+                  "Verify responsive video playback, companion PDF checklists, and completion gates.",
+                  "Dispatch staging link to client authorized lead for final walkthrough.",
+                ]}
+                nextTabId="golive"
+                nextTabLabel="7. Go-Live &amp; IP Transfer"
+                onNavigateNext={handleTabChange}
+              />
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Left Controls */}
               <div className="lg:col-span-5 space-y-6 no-print">
                 <div className="p-5 rounded-2xl bg-[#0F172A] border border-slate-800 space-y-4 text-xs">
@@ -1457,11 +1762,32 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
                 </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
           {/* Tab 7: Go-Live & IP Transfer */}
           {activeTab === "golive" && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="space-y-6">
+              <PhaseGuideBanner
+                phaseNumber="PHASE 4"
+                phaseName="Staging, Go-Live &amp; IP Hand-Off"
+                stepNumber={7}
+                totalSteps={7}
+                dayBadge="Day 14 (Final Hand-Off)"
+                docCode="MM-REL-05"
+                title="Go-Live Launch Kit &amp; 100% IP Assignment"
+                whenToSend="Send on Day 14 upon receipt of the 50% Milestone 2 final balance."
+                whyItMatters="Permanently transfers 100% copyright ownership of all video master files, scripts, and portal assets as work-for-hire, with plug-and-play welcome emails for client users."
+                sopSteps={[
+                  "Confirm settlement of Milestone 2 balance in UBL or Wise account.",
+                  "Transfer super-admin credentials of the live academy portal to client.",
+                  "Deliver master 4K MP4 vault links and release final SLA sign-off certificate.",
+                ]}
+                nextTabId="dispatch"
+                nextTabLabel="8. Client Dispatch Center"
+                onNavigateNext={handleTabChange}
+              />
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Left Controls */}
               <div className="lg:col-span-5 space-y-6 no-print">
                 <div className="p-5 rounded-2xl bg-[#0F172A] border border-slate-800 space-y-4 text-xs">
@@ -1536,11 +1862,31 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
                 </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
           {/* Tab 8: Client Dispatch Center */}
           {activeTab === "dispatch" && (
             <div className="space-y-6 no-print">
+              <div className="rounded-2xl border border-blue-500/30 bg-gradient-to-r from-blue-950/40 via-[#0F172A] to-slate-900/60 p-5 space-y-3 shadow-lg">
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-blue-600 text-white shadow-sm">
+                    MASTER DISPATCH HUB
+                  </span>
+                  <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3" />
+                    READY FOR IMMEDIATE DISPATCH
+                  </span>
+                </div>
+                <h4 className="text-sm font-heading font-bold text-white flex items-center gap-2">
+                  <Send className="w-4 h-4 text-blue-400" />
+                  Client Communications &amp; Deliverable Dispatch Hub
+                </h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Use this center to generate pre-filled client URLs or copy the formatted email packet ready for Gmail or Slack. Any team member or backup admin can dispatch the full package in 5 seconds without manual link construction.
+                </p>
+              </div>
+
               <div className="p-6 rounded-2xl bg-[#0F172A] border border-slate-800 space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="font-heading text-base font-bold text-white flex items-center gap-2">
