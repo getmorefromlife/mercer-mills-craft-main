@@ -16,6 +16,7 @@ import QaumiTaranahCinematic from "./pages/QaumiTaranahCinematic";
 import Syedello from "./pages/Syedello";
 import SyedelloLogo from "./pages/SyedelloLogo";
 import FinancialCenter from "./pages/FinancialCenter";
+import AdminHub from "./pages/AdminHub";
 import InvoiceGenerator from "./pages/InvoiceGenerator";
 import AgreementGenerator from "./pages/AgreementGenerator";
 import Contact from "./pages/Contact";
@@ -57,6 +58,9 @@ export async function prerender({ url }: { url: string }) {
                 <Route path="/portfolio/syedello" element={<Syedello />} />
                 <Route path="/portfolio/syedello-logo" element={<SyedelloLogo />} />
                 <Route path="/financial-center" element={<FinancialCenter />} />
+                <Route path="/admin" element={<AdminHub />} />
+                <Route path="/admin/hub" element={<AdminHub />} />
+                <Route path="/admin/documents" element={<AdminHub />} />
                 <Route path="/invoice-generator" element={<InvoiceGenerator />} />
                 <Route path="/admin/invoice" element={<InvoiceGenerator />} />
                 <Route path="/agreement-generator" element={<AgreementGenerator />} />

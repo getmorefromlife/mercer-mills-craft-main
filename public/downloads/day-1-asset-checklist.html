@@ -3,154 +3,243 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>M&M-SOW-01 | Day 1 Client Intake Checklist</title>
+  <title>Day 1 Client Intake & Asset Vault Checklist | Mercer & Mills</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #2563EB;
-      --bg: #0B0F17;
-      --card: #111827;
-      --border: #1E293B;
-      --text: #E2E8F0;
-      --muted: #94A3B8;
+      --primary-dark: #1D4ED8;
       --accent: #38BDF8;
+      --bg: #080C14;
+      --card: #0F172A;
+      --card-inner: #111827;
+      --border: #1E293B;
+      --text: #F1F5F9;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #0B0F17;
-      color: #E2E8F0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
       line-height: 1.6;
-      padding: 32px 16px;
+      padding: 32px 16px 64px;
+      -webkit-font-smoothing: antialiased;
     }
     .container {
-      max-width: 800px;
+      max-width: 840px;
       margin: 0 auto;
-      background: #0F172A;
-      border: 1px solid #1E293B;
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 40px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      padding: 44px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
     }
-    .header {
-      border-bottom: 1px solid #1E293B;
-      padding-bottom: 24px;
-      margin-bottom: 28px;
-    }
-    .top-bar {
+    .action-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
     }
-    .brand {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 18px;
-      font-weight: 800;
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: #7DD3FC; }
+    .btn-save-pdf {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--primary);
       color: #FFFFFF;
-      letter-spacing: -0.02em;
-    }
-    .brand span { color: #38BDF8; }
-    .badge {
-      display: inline-block;
-      font-size: 10px;
+      border: none;
+      border-radius: 8px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 4px 10px;
-      border-radius: 6px;
-      background: rgba(37, 99, 235, 0.15);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      color: #38BDF8;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
     }
-    h1 {
+    .btn-save-pdf:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+    .header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 28px;
+      margin-bottom: 28px;
+    }
+    .top-brand-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 18px;
+      gap: 16px;
+    }
+    .brand-title {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 24px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+    }
+    .brand-title span { color: #3B82F6; }
+    .brand-sub {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .pmp-seal {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: rgba(37, 99, 235, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: #60A5FA;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .pmp-seal svg { width: 14px; height: 14px; fill: currentColor; }
+    .doc-headline {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 26px;
       font-weight: 800;
       color: #FFFFFF;
       margin-bottom: 6px;
+      line-height: 1.25;
     }
     .doc-meta {
-      font-size: 12px;
-      color: #94A3B8;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
       font-weight: 500;
+      letter-spacing: 0.02em;
     }
+    .meta-creds {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+    .client-sync-banner {
+      margin-top: 14px;
+      padding: 8px 14px;
+      background: rgba(37, 99, 235, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      border-radius: 8px;
+      font-size: 11px;
+      color: #93C5FD;
+      letter-spacing: 0.02em;
+    }
+    .client-sync-banner strong { color: #FFFFFF; }
     .objective-box {
       background: rgba(37, 99, 235, 0.08);
-      border-left: 4px solid #2563EB;
+      border-left: 4px solid var(--primary);
       padding: 16px 20px;
-      border-radius: 0 8px 8px 0;
-      margin-bottom: 32px;
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 30px;
     }
     .objective-box h3 {
-      font-size: 12px;
-      font-weight: 700;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #38BDF8;
+      letter-spacing: 0.08em;
+      color: var(--accent);
       margin-bottom: 4px;
     }
     .objective-box p {
-      font-size: 14px;
-      color: #E2E8F0;
+      font-size: 13.5px;
+      color: var(--text);
       font-weight: 500;
     }
     .section {
-      margin-bottom: 28px;
+      margin-bottom: 26px;
     }
     .section-title {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
+      font-size: 13px;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       color: #F8FAFC;
-      border-bottom: 1px solid #1E293B;
+      border-bottom: 1px solid var(--border);
       padding-bottom: 8px;
       margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .checklist {
       list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
     .check-item {
       display: flex;
       align-items: flex-start;
-      gap: 12px;
-      padding: 10px 14px;
-      background: #111827;
-      border: 1px solid #1E293B;
-      border-radius: 8px;
-      margin-bottom: 8px;
+      gap: 14px;
+      padding: 12px 16px;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 10px;
       font-size: 13px;
       color: #CBD5E1;
+      line-height: 1.5;
     }
     .checkbox {
       width: 18px;
       height: 18px;
-      border: 2px solid #38BDF8;
+      border: 2px solid var(--accent);
       border-radius: 4px;
       flex-shrink: 0;
-      margin-top: 1px;
+      margin-top: 2px;
+      background: rgba(56, 189, 248, 0.05);
+    }
+    .check-item code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #93C5FD;
     }
     .status-bar {
       margin-top: 36px;
-      padding: 16px 20px;
-      background: #020617;
-      border: 1px solid #1E293B;
-      border-radius: 8px;
+      padding: 16px 22px;
+      background: #05080F;
+      border: 1px solid var(--border);
+      border-radius: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 11.5px;
+      font-weight: 700;
     }
     .status-badge {
-      color: #10B981;
+      color: #34D399;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
     .status-badge::before {
       content: "";
@@ -159,109 +248,203 @@
       background: #10B981;
       border-radius: 50%;
       display: inline-block;
+      box-shadow: 0 0 10px #10B981;
     }
-    .btn-print {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 20px;
-      background: #2563EB;
-      color: #FFFFFF;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
+    .footer-note {
+      margin-top: 24px;
+      font-size: 11px;
+      color: var(--text-dim);
       text-align: center;
-      text-decoration: none;
+      line-height: 1.6;
     }
-    .btn-print:hover { background: #1D4ED8; }
+
     @media print {
-      body { background: #FFF !important; color: #000 !important; padding: 0 !important; }
-      .container { border: none !important; box-shadow: none !important; padding: 0 !important; max-width: 100% !important; background: #FFF !important; }
-      .btn-print { display: none !important; }
-      .brand, h1, .section-title, .doc-meta { color: #000 !important; }
-      .objective-box { background: #F1F5F9 !important; border-left: 4px solid #000 !important; color: #000 !important; }
-      .objective-box h3, .objective-box p { color: #000 !important; }
-      .check-item { background: #FFF !important; border: 1px solid #CBD5E1 !important; color: #000 !important; }
-      .checkbox { border: 2px solid #000 !important; }
-      .status-bar { background: #F8FAFC !important; border: 1px solid #E2E8F0 !important; color: #000 !important; }
-      .badge { border: 1px solid #000 !important; color: #000 !important; background: transparent !important; }
+      body {
+        background: #FFFFFF !important;
+        color: #0F172A !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .container {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 10mm !important;
+        max-width: 100% !important;
+        background: #FFFFFF !important;
+      }
+      .action-bar { display: none !important; }
+      .brand-title, .doc-headline, .section-title { color: #0F172A !important; }
+      .brand-sub, .doc-meta, .meta-creds { color: #475569 !important; }
+      .client-sync-banner {
+        background: #F1F5F9 !important;
+        border: 1px solid #CBD5E1 !important;
+        color: #0F172A !important;
+      }
+      .client-sync-banner strong { color: #0F172A !important; }
+      .pmp-seal {
+        border: 1px solid #1E293B !important;
+        color: #0F172A !important;
+        background: #F1F5F9 !important;
+      }
+      .objective-box {
+        background: #F8FAFC !important;
+        border-left: 4px solid #1E293B !important;
+        color: #0F172A !important;
+      }
+      .objective-box h3, .objective-box p { color: #0F172A !important; }
+      .check-item {
+        background: #FFFFFF !important;
+        border: 1px solid #CBD5E1 !important;
+        color: #0F172A !important;
+      }
+      .checkbox {
+        border: 2px solid #0F172A !important;
+        background: transparent !important;
+      }
+      .check-item code {
+        background: #F1F5F9 !important;
+        color: #0F172A !important;
+      }
+      .status-bar {
+        background: #F8FAFC !important;
+        border: 1px solid #CBD5E1 !important;
+        color: #0F172A !important;
+      }
+      .status-badge { color: #059669 !important; }
+      .status-badge::before { background: #059669 !important; box-shadow: none !important; }
+      .footer-note { color: #64748B !important; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <button class="btn-print" onclick="window.print()">Print / Save as PDF</button>
+    <div class="action-bar">
+      <a href="/" class="back-link">← Return to Mercer &amp; Mills</a>
+      <button class="btn-save-pdf" onclick="window.print()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 6 2 18 2 18 9"></polyline>
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+          <rect x="6" y="14" width="12" height="8"></rect>
+        </svg>
+        Save as PDF / Print
+      </button>
+    </div>
 
     <div class="header">
-      <div class="top-bar">
-        <div class="brand">Mercer <span>&</span> Mills</div>
-        <div class="badge">PMP® Sprint Protocol</div>
+      <div class="top-brand-row">
+        <div>
+          <div class="brand-title">Mercer <span>&</span> Mills</div>
+          <div class="brand-sub">Knowledge Operations &amp; Learning Architecture</div>
+          <div class="meta-creds">Managing Director: Syed Imon Rizvi, PMP® · Pakistan (Global Remote Operations) · FBR NTN: 6622762</div>
+        </div>
+        <div class="pmp-seal">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+          Certified PMP® SLA Gated
+        </div>
       </div>
-      <h1>Day 1 Client Intake Checklist</h1>
-      <div class="doc-meta">DOCUMENT: M&amp;M-SOW-01 | KNOWLEDGE OPERATIONS SPRINT</div>
+      <h1 class="doc-headline">Day 1 Client Intake &amp; Asset Vault Checklist</h1>
+      <div class="doc-meta">REF: MM-SOW-01 | PHASE 1 ASSET INGESTION SPRINT PROTOCOL</div>
+      <div id="client-sync-banner" class="client-sync-banner" style="display: none;"></div>
     </div>
 
     <div class="objective-box">
       <h3>Objective</h3>
-      <p>To complete client asset ingestion in under 45 minutes with zero operational friction.</p>
+      <p>Complete all raw asset ingestion in under 45 minutes with zero operational homework or meeting fatigue. Initiates the guaranteed 14-Day Delivery SLA.</p>
     </div>
 
     <div class="section">
-      <div class="section-title">Section 1: The Repository Vault</div>
+      <div class="section-title">Section 1: The Repository Cloud Vault</div>
       <ul class="checklist">
         <li class="check-item">
           <div class="checkbox"></div>
-          <div>Drop raw documentation, existing SOPs, and help center articles into <code>/01_Documentation</code></div>
+          <div><strong>Internal Knowledge &amp; SOPs:</strong> Drop raw Google Docs, Notion exports, technical manuals, and help center articles into <code>/01_Documentation</code></div>
         </li>
         <li class="check-item">
           <div class="checkbox"></div>
-          <div>Upload 2–3 raw Zoom recordings of past client onboarding demos into <code>/02_Recordings</code></div>
+          <div><strong>Unedited Video Walkthroughs:</strong> Upload 2–3 unedited Loom/Zoom recordings of past customer demos or internal feature runs into <code>/02_Recordings</code></div>
         </li>
         <li class="check-item">
           <div class="checkbox"></div>
-          <div>Provide high-resolution vector logos (SVG/PNG) and brand color hex codes into <code>/03_Branding</code></div>
+          <div><strong>Brand Assets &amp; Typography:</strong> Provide high-resolution vector logos (SVG/PNG), custom brand fonts, and brand color hex codes into <code>/03_Branding</code></div>
         </li>
       </ul>
     </div>
 
     <div class="section">
-      <div class="section-title">Section 2: Sandbox Access &amp; Environment</div>
+      <div class="section-title">Section 2: Sandbox Access &amp; Staging Environment</div>
       <ul class="checklist">
         <li class="check-item">
           <div class="checkbox"></div>
-          <div>Provide demo/sandbox user credentials (<code>team@mercerandmills.com</code>)</div>
+          <div><strong>Staging Credentials:</strong> Provide demo/sandbox user credentials (<code class="client-email-dyn">team@mercerandmills.com</code>) with representative dummy test data.</div>
         </li>
         <li class="check-item">
           <div class="checkbox"></div>
-          <div>Confirm designated LMS/portal destination (Skool, Notion, Teachable, or internal LMS)</div>
+          <div><strong>Target Portal Environment:</strong> Confirm designated destination LMS (Skool Community, Notion Workspace, Kajabi, Teachable, or custom portal).</div>
         </li>
       </ul>
     </div>
 
     <div class="section">
-      <div class="section-title">Section 3: Governance &amp; Privacy Lock</div>
+      <div class="section-title">Section 3: Governance &amp; Enterprise AI Privacy Lock</div>
       <ul class="checklist">
         <li class="check-item">
           <div class="checkbox"></div>
-          <div>Executed Mutual Non-Disclosure Agreement (NDA) on file</div>
+          <div><strong>Mutual NDA Execution:</strong> Executed bilateral Non-Disclosure Agreement securely stored on file.</div>
         </li>
         <li class="check-item">
           <div class="checkbox"></div>
-          <div>Milestone 1 (50% Project Deposit) verified</div>
+          <div><strong>50% Milestone 1 Deposit:</strong> Production kickoff deposit verified and locked on calendar.</div>
         </li>
         <li class="check-item">
           <div class="checkbox"></div>
-          <div>Certified PMP® 14-Day Delivery SLA countdown initiated</div>
+          <div><strong>Enterprise AI Data Privacy:</strong> Zero-retention private workflow initialized; client proprietary data will never be trained on public models.</div>
         </li>
       </ul>
     </div>
 
     <div class="status-bar">
-      <div>STATUS: <span style="color: #38BDF8;">SCOPE LOCKED</span></div>
-      <div class="status-badge">DELIVERY SPRINT ACTIVE</div>
+      <div>STATUS: <span style="color: #38BDF8;">SCOPE LOCKED &amp; VERIFIED</span></div>
+      <div class="status-badge">PMP® 14-DAY SPRINT ACTIVE</div>
+    </div>
+
+    <div class="footer-note">
+      Mercer &amp; Mills Knowledge Operations · Registered Commercial Entity (NTN: 6622762)<br>
+      Direct Support Desk: syedimonrizvipmp@gmail.com | +1 (530) 423-5158
     </div>
   </div>
+
+  <script>
+    (function() {
+      try {
+        let company = '';
+        let client = '';
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('company')) company = params.get('company');
+        if (params.get('client')) client = params.get('client');
+
+        if (!company || !client) {
+          const raw = localStorage.getItem('mm_active_client_profile');
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed.clientCompany && !company) company = parsed.clientCompany;
+            if (parsed.clientName && !client) client = parsed.clientName;
+          }
+        }
+
+        if (company || client) {
+          const banner = document.getElementById('client-sync-banner');
+          if (banner) {
+            const nameStr = client ? ` · Attn: ${client}` : '';
+            banner.innerHTML = `<strong>PREPARED EXCLUSIVELY FOR:</strong> ${company || 'Client Organization'}${nameStr}`;
+            banner.style.display = 'block';
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  </script>
 </body>
 </html>

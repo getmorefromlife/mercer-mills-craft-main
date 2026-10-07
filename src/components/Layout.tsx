@@ -47,7 +47,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0F17] text-white">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0B0F17]/85 backdrop-blur-xl border-b border-slate-800/80">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0B0F17]/85 backdrop-blur-xl border-b border-slate-800/80 print:hidden">
         <div className="container flex items-center justify-between h-20">
           {/* Logo + Badge */}
           <Link to="/" className="flex items-center gap-3 group">
@@ -155,7 +155,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <main className="flex-1 pt-20">{children}</main>
 
       {/* Section 8: Footer */}
-      <footer className="bg-[#080C14] border-t border-slate-800/80 text-slate-300">
+      <footer className="bg-[#080C14] border-t border-slate-800/80 text-slate-300 print:hidden">
         <div className="container py-16">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
             {/* Col 1: Brand & Positioning */}

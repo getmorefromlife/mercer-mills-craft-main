@@ -13,35 +13,32 @@ import {
   FileText,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useClientProfile } from "@/hooks/useClientProfile";
 
 export default function AgreementGenerator() {
-  const [agreementId, setAgreementId] = useState(
-    () => `MMA-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`
-  );
-  const [effectiveDate, setEffectiveDate] = useState(() => new Date().toISOString().split("T")[0]);
-  const [clientName, setClientName] = useState("");
-  const [clientTitle, setClientTitle] = useState("Chief Executive Officer / Founder");
-  const [clientCompany, setClientCompany] = useState("");
-  const [clientCountry, setClientCountry] = useState("United States");
+  const { profile, updateProfile, resetProfile } = useClientProfile();
 
-  const [packageType, setPackageType] = useState<"turnkey" | "blueprint" | "care">("turnkey");
-  const [totalInvestment, setTotalInvestment] = useState(3500);
-  const [depositAmount, setDepositAmount] = useState(1750);
+  const agreementId = profile.agreementId;
+  const effectiveDate = profile.effectiveDate;
+  const clientName = profile.clientName;
+  const clientTitle = profile.clientTitle;
+  const clientCompany = profile.clientCompany;
+  const clientCountry = profile.clientCountry;
+  const packageType = profile.packageType;
+  const totalInvestment = profile.totalInvestment;
+  const depositAmount = profile.depositAmount;
+
   const [copied, setCopied] = useState(false);
 
   const agreementRef = useRef<HTMLDivElement>(null);
 
   const handlePackageChange = (type: "turnkey" | "blueprint" | "care") => {
-    setPackageType(type);
     if (type === "turnkey") {
-      setTotalInvestment(3500);
-      setDepositAmount(1750);
+      updateProfile({ packageType: type, totalInvestment: 3500, depositAmount: 1750 });
     } else if (type === "blueprint") {
-      setTotalInvestment(750);
-      setDepositAmount(750);
+      updateProfile({ packageType: type, totalInvestment: 750, depositAmount: 750 });
     } else {
-      setTotalInvestment(1500);
-      setDepositAmount(1500);
+      updateProfile({ packageType: type, totalInvestment: 1500, depositAmount: 1500 });
     }
   };
 
@@ -57,19 +54,27 @@ Agreement Ref: ${agreementId}
 Effective Date: ${effectiveDate}
 
 PARTIES:
-1. PROVIDER: Mercer & Mills Knowledge Operations (FBR NTN: 6622762), led by Syed Imon Rizvi, PMP®.
+1. PROVIDER: Mercer & Mills Knowledge Operations (Pakistan / Global Remote Operations · FBR NTN: 6622762), led by Syed Imon Rizvi, PMP®.
 2. CLIENT: ${clientCompany || "[Client Company]"}, represented by ${clientName || "[Client Representative]"} (${clientTitle}), ${clientCountry}.
 
 ENGAGEMENT SCOPE & DELIVERABLES:
 Package: ${packageType === "turnkey" ? "14-Day Turnkey Client Academy Sprint" : packageType === "blueprint" ? "3-Day Architecture Blueprint Sprint" : "Monthly Academy Care Retainer"}
 Total Project Investment: $${totalInvestment.toLocaleString()} USD
-- Milestone 1 (Upfront Deposit): $${depositAmount.toLocaleString()} USD (Due prior to Sprint Kickoff)
-- Milestone 2 (Final Delivery & Launch): $${(totalInvestment - depositAmount).toLocaleString()} USD (Due on Day 14 upon deployment)
+- Milestone 1 (50% Upfront Deposit): $${depositAmount.toLocaleString()} USD (Due upon execution to lock production calendar)
+- Milestone 2 (50% Final Balance): $${(totalInvestment - depositAmount).toLocaleString()} USD (Due on Day 14 upon portal deployment & sign-off)
 
 TERMS & CONDITIONS:
-1. CONFIDENTIALITY & ZERO-RETENTION: All client documentation, Loom recordings, and internal SOPs remain strictly confidential. Provider utilizes zero-data-retention AI workflows; no client data is used for model training.
-2. 100% INTELLECTUAL PROPERTY TRANSFER: Upon settlement of Milestone 2, all video masters, curriculum architectures, scripts, checklists, and LMS portal instances transfer 100% to the Client as work-for-hire.
-3. GOVERNANCE: Governed under Certified Project Management Professional (PMP®) agile quality standards with 48-hour milestone review windows.
+1. PMP® 14-DAY DELIVERY SERVICE LEVEL AGREEMENT (SLA):
+Execution is governed under certified Project Management Professional (PMP®) agile standards. Delivery is guaranteed within 14 business days from kickoff, backed by 48-hour milestone review turnarounds.
+
+2. 50/50 MILESTONE PAYMENT STRUCTURE:
+Work initiates upon receipt of the 50% Milestone 1 deposit. Final portal staging deployment, admin access, and source file delivery occur upon receipt of the Milestone 2 balance.
+
+3. ENTERPRISE AI DATA PRIVACY & ZERO-DATA RETENTION:
+All client documentation, Loom recordings, system architectures, and internal SOPs remain strictly confidential. Provider operates exclusively within zero-data-retention enterprise AI environments; client data is NEVER retained, logged, or utilized to train public or private AI models.
+
+4. 100% INTELLECTUAL PROPERTY TRANSFER:
+All video masters (4K), scripts, pedagogical frameworks, LMS portal instances, and action checklists transfer 100% permanently to Client as work-for-hire upon final milestone settlement. Zero recurring platform licensing fees.
 
 AGREED & ACCEPTED:
 For Mercer & Mills:
@@ -81,6 +86,7 @@ For Client:
 Authorized Signature: _______________________
 Name: ${clientName || "_______________________"}
 Title: ${clientTitle || "_______________________"}
+Company: ${clientCompany || "_______________________"}
 Date: _______________________
     `.trim();
 
@@ -99,8 +105,24 @@ Date: _______________________
         />
       </Helmet>
 
+      {/* Print-Only CSS to produce a flawless, clean PDF */}
       <style>{`
         @media print {
+          @page {
+            size: auto;
+            margin: 10mm 12mm;
+          }
+          header, footer, nav, .no-print {
+            display: none !important;
+          }
+          body {
+            background: #ffffff !important;
+            color: #000000 !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            padding: 0 !important;
+            margin: 0 !important;
+          }
           body * {
             visibility: hidden;
           }
@@ -112,14 +134,12 @@ Date: _______________________
             left: 0;
             top: 0;
             width: 100%;
-            background: white !important;
-            color: black !important;
-            padding: 0 !important;
+            background: #ffffff !important;
+            color: #0f172a !important;
+            padding: 16px !important;
             box-shadow: none !important;
-            border: none !important;
-          }
-          .no-print {
-            display: none !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 8px !important;
           }
         }
       `}</style>
@@ -166,7 +186,7 @@ Date: _______________________
                 className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center gap-2 transition-all shadow-lg shadow-blue-600/30"
               >
                 <Printer className="w-4 h-4" />
-                Print / Save PDF
+                Print / Save as PDF
               </button>
             </div>
           </div>
@@ -219,16 +239,30 @@ Date: _______________________
 
               {/* Client Info */}
               <div className="p-5 rounded-2xl bg-[#0F172A] border border-slate-800 space-y-3 text-xs">
-                <h3 className="font-heading text-sm font-bold text-white uppercase tracking-wider text-slate-300">
-                  Client &amp; Signer Details
-                </h3>
+                <div className="flex items-center justify-between">
+                  <h3 className="font-heading text-sm font-bold text-white uppercase tracking-wider text-slate-300">
+                    Client &amp; Signer Details
+                  </h3>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded font-semibold flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                      Synced
+                    </span>
+                    <button
+                      onClick={resetProfile}
+                      className="text-[10px] text-slate-400 hover:text-slate-200 underline"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
                 <div>
                   <label className="text-slate-400 font-medium mb-1 block">Client Company / Entity</label>
                   <input
                     type="text"
                     placeholder="e.g. Acme Health Technologies LLC"
                     value={clientCompany}
-                    onChange={(e) => setClientCompany(e.target.value)}
+                    onChange={(e) => updateProfile({ clientCompany: e.target.value })}
                     className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white"
                   />
                 </div>
@@ -239,7 +273,7 @@ Date: _______________________
                       type="text"
                       placeholder="e.g. Alex Morgan"
                       value={clientName}
-                      onChange={(e) => setClientName(e.target.value)}
+                      onChange={(e) => updateProfile({ clientName: e.target.value })}
                       className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white"
                     />
                   </div>
@@ -248,7 +282,7 @@ Date: _______________________
                     <input
                       type="text"
                       value={clientTitle}
-                      onChange={(e) => setClientTitle(e.target.value)}
+                      onChange={(e) => updateProfile({ clientTitle: e.target.value })}
                       className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white"
                     />
                   </div>
@@ -259,7 +293,7 @@ Date: _______________________
                     <input
                       type="text"
                       value={clientCountry}
-                      onChange={(e) => setClientCountry(e.target.value)}
+                      onChange={(e) => updateProfile({ clientCountry: e.target.value })}
                       className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white"
                     />
                   </div>
@@ -268,7 +302,7 @@ Date: _______________________
                     <input
                       type="date"
                       value={effectiveDate}
-                      onChange={(e) => setEffectiveDate(e.target.value)}
+                      onChange={(e) => updateProfile({ effectiveDate: e.target.value })}
                       className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white"
                     />
                   </div>
@@ -322,7 +356,7 @@ Date: _______________________
                       Knowledge Operations &amp; Learning Architecture
                     </p>
                     <p className="text-[11px] text-slate-600 mt-2">
-                      FBR NTN: <span className="font-mono font-bold">6622762</span> | Lead: Syed Imon Rizvi, PMP®
+                      Provider: <span className="font-semibold text-slate-800">Pakistan (Global Remote Operations)</span> · FBR NTN: <span className="font-mono font-bold">6622762</span> | Lead: Syed Imon Rizvi, PMP®
                     </p>
                   </div>
                   <div className="sm:text-right">
@@ -337,7 +371,7 @@ Date: _______________________
                 {/* Parties */}
                 <div className="bg-slate-50 p-4 rounded-xl border border-slate-200/80 space-y-2">
                   <p>
-                    This Agreement is entered into between <strong>Mercer &amp; Mills Knowledge Operations</strong> (&ldquo;Provider&rdquo;) and{" "}
+                    This Agreement is entered into between <strong>Mercer &amp; Mills Knowledge Operations</strong> (&ldquo;Provider&rdquo;, registered entity in <strong>Pakistan</strong> under FBR NTN 6622762, Global Remote Delivery Hub) and{" "}
                     <strong>{clientCompany || "[Client Company Name]"}</strong> (&ldquo;Client&rdquo;), represented by{" "}
                     <strong>{clientName || "[Signer Name]"}</strong>, {clientTitle} ({clientCountry}).
                   </p>
@@ -363,14 +397,14 @@ Date: _______________________
 
                   <div>
                     <h4 className="font-bold text-slate-900 uppercase tracking-wider text-xs mb-1">
-                      2. Investment &amp; 50/50 Milestone Terms
+                      2. 50/50 Milestone Investment &amp; Payment Schedule
                     </h4>
                     <p>
                       Total fixed sprint investment: <strong>${totalInvestment.toLocaleString()} USD</strong>.
                     </p>
                     <ul className="list-disc pl-5 mt-1 space-y-0.5 text-slate-600">
                       <li>
-                        <strong>Milestone 1 (50% Upfront Deposit): ${depositAmount.toLocaleString()} USD</strong> due upon signing to initiate Discovery Intake, curriculum scoping, and production schedule.
+                        <strong>Milestone 1 (50% Upfront Deposit): ${depositAmount.toLocaleString()} USD</strong> due upon signing to lock production calendar, initiate Discovery Intake, and begin curriculum scoping.
                       </li>
                       <li>
                         <strong>Milestone 2 (50% Final Balance): ${(totalInvestment - depositAmount).toLocaleString()} USD</strong> due on Day 14 upon live portal staging review and prior to final credential transfer.
@@ -380,10 +414,10 @@ Date: _______________________
 
                   <div>
                     <h4 className="font-bold text-slate-900 uppercase tracking-wider text-xs mb-1">
-                      3. Mutual Non-Disclosure &amp; Zero-Retention Protocol
+                      3. Enterprise AI Data Privacy &amp; Zero-Data Retention
                     </h4>
                     <p>
-                      Provider agrees that all proprietary workflows, codebases, Loom recordings, and client business records shared during the sprint remain strictly confidential. Provider utilizes enterprise zero-data-retention AI environments; Client data is never retained, shared, or utilized to train public AI models.
+                      Provider agrees that all proprietary workflows, codebases, Loom recordings, client documentation, and business records shared during the sprint remain strictly confidential. Provider utilizes enterprise zero-data-retention AI environments; Client data is never retained, logged, shared, or utilized to train public or private AI models.
                     </p>
                   </div>
 
@@ -392,16 +426,16 @@ Date: _______________________
                       4. 100% Intellectual Property Transfer
                     </h4>
                     <p>
-                      All deliverables produced under this Agreement are deemed &ldquo;work-for-hire.&rdquo; Upon receipt of the Milestone 2 balance, 100% of all copyrights, video master files, and portal rights permanently transfer to the Client.
+                      All deliverables produced under this Agreement are deemed &ldquo;work-for-hire.&rdquo; Upon receipt of the Milestone 2 balance, 100% of all copyrights, video master files, scripts, and portal rights permanently transfer to the Client. Zero recurring platform fees.
                     </p>
                   </div>
 
                   <div>
                     <h4 className="font-bold text-slate-900 uppercase tracking-wider text-xs mb-1">
-                      5. Governance &amp; Sprint Timelines
+                      5. PMP® 14-Day Delivery SLA &amp; Governance
                     </h4>
                     <p>
-                      Sprint execution is governed under Certified Project Management Professional (PMP®) standards. Client agrees to provide prompt feedback within 48 hours of milestone staging reviews to maintain the 14-day completion timeline.
+                      Sprint execution is governed under Certified Project Management Professional (PMP®) agile standards with a guaranteed 14-day completion SLA. Client agrees to provide prompt feedback within 48 hours of milestone staging reviews to maintain the sprint timeline.
                     </p>
                   </div>
                 </div>
@@ -417,7 +451,8 @@ Date: _______________________
                     </div>
                     <div className="text-slate-600 space-y-0.5">
                       <p><strong>Name:</strong> Syed Imon Rizvi, PMP®</p>
-                      <p><strong>Title:</strong> Managing Director</p>
+                      <p><strong>Title:</strong> Managing Director &amp; Lead Architect</p>
+                      <p><strong>Jurisdiction:</strong> Pakistan (Global Remote Operations)</p>
                       <p><strong>Entity NTN:</strong> 6622762 (FBR Pakistan)</p>
                       <p><strong>Date:</strong> {effectiveDate}</p>
                     </div>

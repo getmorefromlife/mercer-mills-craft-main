@@ -25,6 +25,7 @@ const QaumiTaranahCinematic = lazy(() => import("./pages/QaumiTaranahCinematic")
 const Syedello = lazy(() => import("./pages/Syedello"));
 const SyedelloLogo = lazy(() => import("./pages/SyedelloLogo"));
 const FinancialCenter = lazy(() => import("./pages/FinancialCenter"));
+const AdminHub = lazy(() => import("./pages/AdminHub"));
 const InvoiceGenerator = lazy(() => import("./pages/InvoiceGenerator"));
 const AgreementGenerator = lazy(() => import("./pages/AgreementGenerator"));
 const Contact = lazy(() => import("./pages/Contact"));
@@ -71,12 +72,27 @@ const App = () => (
               <Route path="/portfolio/syedello" element={<Syedello />} />
               <Route path="/portfolio/syedello-logo" element={<SyedelloLogo />} />
               <Route path="/financial-center" element={<FinancialCenter />} />
-              <Route path="/admin" element={<Navigate to="/admin/invoice" replace />} />
               <Route
-                path="/invoice-generator"
+                path="/admin"
                 element={
                   <AdminGate>
-                    <InvoiceGenerator />
+                    <AdminHub />
+                  </AdminGate>
+                }
+              />
+              <Route
+                path="/admin/hub"
+                element={
+                  <AdminGate>
+                    <AdminHub />
+                  </AdminGate>
+                }
+              />
+              <Route
+                path="/admin/documents"
+                element={
+                  <AdminGate>
+                    <AdminHub />
                   </AdminGate>
                 }
               />

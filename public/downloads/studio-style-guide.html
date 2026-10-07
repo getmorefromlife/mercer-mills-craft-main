@@ -3,160 +3,361 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>M&M-STD-03 | Multimedia Production Benchmarks</title>
+  <title>Studio Style Guide & Multimedia Quality Benchmarks | Mercer & Mills</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary: #2563EB;
+      --primary-dark: #1D4ED8;
+      --accent: #38BDF8;
+      --bg: #080C14;
+      --card: #0F172A;
+      --card-inner: #111827;
+      --border: #1E293B;
+      --text: #F1F5F9;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #0B0F17;
-      color: #E2E8F0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
       line-height: 1.6;
-      padding: 32px 16px;
+      padding: 32px 16px 64px;
+      -webkit-font-smoothing: antialiased;
     }
     .container {
-      max-width: 800px;
+      max-width: 840px;
       margin: 0 auto;
-      background: #0F172A;
-      border: 1px solid #1E293B;
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 40px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      padding: 44px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
     }
-    .header {
-      border-bottom: 1px solid #1E293B;
-      padding-bottom: 24px;
-      margin-bottom: 28px;
-    }
-    .top-bar {
+    .action-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
     }
-    .brand {
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: #7DD3FC; }
+    .btn-save-pdf {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+    .btn-save-pdf:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+    .header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 28px;
+      margin-bottom: 28px;
+    }
+    .top-brand-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 18px;
+      gap: 16px;
+    }
+    .brand-title {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 18px;
+      font-size: 22px;
       font-weight: 800;
+      letter-spacing: -0.02em;
       color: #FFFFFF;
     }
-    .brand span { color: #38BDF8; }
-    .badge {
-      font-size: 10px;
-      font-weight: 700;
+    .brand-title span { color: #3B82F6; }
+    .brand-sub {
+      font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 4px 10px;
-      border-radius: 6px;
-      background: rgba(37, 99, 235, 0.15);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      color: #38BDF8;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-top: 2px;
     }
-    h1 {
+    .pmp-seal {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: rgba(37, 99, 235, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: #60A5FA;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .pmp-seal svg { width: 14px; height: 14px; fill: currentColor; }
+    .doc-headline {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 800;
       color: #FFFFFF;
       margin-bottom: 6px;
+      line-height: 1.25;
     }
-    .doc-meta { font-size: 12px; color: #94A3B8; font-weight: 500; }
+    .doc-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+    .meta-creds {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+    .client-sync-banner {
+      margin-top: 14px;
+      padding: 8px 14px;
+      background: rgba(37, 99, 235, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      border-radius: 8px;
+      font-size: 11px;
+      color: #93C5FD;
+      letter-spacing: 0.02em;
+    }
+    .client-sync-banner strong { color: #FFFFFF; }
     .section {
-      background: #111827;
-      border: 1px solid #1E293B;
-      border-radius: 10px;
-      padding: 20px;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 24px;
       margin-bottom: 20px;
     }
     .section-title {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
+      font-size: 13.5px;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #38BDF8;
-      border-bottom: 1px solid #1E293B;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border);
       padding-bottom: 8px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .spec-list {
       list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
     .spec-item {
       font-size: 13px;
       color: #CBD5E1;
-      padding: 6px 0;
-      border-bottom: 1px solid rgba(30, 41, 59, 0.5);
+      line-height: 1.55;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(30, 41, 59, 0.6);
     }
-    .spec-item:last-child { border-bottom: none; }
-    .spec-item strong { color: #FFFFFF; }
-    .btn-print {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 20px;
-      background: #2563EB;
+    .spec-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .spec-item strong {
       color: #FFFFFF;
-      border: none;
-      border-radius: 8px;
       font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      text-align: center;
     }
-    .btn-print:hover { background: #1D4ED8; }
+    .footer-bar {
+      margin-top: 36px;
+      padding: 16px 20px;
+      background: #05080F;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+    .footer-bar strong { color: #FFFFFF; }
+
     @media print {
-      body { background: #FFF !important; color: #000 !important; padding: 0 !important; }
-      .container { border: none !important; box-shadow: none !important; padding: 0 !important; max-width: 100% !important; background: #FFF !important; }
-      .btn-print { display: none !important; }
-      .brand, h1, .section-title, .doc-meta { color: #000 !important; }
-      .section { background: #FFF !important; border: 1px solid #CBD5E1 !important; color: #000 !important; }
-      .spec-item, .spec-item strong { color: #000 !important; }
-      .badge { border: 1px solid #000 !important; color: #000 !important; background: transparent !important; }
+      body {
+        background: #FFFFFF !important;
+        color: #0F172A !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .container {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 10mm !important;
+        max-width: 100% !important;
+        background: #FFFFFF !important;
+      }
+      .action-bar { display: none !important; }
+      .brand-title, .doc-headline, .section-title { color: #0F172A !important; }
+      .brand-sub, .doc-meta, .meta-creds { color: #475569 !important; }
+      .client-sync-banner {
+        background: #F1F5F9 !important;
+        border: 1px solid #CBD5E1 !important;
+        color: #0F172A !important;
+      }
+      .client-sync-banner strong { color: #0F172A !important; }
+      .pmp-seal {
+        border: 1px solid #1E293B !important;
+        color: #0F172A !important;
+        background: #F1F5F9 !important;
+      }
+      .section {
+        background: #FFFFFF !important;
+        border: 1px solid #CBD5E1 !important;
+        color: #0F172A !important;
+        page-break-inside: avoid;
+      }
+      .spec-item {
+        color: #334155 !important;
+        border-bottom: 1px solid #E2E8F0 !important;
+      }
+      .spec-item strong { color: #0F172A !important; }
+      .footer-bar {
+        background: #F8FAFC !important;
+        border: 1px solid #CBD5E1 !important;
+        color: #475569 !important;
+      }
+      .footer-bar strong { color: #0F172A !important; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <button class="btn-print" onclick="window.print()">Print / Save as PDF</button>
+    <div class="action-bar">
+      <a href="/" class="back-link">← Return to Mercer &amp; Mills</a>
+      <button class="btn-save-pdf" onclick="window.print()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 6 2 18 2 18 9"></polyline>
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+          <rect x="6" y="14" width="12" height="8"></rect>
+        </svg>
+        Save as PDF / Print
+      </button>
+    </div>
 
     <div class="header">
-      <div class="top-bar">
-        <div class="brand">Mercer <span>&</span> Mills</div>
-        <div class="badge">PMP® Quality Management</div>
+      <div class="top-brand-row">
+        <div>
+          <div class="brand-title">Mercer <span>&</span> Mills</div>
+          <div class="brand-sub">Knowledge Operations &amp; Learning Architecture</div>
+          <div class="meta-creds">Managing Director: Syed Imon Rizvi, PMP® · Pakistan (Global Remote Operations) · FBR NTN: 6622762</div>
+        </div>
+        <div class="pmp-seal">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+          PMP® Quality Benchmark Gated
+        </div>
       </div>
-      <h1>Multimedia Production Benchmarks</h1>
-      <div class="doc-meta">DOCUMENT: M&amp;M-STD-03 | STUDIO STYLE GUIDE &amp; QUALITY STANDARDS</div>
+      <h1 class="doc-headline">Studio Style Guide &amp; Multimedia Production Benchmarks</h1>
+      <div class="doc-meta">REF: MM-STD-03 | 4K VIDEO &amp; PEDAGOGICAL ASSET QUALITY STANDARDS</div>
+      <div id="client-sync-banner" class="client-sync-banner" style="display: none;"></div>
     </div>
 
     <div class="section">
-      <div class="section-title">1. Visual Capture Standards</div>
+      <div class="section-title">1. High-Definition 4K Visual Capture Standards</div>
       <ul class="spec-list">
-        <li class="spec-item"><strong>Resolution:</strong> Native 4K UHD (3840 x 2160) at 60 FPS</li>
-        <li class="spec-item"><strong>Framing:</strong> Dynamic cursor smoothing with automated 1.25x focal zoom on interactive elements</li>
-        <li class="spec-item"><strong>UI Isolation:</strong> Zero desktop clutter; clean browser staging with dark-mode optimization</li>
-        <li class="spec-item"><strong>Subtitles:</strong> 100% synchronized animated typography with high-contrast background bounding</li>
+        <li class="spec-item"><strong>Resolution &amp; Frame Rate:</strong> Master recordings rendered in native 4K UHD (3840 × 2160) at 60 FPS for ultra-crisp interface readability.</li>
+        <li class="spec-item"><strong>Dynamic Cursor &amp; Focal Zooms:</strong> Intelligent cursor smoothing with automated 1.25x – 1.4x zoom emphasis on critical UI elements and interactive triggers.</li>
+        <li class="spec-item"><strong>Staging Isolation:</strong> Distraction-free clean browser windows, zero browser extensions, custom dark-mode optimizations, and curated mock client data.</li>
+        <li class="spec-item"><strong>Kinetic Captions:</strong> 100% synchronized animated subtitles formatted with high-contrast semi-translucent bounding boxes for accessibility.</li>
       </ul>
     </div>
 
     <div class="section">
-      <div class="section-title">2. Audio Mastering Benchmarks</div>
+      <div class="section-title">2. Studio Audio Mastering &amp; Voiceover Benchmarks</div>
       <ul class="spec-list">
-        <li class="spec-item"><strong>Voiceover:</strong> Studio-grade condenser processing or ElevenLabs enterprise neural voice</li>
-        <li class="spec-item"><strong>Noise Floor:</strong> -60 dB (complete background noise and acoustic echo removal)</li>
-        <li class="spec-item"><strong>Master Level:</strong> Standardized to -14 LUFS (integrated loudness for digital web playback)</li>
-        <li class="spec-item"><strong>Cadence:</strong> Conversational direct-response pace (135–150 words per minute)</li>
+        <li class="spec-item"><strong>Voice Processing:</strong> Studio-grade condenser processing with multi-band compression, de-essing, and de-reverberation, or ElevenLabs Enterprise neural audio.</li>
+        <li class="spec-item"><strong>Noise Floor &amp; Acoustic Floor:</strong> Standardized to -60 dB (complete elimination of background hum, keyboard clicks, and room echo).</li>
+        <li class="spec-item"><strong>Integrated Loudness:</strong> Mastered to -14.0 LUFS (±0.5 LUFS) with a true peak ceiling of -1.0 dBFS compliant with web playback standards.</li>
+        <li class="spec-item"><strong>Pacing &amp; Cadence:</strong> Conversational direct-response pace calibrated between 135 and 150 words per minute for optimal cognitive retention.</li>
       </ul>
     </div>
 
     <div class="section">
-      <div class="section-title">3. Companion Assets</div>
+      <div class="section-title">3. Companion Action Assets &amp; Vector Checklists</div>
       <ul class="spec-list">
-        <li class="spec-item"><strong>Action Summaries:</strong> Every video module accompanied by a 1-page action summary checklist</li>
-        <li class="spec-item"><strong>Format:</strong> Formatted in vector PDF with interactive checkboxes for immediate mobile/desktop execution</li>
+        <li class="spec-item"><strong>1-Page Action Architecture:</strong> Every video module is paired with an actionable 1-page summary framework.</li>
+        <li class="spec-item"><strong>Interactive Vector PDF:</strong> Compiled with active checkboxes and direct jump links, styled in client brand identity.</li>
       </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title">4. Certified Quality Assurance &amp; Milestone Sign-Off Gate</div>
+      <ul class="spec-list">
+        <li class="spec-item"><strong>PMP® Peer Review:</strong> Every module undergoes pedagogical timing and technical QA prior to staging deployment.</li>
+        <li class="spec-item"><strong>Day 7 Prototype Gate:</strong> Full production continues only after Client formal review and approval of the initial module prototype.</li>
+      </ul>
+    </div>
+
+    <div class="footer-bar">
+      <strong>Enterprise Production Benchmark:</strong> 100% Client IP Assignment upon completion · Zero watermarks · Raw master files included<br>
+      Mercer &amp; Mills Knowledge Operations (FBR NTN: 6622762)
     </div>
   </div>
+
+  <script>
+    (function() {
+      try {
+        let company = '';
+        let client = '';
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('company')) company = params.get('company');
+        if (params.get('client')) client = params.get('client');
+
+        if (!company || !client) {
+          const raw = localStorage.getItem('mm_active_client_profile');
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed.clientCompany && !company) company = parsed.clientCompany;
+            if (parsed.clientName && !client) client = parsed.clientName;
+          }
+        }
+
+        if (company || client) {
+          const banner = document.getElementById('client-sync-banner');
+          if (banner) {
+            const nameStr = client ? ` · Attn: ${client}` : '';
+            banner.innerHTML = `<strong>PRODUCTION STANDARDS STYLED FOR:</strong> ${company || 'Client Organization'}${nameStr}`;
+            banner.style.display = 'block';
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  </script>
 </body>
 </html>

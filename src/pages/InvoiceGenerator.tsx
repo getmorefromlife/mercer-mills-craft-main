@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
+import { useClientProfile } from "@/hooks/useClientProfile";
+
 interface LineItem {
   id: string;
   description: string;
@@ -60,21 +62,16 @@ const PRESET_PACKAGES = [
 ];
 
 export default function InvoiceGenerator() {
-  const [invoiceNumber, setInvoiceNumber] = useState(
-    () => `MM-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`
-  );
-  const [issueDate, setIssueDate] = useState(() => new Date().toISOString().split("T")[0]);
-  const [dueDate, setDueDate] = useState(() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 7);
-    return d.toISOString().split("T")[0];
-  });
+  const { profile, updateProfile, resetProfile } = useClientProfile();
 
-  const [clientName, setClientName] = useState("");
-  const [clientCompany, setClientCompany] = useState("");
-  const [clientEmail, setClientEmail] = useState("");
-  const [clientCountry, setClientCountry] = useState("United States");
-  const [currency] = useState("USD ($)");
+  const invoiceNumber = profile.invoiceNumber;
+  const issueDate = profile.issueDate;
+  const dueDate = profile.dueDate;
+  const clientName = profile.clientName;
+  const clientCompany = profile.clientCompany;
+  const clientEmail = profile.clientEmail;
+  const clientCountry = profile.clientCountry;
+  const currency = "USD ($)";
 
   const [items, setItems] = useState<LineItem[]>([
     {
@@ -188,6 +185,21 @@ Direct Desk: +1 (530) 423-5158 | +92 330 365 8220
       {/* Print-Only CSS to produce a flawless, clean PDF */}
       <style>{`
         @media print {
+          @page {
+            size: auto;
+            margin: 10mm 12mm;
+          }
+          header, footer, nav, .no-print {
+            display: none !important;
+          }
+          body {
+            background: #ffffff !important;
+            color: #000000 !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            padding: 0 !important;
+            margin: 0 !important;
+          }
           body * {
             visibility: hidden;
           }
@@ -199,14 +211,12 @@ Direct Desk: +1 (530) 423-5158 | +92 330 365 8220
             left: 0;
             top: 0;
             width: 100%;
-            background: white !important;
-            color: black !important;
-            padding: 0 !important;
+            background: #ffffff !important;
+            color: #0f172a !important;
+            padding: 16px !important;
             box-shadow: none !important;
-            border: none !important;
-          }
-          .no-print {
-            display: none !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 8px !important;
           }
         }
       `}</style>
@@ -253,7 +263,7 @@ Direct Desk: +1 (530) 423-5158 | +92 330 365 8220
                 className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center gap-2 transition-all shadow-lg shadow-blue-600/30"
               >
                 <Printer className="w-4 h-4" />
-                Print / Save PDF
+                Print / Save as PDF
               </button>
             </div>
           </div>
@@ -287,16 +297,22 @@ Direct Desk: +1 (530) 423-5158 | +92 330 365 8220
 
               {/* Invoice Meta */}
               <div className="p-5 rounded-2xl bg-[#0F172A] border border-slate-800 space-y-4 text-xs">
-                <h3 className="font-heading text-sm font-bold text-white uppercase tracking-wider text-slate-300">
-                  Invoice Metadata
-                </h3>
+                <div className="flex items-center justify-between">
+                  <h3 className="font-heading text-sm font-bold text-white uppercase tracking-wider text-slate-300">
+                    Invoice Metadata
+                  </h3>
+                  <span className="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded font-semibold flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Synced
+                  </span>
+                </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="text-slate-400 font-medium mb-1 block">Invoice #</label>
                     <input
                       type="text"
                       value={invoiceNumber}
-                      onChange={(e) => setInvoiceNumber(e.target.value)}
+                      onChange={(e) => updateProfile({ invoiceNumber: e.target.value })}
                       className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white font-mono"
                     />
                   </div>
@@ -316,7 +332,7 @@ Direct Desk: +1 (530) 423-5158 | +92 330 365 8220
                     <input
                       type="date"
                       value={issueDate}
-                      onChange={(e) => setIssueDate(e.target.value)}
+                      onChange={(e) => updateProfile({ issueDate: e.target.value })}
                       className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white"
                     />
                   </div>
@@ -325,7 +341,7 @@ Direct Desk: +1 (530) 423-5158 | +92 330 365 8220
                     <input
                       type="date"
                       value={dueDate}
-                      onChange={(e) => setDueDate(e.target.value)}
+                      onChange={(e) => updateProfile({ dueDate: e.target.value })}
                       className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white"
                     />
                   </div>
@@ -334,16 +350,24 @@ Direct Desk: +1 (530) 423-5158 | +92 330 365 8220
 
               {/* Client Info */}
               <div className="p-5 rounded-2xl bg-[#0F172A] border border-slate-800 space-y-3 text-xs">
-                <h3 className="font-heading text-sm font-bold text-white uppercase tracking-wider text-slate-300">
-                  Client Details
-                </h3>
+                <div className="flex items-center justify-between">
+                  <h3 className="font-heading text-sm font-bold text-white uppercase tracking-wider text-slate-300">
+                    Client Details
+                  </h3>
+                  <button
+                    onClick={resetProfile}
+                    className="text-[10px] text-slate-400 hover:text-slate-200 underline"
+                  >
+                    Reset All Fields
+                  </button>
+                </div>
                 <div>
                   <label className="text-slate-400 font-medium mb-1 block">Client Name</label>
                   <input
                     type="text"
                     placeholder="e.g. Alex Morgan"
                     value={clientName}
-                    onChange={(e) => setClientName(e.target.value)}
+                    onChange={(e) => updateProfile({ clientName: e.target.value })}
                     className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white"
                   />
                 </div>
@@ -353,7 +377,7 @@ Direct Desk: +1 (530) 423-5158 | +92 330 365 8220
                     type="text"
                     placeholder="e.g. Acme Health Technologies"
                     value={clientCompany}
-                    onChange={(e) => setClientCompany(e.target.value)}
+                    onChange={(e) => updateProfile({ clientCompany: e.target.value })}
                     className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white"
                   />
                 </div>
@@ -364,7 +388,7 @@ Direct Desk: +1 (530) 423-5158 | +92 330 365 8220
                       type="email"
                       placeholder="alex@acme.com"
                       value={clientEmail}
-                      onChange={(e) => setClientEmail(e.target.value)}
+                      onChange={(e) => updateProfile({ clientEmail: e.target.value })}
                       className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white"
                     />
                   </div>
@@ -374,7 +398,7 @@ Direct Desk: +1 (530) 423-5158 | +92 330 365 8220
                       type="text"
                       placeholder="United States"
                       value={clientCountry}
-                      onChange={(e) => setClientCountry(e.target.value)}
+                      onChange={(e) => updateProfile({ clientCountry: e.target.value })}
                       className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white"
                     />
                   </div>
@@ -506,9 +530,13 @@ Direct Desk: +1 (530) 423-5158 | +92 330 365 8220
                         Managing Director: Syed Imon Rizvi, PMP®
                       </p>
                       <p>
+                        Provider Jurisdiction:{" "}
+                        <span className="font-semibold text-slate-800">Pakistan (Global Remote Operations)</span>
+                      </p>
+                      <p>
                         Corporate NTN:{" "}
                         <span className="font-mono font-semibold text-slate-800">6622762</span>{" "}
-                        (FBR IRIS Verified)
+                        (FBR IRIS Verified, Pakistan)
                       </p>
                       <p>Email: syedimonrizvipmp@gmail.com</p>
                       <p>Desk: +1 (530) 423-5158 | +92 330 365 8220</p>
