@@ -34,6 +34,7 @@ import {
   BookOpen,
   Layers,
   Download,
+  Lock,
 } from "lucide-react";
 import { useClientProfile } from "@/hooks/useClientProfile";
 
@@ -243,10 +244,10 @@ export const DOC_REGISTRY: RegistryDoc[] = [
   },
   {
     id: "golive",
-    code: "MM-SOW-05",
+    code: "MM-REL-05",
     day: "Day 14",
     label: "7. Go-Live & IP Transfer",
-    title: "Go-Live Launch Kit & 100% IP Transfer",
+    title: "PMP® Milestone Sign-Off & IP Assignment Certificate",
     pdf: "/downloads/go-live-launch-kit.pdf",
     filename: "Go-Live-Launch-Kit-Mercer-Mills.pdf",
     html: "/downloads/go-live-launch-kit.html",
@@ -391,10 +392,13 @@ export default function AdminHub() {
   // LMS custom specs
   const [lmsPlatforms, setLmsPlatforms] = useState("Notion Executive Portals, Skool Community Classrooms, Kajabi, Teachable, Circle, Custom In-App HLS Embeds");
 
-  // Go-Live Welcome email customized text
-  const [welcomeEmailSubject, setWelcomeEmailSubject] = useState(
-    () => `Welcome to ${profile.clientCompany || "[Company Name]"} — Access Your Onboarding Academy`
-  );
+  // Go-Live Welcome email & Academy link state
+  const [welcomeEmailSubject, setWelcomeEmailSubject] = useState("");
+  const [welcomeAcademyLink, setWelcomeAcademyLink] = useState("[INSERT_ACADEMY_LINK]");
+
+  const activeWelcomeSubject =
+    welcomeEmailSubject ||
+    `Welcome to ${profile.clientCompany || "Acme Cloud"} — Access Your 15-Minute Onboarding Academy`;
 
   const [copiedAction, setCopiedAction] = useState<string | null>(null);
 
@@ -2139,7 +2143,7 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
           </div>
         )}
 
-          {/* Tab 7: Go-Live & IP Transfer */}
+          {/* Tab 7: Go-Live & IP Transfer (MM-REL-05) */}
           {activeTab === "golive" && (
             <div className="space-y-6">
               <PhaseGuideBanner
@@ -2149,13 +2153,14 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
                 totalSteps={7}
                 dayBadge="Day 14 (Final Hand-Off)"
                 docCode="MM-REL-05"
-                title="Go-Live Launch Kit &amp; 100% IP Assignment"
+                title="PMP® Milestone Sign-Off &amp; IP Assignment Certificate"
                 whenToSend="Send on Day 14 upon receipt of the 50% Milestone 2 final balance."
-                whyItMatters="Permanently transfers 100% copyright ownership of all video master files, scripts, and portal assets as work-for-hire, with plug-and-play welcome emails for client users."
+                whyItMatters="Permanently transfers 100% copyright ownership of all video master files, scripts, and portal assets as work-for-hire, with verified milestone sign-off and turnkey customer distribution templates."
                 sopSteps={[
-                  "Confirm settlement of Milestone 2 balance in UBL or Wise account.",
-                  "Transfer super-admin credentials of the live academy portal to client.",
-                  "Deliver master 4K MP4 vault links and release final SLA sign-off certificate.",
+                  "Verify all 5 sprint milestones have passed quality criteria.",
+                  "Confirm settlement of Milestone 2 balance in bank or Wise account.",
+                  "Release formal PMP® sign-off certificate and transfer 100% IP as work-for-hire.",
+                  "Deliver super-admin credentials and client welcome email template.",
                 ]}
                 nextTabId="dispatch"
                 nextTabLabel="8. Client Dispatch Center"
@@ -2165,18 +2170,105 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
               {/* Left Controls */}
               <div className="lg:col-span-5 space-y-6 no-print">
                 <div className="p-5 rounded-2xl bg-[#0F172A] border border-slate-800 space-y-4 text-xs">
-                  <h3 className="font-heading text-sm font-bold text-white uppercase tracking-wider text-slate-300">
-                    Welcome Email &amp; IP Assignment
-                  </h3>
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-heading text-sm font-bold text-white uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                      <Lock className="w-4 h-4 text-emerald-400" />
+                      Certificate &amp; Template Controls
+                    </h3>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                      MM-REL-05
+                    </span>
+                  </div>
+
                   <div>
-                    <label className="text-slate-400 font-medium mb-1 block">Email Subject</label>
+                    <label className="text-slate-400 font-medium mb-1 block">Client Organization</label>
+                    <input
+                      type="text"
+                      value={profile.clientCompany}
+                      onChange={(e) => updateProfile({ clientCompany: e.target.value })}
+                      placeholder="Acme Cloud Technologies"
+                      className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white text-xs focus:border-blue-500 focus:outline-none"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-slate-400 font-medium mb-1 block">Authorized Signer</label>
+                      <input
+                        type="text"
+                        value={profile.clientName}
+                        onChange={(e) => updateProfile({ clientName: e.target.value })}
+                        placeholder="David Miller"
+                        className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white text-xs focus:border-blue-500 focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-slate-400 font-medium mb-1 block">Signer Title</label>
+                      <input
+                        type="text"
+                        value={profile.clientTitle}
+                        onChange={(e) => updateProfile({ clientTitle: e.target.value })}
+                        placeholder="Chief Executive Officer"
+                        className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white text-xs focus:border-blue-500 focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-slate-400 font-medium mb-1 block">Academy Portal Link</label>
+                    <input
+                      type="text"
+                      value={welcomeAcademyLink}
+                      onChange={(e) => setWelcomeAcademyLink(e.target.value)}
+                      placeholder="[INSERT_ACADEMY_LINK]"
+                      className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white text-xs font-mono focus:border-blue-500 focus:outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-slate-400 font-medium mb-1 block">Welcome Email Subject</label>
                     <input
                       type="text"
                       value={welcomeEmailSubject}
                       onChange={(e) => setWelcomeEmailSubject(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white text-xs"
+                      placeholder={`Welcome to ${profile.clientCompany || "Acme Cloud"} — Access Your 15-Minute Onboarding Academy`}
+                      className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-white text-xs focus:border-blue-500 focus:outline-none"
                     />
                   </div>
+
+                  <div className="pt-2 flex flex-col gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const emailText = `Subject: ${activeWelcomeSubject}\n\nHi {Customer Name},\n\nWelcome aboard! To ensure you get maximum value and get fully activated in under 20 minutes without any confusion, we have built a dedicated Onboarding Academy for your team:\n\n👉 Access Your Academy Here: ${welcomeAcademyLink || "[INSERT_ACADEMY_LINK]"}\n\nComplete these 5 quick modules and your workspace will be ready to launch.`;
+                        navigator.clipboard.writeText(emailText);
+                        notifyCopied("Copied Welcome Email Template!");
+                      }}
+                      className="w-full py-2.5 px-4 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md shadow-blue-600/30 transition-all"
+                    >
+                      <Copy className="w-3.5 h-3.5" />
+                      Copy Welcome Email Template
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handlePrint}
+                      className="w-full py-2 px-4 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs flex items-center justify-center gap-2 transition-colors"
+                    >
+                      <Printer className="w-3.5 h-3.5" />
+                      Print Certificate (A4 Clean View)
+                    </button>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2.5 text-xs">
+                  <div className="flex items-center gap-2 text-emerald-400 font-bold text-[11px] uppercase tracking-wider">
+                    <CheckCircle2 className="w-4 h-4" />
+                    PMP® SLA Quality Guarantee
+                  </div>
+                  <p className="text-slate-400 text-[11px] leading-relaxed">
+                    All 5 sprint milestones verified and signed off under PMI® standard quality gates. Permanent work-for-hire assignment releases upon Milestone 2 settlement.
+                  </p>
                 </div>
               </div>
 
@@ -2186,7 +2278,7 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                     <span className="text-xs font-mono font-bold text-slate-200">
-                      MM-SOW-05 · Go-Live, IP Transfer &amp; Launch Kit
+                      MM-REL-05 · PMP® Milestone Sign-Off &amp; IP Assignment Certificate
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -2210,55 +2302,250 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
                   </div>
                 </div>
 
+                {/* The Printable A4 Sheet */}
                 <div
                   id="admin-printable-sheet"
-                  className="bg-white text-slate-900 rounded-2xl p-8 sm:p-12 shadow-2xl border border-slate-200 space-y-6 font-sans text-xs leading-relaxed"
+                  className="bg-white text-slate-900 rounded-2xl p-6 sm:p-10 shadow-2xl border border-slate-200 space-y-5 font-sans text-xs leading-relaxed"
                 >
-                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-slate-200 pb-6">
+                  {/* Document Header */}
+                  <div className="border-b border-slate-200 pb-4 space-y-3">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                      <div>
+                        <span className="text-2xl font-serif font-black tracking-tight text-slate-900">
+                          Mercer <span className="text-blue-600">&amp;</span> Mills
+                        </span>
+                        <p className="text-[10px] uppercase tracking-widest font-bold text-slate-500 mt-0.5">
+                          Knowledge Operations &amp; Learning Architecture
+                        </p>
+                      </div>
+                      <div className="sm:text-right">
+                        <span className="inline-block px-2.5 py-1 rounded bg-emerald-100 text-emerald-800 font-extrabold text-[10px] uppercase tracking-wider border border-emerald-300">
+                          PMP® SLA COMPLETION | MM-REL-05
+                        </span>
+                      </div>
+                    </div>
+
                     <div>
-                      <span className="text-2xl font-serif font-black tracking-tight text-slate-900">
-                        Mercer <span className="text-blue-600">&amp;</span> Mills
-                      </span>
-                      <p className="text-[10px] uppercase tracking-widest font-semibold text-slate-500 mt-0.5">
-                        Knowledge Operations &amp; Learning Architecture
-                      </p>
-                      <p className="text-[11px] text-slate-600 mt-1">
-                        Managing Director: Syed Imon Rizvi, PMP® · Pakistan (Global Remote Operations) · FBR NTN: 6622762
-                      </p>
+                      <h2 className="text-lg sm:text-xl font-heading font-black text-slate-900 leading-tight">
+                        PMP® Milestone Sign-Off &amp; IP Assignment Certificate
+                      </h2>
                     </div>
-                    <div className="sm:text-right">
-                      <span className="px-2.5 py-1 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px] uppercase tracking-wider border border-emerald-200">
-                        Final SLA Sign-Off
-                      </span>
-                      <p className="text-[11px] text-slate-500 font-mono mt-2">REF: MM-REL-05</p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5 pt-1 text-[11px] text-slate-700 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                      <div>
+                        <span className="text-slate-500 font-medium">Project Scope: </span>
+                        <strong className="text-slate-900 font-semibold">14-Day Customer Onboarding Academy</strong>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 font-medium">Client Company: </span>
+                        <strong className="text-slate-900 font-semibold">{profile.clientCompany || "Acme Cloud Technologies"}</strong>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 font-medium">Authorized Signer: </span>
+                        <strong className="text-slate-900 font-semibold">
+                          {profile.clientName ? `${profile.clientName}, ${profile.clientTitle || "Chief Executive Officer"}` : "David Miller, CEO"}
+                        </strong>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 font-medium">Lead Knowledge Architect: </span>
+                        <strong className="text-slate-900 font-semibold">Syed Imon Rizvi, PMP®, PSM II, PAL I</strong>
+                      </div>
+                      <div className="sm:col-span-2">
+                        <span className="text-slate-500 font-medium">Jurisdiction: </span>
+                        <strong className="text-slate-900 font-semibold">Pakistan (Global Remote Operations Hub)</strong>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="bg-emerald-50/80 p-4 rounded-xl border border-emerald-200 text-emerald-950">
-                    <strong className="block text-xs uppercase font-bold text-emerald-900 mb-1">
-                      100% Intellectual Property Assignment
-                    </strong>
-                    Upon settlement of Milestone 2, Mercer &amp; Mills permanently assigns 100% of worldwide copyrights, master 4K MP4s, scripts, and portal rights to <strong>{profile.clientCompany || "the Client"}</strong> as work-for-hire. Zero platform fees.
+                  {/* Section 1: Milestone Verification Checklist (5 of 5 Passed) */}
+                  <div className="space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-heading font-extrabold text-slate-900 uppercase tracking-wider text-xs flex items-center gap-1.5">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                        Section 1: Milestone Verification Checklist (5 of 5 Passed)
+                      </h3>
+                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                        100% QUALITY GATES VERIFIED
+                      </span>
+                    </div>
+
+                    <div className="border border-slate-200 rounded-xl overflow-hidden divide-y divide-slate-200 bg-white shadow-sm text-[11px]">
+                      {/* Milestone 1 */}
+                      <div className="p-2.5 sm:px-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 bg-slate-50/50">
+                        <div className="space-y-0.5">
+                          <div className="font-bold text-slate-900 flex items-center gap-2">
+                            <span>1. Milestone 1 (Day 1–2):</span>
+                            <span>Intake &amp; Secure Vault Scoping</span>
+                          </div>
+                          <p className="text-[10.5px] text-slate-600 italic">
+                            Status: Cloud vault initialized, mutual NDA executed, raw assets ingested.
+                          </p>
+                        </div>
+                        <span className="self-start sm:self-center px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold text-[10px] tracking-wide border border-emerald-200 whitespace-nowrap">
+                          PASSED ✓
+                        </span>
+                      </div>
+
+                      {/* Milestone 2 */}
+                      <div className="p-2.5 sm:px-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                        <div className="space-y-0.5">
+                          <div className="font-bold text-slate-900 flex items-center gap-2">
+                            <span>2. Milestone 2 (Day 3–5):</span>
+                            <span>5-Module Curriculum Architecture Matrix</span>
+                          </div>
+                          <p className="text-[10.5px] text-slate-600 italic">
+                            Status: Micro-learning syllabus approved, learning objectives locked.
+                          </p>
+                        </div>
+                        <span className="self-start sm:self-center px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold text-[10px] tracking-wide border border-emerald-200 whitespace-nowrap">
+                          PASSED ✓
+                        </span>
+                      </div>
+
+                      {/* Milestone 3 */}
+                      <div className="p-2.5 sm:px-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 bg-slate-50/50">
+                        <div className="space-y-0.5">
+                          <div className="font-bold text-slate-900 flex items-center gap-2">
+                            <span>3. Milestone 3 (Day 6–10):</span>
+                            <span>4K Studio Screen Capture &amp; Audio Mastering</span>
+                          </div>
+                          <p className="text-[10.5px] text-slate-600 italic">
+                            Status: 4K 60fps walkthroughs rendered, -14 LUFS studio audio mastered.
+                          </p>
+                        </div>
+                        <span className="self-start sm:self-center px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold text-[10px] tracking-wide border border-emerald-200 whitespace-nowrap">
+                          PASSED ✓
+                        </span>
+                      </div>
+
+                      {/* Milestone 4 */}
+                      <div className="p-2.5 sm:px-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                        <div className="space-y-0.5">
+                          <div className="font-bold text-slate-900 flex items-center gap-2">
+                            <span>4. Milestone 4 (Day 11–13):</span>
+                            <span>Turnkey LMS Deployment &amp; Progress Staging</span>
+                          </div>
+                          <p className="text-[10.5px] text-slate-600 italic">
+                            Status: Portal staged (Skool/Notion/LMS), interactive progress tracking verified.
+                          </p>
+                        </div>
+                        <span className="self-start sm:self-center px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold text-[10px] tracking-wide border border-emerald-200 whitespace-nowrap">
+                          PASSED ✓
+                        </span>
+                      </div>
+
+                      {/* Milestone 5 */}
+                      <div className="p-2.5 sm:px-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 bg-slate-50/50">
+                        <div className="space-y-0.5">
+                          <div className="font-bold text-slate-900 flex items-center gap-2">
+                            <span>5. Milestone 5 (Day 14):</span>
+                            <span>Go-Live Handoff &amp; Customer Distribution</span>
+                          </div>
+                          <p className="text-[10.5px] text-slate-600 italic">
+                            Status: Welcome email automation tested, 100% raw master files delivered.
+                          </p>
+                        </div>
+                        <span className="self-start sm:self-center px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold text-[10px] tracking-wide border border-emerald-200 whitespace-nowrap">
+                          COMPLETED ✓
+                        </span>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2">
-                    <h4 className="font-bold text-slate-900 uppercase tracking-wider text-xs">
-                      Plug-and-Play Client Welcome Email
+                  {/* Section 2: 100% Worldwide Intellectual Property Assignment */}
+                  <div className="bg-emerald-50/90 border border-emerald-200 rounded-xl p-3.5 sm:p-4 text-emerald-950 shadow-sm">
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 rounded-lg bg-emerald-100 border border-emerald-300 text-emerald-800 flex-shrink-0 mt-0.5">
+                        <Lock className="w-4 h-4" />
+                      </div>
+                      <div className="space-y-1 min-w-0">
+                        <h4 className="font-heading font-extrabold text-xs uppercase tracking-wider text-emerald-900">
+                          100% INTELLECTUAL PROPERTY OWNERSHIP ASSIGNMENT (WORK-FOR-HIRE)
+                        </h4>
+                        <p className="text-[11px] leading-relaxed text-emerald-950">
+                          Upon settlement of Milestone 2, Mercer &amp; Mills Knowledge Operations hereby irrevocably and permanently assigns 100% of all worldwide copyright, trademarks, 4K video master files, written lesson scripts, visual diagrams, and companion checklists created under this sprint to <strong className="font-bold text-emerald-900">{profile.clientCompany || "Acme Cloud Technologies"}</strong> as work-for-hire.
+                        </p>
+                        <p className="text-[10px] italic font-semibold text-emerald-800 pt-0.5">
+                          Zero ongoing platform licensing fees. Zero recurring royalties. Zero vendor lock-in. Client owns every asset permanently.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Section 3: Plug-and-Play Customer Welcome Email Template */}
+                  <div className="p-3.5 sm:p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <h4 className="font-heading font-extrabold text-slate-900 uppercase tracking-wider text-xs flex items-center gap-1.5">
+                        <Send className="w-3.5 h-3.5 text-blue-600" />
+                        Section 3: Plug-and-Play Customer Welcome Email Template
+                      </h4>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const emailText = `Subject: ${activeWelcomeSubject}\n\nHi {Customer Name},\n\nWelcome aboard! To ensure you get maximum value and get fully activated in under 20 minutes without any confusion, we have built a dedicated Onboarding Academy for your team:\n\n👉 Access Your Academy Here: ${welcomeAcademyLink || "[INSERT_ACADEMY_LINK]"}\n\nComplete these 5 quick modules and your workspace will be ready to launch.`;
+                          navigator.clipboard.writeText(emailText);
+                          notifyCopied("Copied Welcome Email Template!");
+                        }}
+                        className="no-print inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10.5px] shadow-sm transition-all"
+                      >
+                        <Copy className="w-3 h-3" />
+                        Copy Template
+                      </button>
+                    </div>
+
+                    <div className="font-mono text-[10.5px] bg-white p-3 rounded-lg border border-slate-200 text-slate-800 whitespace-pre-wrap leading-relaxed shadow-inner">
+                      <div><strong>Subject:</strong> {activeWelcomeSubject}</div>
+                      <div className="my-1.5 border-b border-slate-100" />
+                      Hi &#123;Customer Name&#125;,
+                      {"\n\n"}
+                      Welcome aboard! To ensure you get maximum value and get fully activated in under 20 minutes without any confusion, we have built a dedicated Onboarding Academy for your team:
+                      {"\n\n"}
+                      👉 Access Your Academy Here: {welcomeAcademyLink || "[INSERT_ACADEMY_LINK]"}
+                      {"\n\n"}
+                      Complete these 5 quick modules and your workspace will be ready to launch.
+                    </div>
+                  </div>
+
+                  {/* Section 4: Formal Governance Signature Block */}
+                  <div className="pt-2 border-t border-slate-200 space-y-2">
+                    <h4 className="font-heading font-extrabold text-slate-900 uppercase tracking-wider text-[11px]">
+                      Section 4: Formal Governance Signature Block
                     </h4>
-                    <div className="font-mono text-[10.5px] bg-white p-3 rounded border border-slate-200 text-slate-800 whitespace-pre-wrap leading-relaxed">
-                      Subject: {welcomeEmailSubject}
-                      {"\n\n"}
-                      Hi {profile.clientName ? profile.clientName.split(" ")[0] : "[Customer Name]"},
-                      {"\n\n"}
-                      Welcome aboard! To ensure you get maximum value from our platform in under 20 minutes without any confusion, we have built a dedicated Onboarding Academy for your team:
-                      {"\n\n"}
-                      👉 Access Your Academy Here: [PORTAL_LINK]
-                      {"\n\n"}
-                      Complete the 5 bite-sized walkthrough modules, and you will be completely set up and ready to launch.
-                      {"\n\n"}
-                      Best regards,
-                      {"\n"}
-                      {profile.clientName || "[Signer Name]"} &amp; The {profile.clientCompany || "[Company Name]"} Team
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                      {/* For Mercer & Mills Knowledge Operations */}
+                      <div className="p-3 rounded-xl border border-slate-200 bg-slate-50 space-y-1.5">
+                        <div className="text-[10px] uppercase font-bold tracking-wider text-slate-500">
+                          For Mercer &amp; Mills Knowledge Operations:
+                        </div>
+                        <div className="pt-1.5 border-b border-slate-300 pb-0.5">
+                          <span className="font-serif italic text-base font-bold text-slate-900">
+                            Syed Imon Rizvi
+                          </span>
+                        </div>
+                        <div className="space-y-0.5 text-[10.5px] text-slate-700">
+                          <p className="font-bold text-slate-900">Syed Imon Rizvi, PMP®, PSM II, PAL I</p>
+                          <p className="text-slate-600">Lead Knowledge Architect | PMP License #3049182</p>
+                          <p className="text-slate-500">Pakistan (Global Remote Operations Hub)</p>
+                        </div>
+                      </div>
+
+                      {/* For Client Entity */}
+                      <div className="p-3 rounded-xl border border-slate-200 bg-slate-50 space-y-1.5">
+                        <div className="text-[10px] uppercase font-bold tracking-wider text-slate-500">
+                          For Client Entity:
+                        </div>
+                        <div className="pt-1.5 border-b border-slate-300 pb-0.5">
+                          <span className="font-serif italic text-base font-bold text-slate-900">
+                            {profile.clientName || "David Miller"}
+                          </span>
+                        </div>
+                        <div className="space-y-0.5 text-[10.5px] text-slate-700">
+                          <p className="font-bold text-slate-900">{profile.clientName || "David Miller"}</p>
+                          <p className="text-slate-600">{profile.clientTitle || "Chief Executive Officer"}</p>
+                          <p className="text-slate-500">{profile.clientCompany || "Acme Cloud Technologies"}</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2266,6 +2553,7 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
             </div>
           </div>
         )}
+
 
           {/* Tab 8: Client Dispatch Center */}
           {activeTab === "dispatch" && (
