@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commercial Invoice | Mercer &amp; Mills Knowledge Operations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563EB;
+      --primary-dark: #1D4ED8;
+      --accent: #38BDF8;
+      --bg: #080C14;
+      --card: #0F172A;
+      --border: #1E293B;
+      --text: #F1F5F9;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 32px 16px 64px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container {
+      max-width: 840px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+    }
+    .action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .back-link:hover { color: #7DD3FC; }
+    .action-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn-download-pdf {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: #10B981;
+      color: #FFFFFF;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+    }
+    .btn-download-pdf:hover {
+      background: #059669;
+      transform: translateY(-1px);
+    }
+    .btn-print {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      background: #1E293B;
+      color: #CBD5E1;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-print:hover {
+      background: #334155;
+      color: #FFFFFF;
+    }
+    .header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 24px;
+    }
+    .top-brand-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      gap: 16px;
+    }
+    .brand-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+    }
+    .brand-title span { color: #3B82F6; }
+    .brand-sub {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .meta-creds {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+    .meta-creds strong { color: var(--text-muted); }
+    .invoice-title-badge {
+      text-align: right;
+    }
+    .invoice-tag {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+    }
+    .invoice-meta-box {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+    .client-billing-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      background: rgba(30, 41, 59, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 24px;
+    }
+    .billing-section-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .billing-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+    .billing-company {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 2px;
+    }
+    .billing-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    table.line-items {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+    }
+    table.line-items th {
+      background: rgba(15, 23, 42, 0.8);
+      border-bottom: 2px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    table.line-items th:last-child {
+      text-align: right;
+    }
+    table.line-items td {
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12.5px;
+      color: var(--text);
+    }
+    table.line-items td:last-child {
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+    .total-box {
+      margin-left: auto;
+      max-width: 320px;
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 24px;
+    }
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 4px 0;
+    }
+    .total-row.highlight {
+      border-top: 1px solid var(--border);
+      margin-top: 6px;
+      padding-top: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+    .total-row.highlight span:last-child {
+      color: #38BDF8;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+    }
+    .payment-instructions {
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 24px;
+    }
+    .instruction-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #60A5FA;
+      margin-bottom: 8px;
+    }
+    .instruction-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      font-size: 11.5px;
+      color: var(--text);
+    }
+    .instruction-grid code {
+      font-family: 'JetBrains Mono', monospace;
+      color: #93C5FD;
+      font-weight: 600;
+    }
+    .footer-note {
+      text-align: center;
+      font-size: 10.5px;
+      color: var(--text-dim);
+      line-height: 1.5;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 10mm;
+      }
+      body {
+        background: #FFFFFF !important;
+        color: #0F172A !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .container {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+        background: #FFFFFF !important;
+      }
+      .action-bar { display: none !important; }
+      .brand-title, .invoice-tag, .billing-name, .billing-company, table.line-items td:last-child, .total-row.highlight { color: #0F172A !important; }
+      .brand-sub, .meta-creds, .billing-sub, table.line-items td, .total-row { color: #334155 !important; }
+      .meta-creds strong { color: #0F172A !important; }
+      .invoice-meta-box { color: #2563EB !important; }
+      .client-billing-card, .total-box {
+        background: #F8FAFC !important;
+        border: 1px solid #CBD5E1 !important;
+      }
+      table.line-items th {
+        background: #F1F5F9 !important;
+        border-bottom: 2px solid #94A3B8 !important;
+        color: #0F172A !important;
+      }
+      table.line-items td {
+        border-bottom: 1px solid #E2E8F0 !important;
+      }
+      .payment-instructions {
+        background: #F8FAFC !important;
+        border: 1px solid #93C5FD !important;
+        color: #0F172A !important;
+      }
+      .payment-instructions code {
+        color: #1D4ED8 !important;
+      }
+      .instruction-title { color: #1D4ED8 !important; }
+      .total-row.highlight span:last-child { color: #1D4ED8 !important; }
+      .footer-note { color: #64748B !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="action-bar">
+      <a href="/admin/hub" class="back-link">← Return to Admin Hub</a>
+      <div class="action-group">
+        <a href="/downloads/commercial-invoice.pdf" download="Mercer-Mills-Invoice-MM-INV-2025-001.pdf" class="btn-download-pdf">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Direct Download PDF (1-Click)
+        </a>
+        <button class="btn-print" onclick="window.print()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          Print
+        </button>
+      </div>
+    </div>
+
+    <div class="header">
+      <div class="top-brand-row">
+        <div>
+          <div class="brand-title">Mercer <span>&</span> Mills</div>
+          <div class="brand-sub">Knowledge Operations &amp; Learning Architecture</div>
+          <div class="meta-creds">
+            <strong>Managing Director:</strong> Syed Imon Rizvi, PMP®<br>
+            <strong>Provider Jurisdiction:</strong> Pakistan (Global Remote Operations)<br>
+            <strong>FBR NTN:</strong> 6622762 (FBR IRIS Verified, Pakistan) · Desk: +1 (530) 423-5158 | +92 330 365 8220
+          </div>
+        </div>
+        <div class="invoice-title-badge">
+          <div class="invoice-tag">INVOICE</div>
+          <div class="invoice-meta-box">
+            Invoice #: <span id="inv-num">MM-INV-2025-001</span><br>
+            Issue Date: <span id="inv-issue">October 8, 2026</span><br>
+            Due Date: <span id="inv-due">Due on Receipt</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="client-billing-card">
+      <div>
+        <div class="billing-section-title">Billed To (Client Partner)</div>
+        <div class="billing-name" id="client-name">Authorized Client Representative</div>
+        <div class="billing-company" id="client-company">Client Enterprise Organization</div>
+        <div class="billing-sub" id="client-email">client@enterprise.com</div>
+      </div>
+      <div>
+        <div class="billing-section-title">Engagement Specification</div>
+        <div class="billing-name">14-Day Turnkey Academy Sprint</div>
+        <div class="billing-sub">Service SLA: PMP® Certified Day 1 to Day 14</div>
+        <div class="billing-sub">Terms: 50% Upfront Deposit / 50% Final Sign-Off</div>
+      </div>
+    </div>
+
+    <table class="line-items">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th style="width: 70px; text-align: center;">Qty</th>
+          <th style="width: 100px; text-align: right;">Rate</th>
+          <th style="width: 110px;">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <strong>Milestone 1 (50% Upfront Deposit): 14-Day Turnkey Client Academy Sprint</strong><br>
+            <span style="font-size: 11px; color: var(--text-dim);">Locks 14-day production calendar, reserves studio engineering resources, discovery intake, and curriculum architecture.</span>
+          </td>
+          <td style="text-align: center;">1</td>
+          <td style="text-align: right; font-family: 'JetBrains Mono', monospace;">$1,750.00</td>
+          <td>$1,750.00</td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Milestone 2 (50% Final Balance): Turnkey Portal Delivery &amp; IP Transfer</strong><br>
+            <span style="font-size: 11px; color: var(--text-dim);">Due on Day 14 upon portal deployment review (Skool/Notion/LMS), welcome email templates, and complete IP handoff.</span>
+          </td>
+          <td style="text-align: center;">1</td>
+          <td style="text-align: right; font-family: 'JetBrains Mono', monospace;">$1,750.00</td>
+          <td>$1,750.00</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="total-box">
+      <div class="total-row">
+        <span>Sprint Subtotal:</span>
+        <span style="font-family: 'JetBrains Mono', monospace;">$3,500.00 USD</span>
+      </div>
+      <div class="total-row">
+        <span>Deposit Required Now (50%):</span>
+        <span style="font-family: 'JetBrains Mono', monospace; color: #10B981;">$1,750.00 USD</span>
+      </div>
+      <div class="total-row highlight">
+        <span>Amount Due Now:</span>
+        <span id="amount-due">$1,750.00 USD</span>
+      </div>
+    </div>
+
+    <div class="payment-instructions">
+      <div class="instruction-title">Direct Bank Wire &amp; Digital Settlement Rails</div>
+      <div class="instruction-grid">
+        <div>
+          <strong>Global Wire / ACH (Wise):</strong><br>
+          Account Holder: <code>Syed Imon Rizvi</code><br>
+          Routing (ABA): <code>026073150</code> · Account: <code>9600000000</code><br>
+          Reference: <code id="wire-ref">MM-INV-2025-001</code>
+        </div>
+        <div>
+          <strong>International SWIFT / IBAN (Direct):</strong><br>
+          Bank: <code>Standard Chartered Bank / Meezan Bank</code><br>
+          IBAN: <code>PK36MEZN0000000000000001</code> · SWIFT: <code>MEZNPKKA</code><br>
+          Beneficiary: <code>Syed Imon Rizvi / Mercer &amp; Mills</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      Mercer &amp; Mills Knowledge Operations · Pakistan (Global Remote Operations) · FBR NTN: 6622762<br>
+      Certified PMP® Agile Delivery Governance · All intellectual property transfers 100% upon final milestone completion.
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      try {
+        const raw = localStorage.getItem('mm_active_client_profile');
+        if (raw) {
+          const profile = JSON.parse(raw);
+          if (profile.clientName) document.getElementById('client-name').textContent = profile.clientName;
+          if (profile.clientCompany) document.getElementById('client-company').textContent = profile.clientCompany;
+          if (profile.clientEmail) document.getElementById('client-email').textContent = profile.clientEmail;
+          if (profile.invoiceNumber) {
+            document.getElementById('inv-num').textContent = profile.invoiceNumber;
+            document.getElementById('wire-ref').textContent = profile.invoiceNumber;
+          }
+          if (profile.issueDate) document.getElementById('inv-issue').textContent = profile.issueDate;
+          if (profile.dueDate) document.getElementById('inv-due').textContent = profile.dueDate;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  </script>
+</body>
+</html>

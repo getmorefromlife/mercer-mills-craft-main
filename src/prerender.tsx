@@ -23,6 +23,7 @@ import Contact from "./pages/Contact";
 import Insights from "./pages/Insights";
 import BlogPost from "./pages/BlogPost";
 import SprintBlueprint from "./pages/SprintBlueprint";
+import ClientOnboarding from "./pages/ClientOnboarding";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
@@ -69,6 +70,7 @@ export async function prerender({ url }: { url: string }) {
                 <Route path="/insights" element={<Insights />} />
                 <Route path="/insights/:slug" element={<BlogPost />} />
                 <Route path="/sprint-blueprint" element={<SprintBlueprint />} />
+                <Route path="/client-onboarding" element={<ClientOnboarding />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Layout>
@@ -100,6 +102,7 @@ export async function prerender({ url }: { url: string }) {
     "/contact",
     "/insights",
     "/sprint-blueprint",
+    "/client-onboarding",
   ]);
   for (const post of posts) {
     links.add(`/insights/${post.slug}`);

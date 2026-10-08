@@ -32,6 +32,7 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Insights = lazy(() => import("./pages/Insights"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const SprintBlueprint = lazy(() => import("./pages/SprintBlueprint"));
+const ClientOnboarding = lazy(() => import("./pages/ClientOnboarding"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const AIGovernance = lazy(() => import("./pages/AIGovernance"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -59,6 +60,7 @@ const App = () => (
           <Suspense fallback={<LoadingFallback />}>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/client-onboarding" element={<ClientOnboarding />} />
               <Route path="/r/:name" element={<ReferralRedirect />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />

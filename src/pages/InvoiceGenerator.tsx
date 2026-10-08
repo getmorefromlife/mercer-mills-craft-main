@@ -16,6 +16,7 @@ import {
   Trash2,
   ExternalLink,
   ArrowLeft,
+  Download,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -186,8 +187,8 @@ Direct Desk: +1 (530) 423-5158 | +92 330 365 8220
       <style>{`
         @media print {
           @page {
-            size: auto;
-            margin: 10mm 12mm;
+            size: A4 portrait;
+            margin: 8mm 10mm;
           }
           header, footer, nav, .no-print {
             display: none !important;
@@ -207,16 +208,18 @@ Direct Desk: +1 (530) 423-5158 | +92 330 365 8220
             visibility: visible;
           }
           #printable-invoice {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
+            position: relative !important;
+            left: auto !important;
+            top: auto !important;
+            width: 100% !important;
+            max-width: 100% !important;
             background: #ffffff !important;
             color: #0f172a !important;
-            padding: 16px !important;
+            padding: 12px !important;
             box-shadow: none !important;
-            border: 1px solid #e2e8f0 !important;
-            border-radius: 8px !important;
+            border: none !important;
+            border-radius: 0 !important;
+            page-break-inside: avoid;
           }
         }
       `}</style>
@@ -250,7 +253,15 @@ Direct Desk: +1 (530) 423-5158 | +92 330 365 8220
               </p>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
+              <a
+                href="/downloads/commercial-invoice.pdf"
+                download="Mercer-Mills-Commercial-Invoice-MM-INV-2025-001.pdf"
+                className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-2 transition-all shadow-md shadow-emerald-600/30"
+              >
+                <Download className="w-4 h-4 stroke-[2.5]" />
+                1-Click Download Official PDF
+              </a>
               <button
                 onClick={copyInvoiceText}
                 className="px-4 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold flex items-center gap-2 transition-all shadow-sm"
@@ -260,10 +271,10 @@ Direct Desk: +1 (530) 423-5158 | +92 330 365 8220
               </button>
               <button
                 onClick={handlePrint}
-                className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center gap-2 transition-all shadow-lg shadow-blue-600/30"
+                className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-2 transition-all border border-slate-700"
               >
                 <Printer className="w-4 h-4" />
-                Print / Save as PDF
+                Print View
               </button>
             </div>
           </div>

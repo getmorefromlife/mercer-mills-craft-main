@@ -33,6 +33,7 @@ import {
   AlertCircle,
   BookOpen,
   Layers,
+  Download,
 } from "lucide-react";
 import { useClientProfile } from "@/hooks/useClientProfile";
 
@@ -153,6 +154,118 @@ type ActiveTab =
   | "lms"
   | "golive"
   | "dispatch";
+
+export interface RegistryDoc {
+  id: ActiveTab;
+  code: string;
+  day: string;
+  label: string;
+  title: string;
+  pdf: string;
+  filename: string;
+  html: string;
+  badge: string;
+  icon: typeof FileText;
+}
+
+export const DOC_REGISTRY: RegistryDoc[] = [
+  {
+    id: "invoice",
+    code: "MM-INV",
+    day: "Day 0",
+    label: "1. Commercial Invoice",
+    title: "Commercial Sprint Invoice (Milestone 1 Deposit)",
+    pdf: "/downloads/commercial-invoice.pdf",
+    filename: "Mercer-Mills-Commercial-Invoice-MM-INV-2025-001.pdf",
+    html: "/downloads/commercial-invoice.html",
+    badge: "Commercial",
+    icon: FileText,
+  },
+  {
+    id: "agreement",
+    code: "MM-AGR",
+    day: "Day 0",
+    label: "2. Sprint Agreement & NDA",
+    title: "Sprint Master Agreement & Mutual NDA",
+    pdf: "/downloads/sprint-agreement-nda.pdf",
+    filename: "Mercer-Mills-Sprint-Agreement-NDA.pdf",
+    html: "/downloads/sprint-agreement-nda.html",
+    badge: "Legal SLA",
+    icon: FileCheck,
+  },
+  {
+    id: "intake",
+    code: "MM-SOW-01",
+    day: "Day 1",
+    label: "3. Day 1 Intake Checklist",
+    title: "Day 1 Client Intake & Asset Vault Checklist",
+    pdf: "/downloads/day-1-asset-checklist.pdf",
+    filename: "Day-1-Asset-Checklist-Mercer-Mills.pdf",
+    html: "/downloads/day-1-asset-checklist.html",
+    badge: "Asset Vault",
+    icon: ListChecks,
+  },
+  {
+    id: "curriculum",
+    code: "MM-SOW-02",
+    day: "Day 4",
+    label: "4. Curriculum Blueprint",
+    title: "Friction Audit & 5-Module Curriculum Blueprint",
+    pdf: "/downloads/sample-curriculum-blueprint.pdf",
+    filename: "Sample-Curriculum-Blueprint-Mercer-Mills.pdf",
+    html: "/downloads/sample-curriculum-blueprint.html",
+    badge: "Instructional Map",
+    icon: Compass,
+  },
+  {
+    id: "styleguide",
+    code: "MM-SOW-03",
+    day: "Day 7",
+    label: "5. Studio Style Guide",
+    title: "Studio Style Guide & AV Standards",
+    pdf: "/downloads/studio-style-guide.pdf",
+    filename: "Studio-Style-Guide-Mercer-Mills.pdf",
+    html: "/downloads/studio-style-guide.html",
+    badge: "4K Audiovisual",
+    icon: Palette,
+  },
+  {
+    id: "lms",
+    code: "MM-SOW-04",
+    day: "Day 10",
+    label: "6. LMS Architecture Specs",
+    title: "LMS Architecture & Platform Specs",
+    pdf: "/downloads/portal-setup-specs.pdf",
+    filename: "Portal-Setup-Specs-Mercer-Mills.pdf",
+    html: "/downloads/portal-setup-specs.html",
+    badge: "Platform Specs",
+    icon: Server,
+  },
+  {
+    id: "golive",
+    code: "MM-SOW-05",
+    day: "Day 14",
+    label: "7. Go-Live & IP Transfer",
+    title: "Go-Live Launch Kit & 100% IP Transfer",
+    pdf: "/downloads/go-live-launch-kit.pdf",
+    filename: "Go-Live-Launch-Kit-Mercer-Mills.pdf",
+    html: "/downloads/go-live-launch-kit.html",
+    badge: "IP Transfer",
+    icon: Rocket,
+  },
+  {
+    id: "dispatch",
+    code: "MM-DISPATCH",
+    day: "Dispatch",
+    label: "8. Client Dispatch Center",
+    title: "Master Client Dispatch & Kickoff Packet",
+    pdf: "/downloads/client-dispatch-packet.pdf",
+    filename: "Master-Dispatch-Packet-Mercer-Mills.pdf",
+    html: "/downloads/client-dispatch-packet.html",
+    badge: "Master Suite",
+    icon: Send,
+  },
+];
 
 interface PhaseGuideProps {
   phaseNumber: string;
@@ -407,8 +520,8 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
       <style>{`
         @media print {
           @page {
-            size: auto;
-            margin: 10mm 12mm;
+            size: A4 portrait;
+            margin: 8mm 10mm;
           }
           header, footer, nav, .no-print {
             display: none !important;
@@ -428,16 +541,18 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
             visibility: visible;
           }
           #admin-printable-sheet {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
+            position: relative !important;
+            left: auto !important;
+            top: auto !important;
+            width: 100% !important;
+            max-width: 100% !important;
             background: #ffffff !important;
             color: #0f172a !important;
-            padding: 16px !important;
+            padding: 12px !important;
             box-shadow: none !important;
-            border: 1px solid #e2e8f0 !important;
-            border-radius: 8px !important;
+            border: none !important;
+            border-radius: 0 !important;
+            page-break-inside: avoid;
           }
         }
       `}</style>
@@ -469,6 +584,15 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
+              <a
+                href={DOC_REGISTRY.find((d) => d.id === activeTab)?.pdf || "/downloads/commercial-invoice.pdf"}
+                download={DOC_REGISTRY.find((d) => d.id === activeTab)?.filename || "Mercer-Mills-Document.pdf"}
+                className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-2 transition-all shadow-lg shadow-emerald-600/30"
+                title="Download pristine formatted PDF directly without browser print"
+              >
+                <Download className="w-4 h-4 stroke-[2.5]" />
+                1-Click Download Current PDF
+              </a>
               <button
                 onClick={copyClientPacket}
                 className="px-4 py-2.5 rounded-xl border border-blue-500/40 bg-blue-950/40 hover:bg-blue-900/50 text-blue-200 text-xs font-semibold flex items-center gap-2 transition-all shadow-sm"
@@ -484,10 +608,10 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
               </button>
               <button
                 onClick={handlePrint}
-                className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center gap-2 transition-all shadow-lg shadow-blue-600/30"
+                className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-2 transition-all border border-slate-700"
               >
                 <Printer className="w-4 h-4" />
-                Print Current Doc as PDF
+                Print View
               </button>
             </div>
           </div>
@@ -662,6 +786,88 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
                   <p className="text-[11px] text-slate-400 mt-0.5 truncate">{phase.sub}</p>
                 </button>
               ))}
+            </div>
+          </div>
+
+          {/* Master 1-Click Document & Checklist Download Center */}
+          <div className="rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-950/40 via-[#0F172A] to-slate-900/60 p-5 space-y-4 no-print shadow-xl">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  <Download className="w-5 h-5 stroke-[2.5]" />
+                </div>
+                <div>
+                  <h3 className="font-heading text-sm sm:text-base font-bold text-white flex items-center gap-2">
+                    <span>Master 1-Click Document &amp; Checklist Download Center</span>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950 border border-emerald-500/40 text-emerald-300">
+                      8 Official Documents
+                    </span>
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Download pristine vector PDFs instantly without browser print distortion, or view full interactive HTML blueprints.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+              {DOC_REGISTRY.map((doc) => {
+                const isCurrent = activeTab === doc.id;
+                const Icon = doc.icon;
+                return (
+                  <div
+                    key={doc.id}
+                    className={`p-3.5 rounded-xl border transition-all flex flex-col justify-between gap-3 ${
+                      isCurrent
+                        ? "bg-slate-900 border-emerald-500/50 shadow-md shadow-emerald-950/30"
+                        : "bg-[#0A0E1A]/80 border-slate-800 hover:border-slate-700"
+                    }`}
+                  >
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-800 text-amber-300 border border-slate-700">
+                          {doc.day}
+                        </span>
+                        <span className="text-[10px] font-mono text-cyan-400 font-semibold">
+                          {doc.code}
+                        </span>
+                      </div>
+                      <div className="font-bold text-white text-xs flex items-center gap-1.5 pt-1">
+                        <Icon className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
+                        <span className="truncate">{doc.title}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-1">
+                      <a
+                        href={doc.pdf}
+                        download={doc.filename}
+                        className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] shadow-sm transition-all"
+                        title={`Download ${doc.title} as PDF`}
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Download PDF</span>
+                      </a>
+                      <a
+                        href={doc.html}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 text-[11px] font-semibold flex items-center gap-1 transition-colors"
+                        title="Open Interactive HTML Blueprint"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                      <button
+                        onClick={() => handleTabChange(doc.id)}
+                        className="px-2 py-1.5 rounded-lg bg-slate-800/60 hover:bg-blue-600/30 text-slate-400 hover:text-blue-300 border border-slate-800 text-[11px] transition-colors"
+                        title="Edit in Workspace"
+                      >
+                        <Edit3 className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -874,6 +1080,34 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
 
               {/* Right Printable A4 Sheet */}
               <div className="lg:col-span-7">
+                <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-slate-900 border border-slate-800 rounded-xl mb-4 no-print shadow-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-xs font-mono font-bold text-slate-200">
+                      MM-INV · Commercial Sprint Invoice
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href="/downloads/commercial-invoice.pdf"
+                      download="Mercer-Mills-Commercial-Invoice-MM-INV-2025-001.pdf"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/30 transition-all"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      1-Click Download PDF
+                    </a>
+                    <a
+                      href="/downloads/commercial-invoice.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 text-xs font-semibold transition-colors"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      HTML View
+                    </a>
+                  </div>
+                </div>
+
                 <div
                   id="admin-printable-sheet"
                   className="bg-white text-slate-900 rounded-2xl p-8 sm:p-12 shadow-2xl border border-slate-200 space-y-8 font-sans"
@@ -1149,6 +1383,34 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
 
               {/* Right Agreement Printable Sheet */}
               <div className="lg:col-span-7">
+                <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-slate-900 border border-slate-800 rounded-xl mb-4 no-print shadow-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-xs font-mono font-bold text-slate-200">
+                      MM-AGR · Sprint Master Agreement &amp; Mutual NDA
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href="/downloads/sprint-agreement-nda.pdf"
+                      download="Mercer-Mills-Sprint-Agreement-NDA.pdf"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/30 transition-all"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      1-Click Download PDF
+                    </a>
+                    <a
+                      href="/downloads/sprint-agreement-nda.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 text-xs font-semibold transition-colors"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      HTML View
+                    </a>
+                  </div>
+                </div>
+
                 <div
                   id="admin-printable-sheet"
                   className="bg-white text-slate-900 rounded-2xl p-8 sm:p-12 shadow-2xl border border-slate-200 space-y-6 font-sans text-xs leading-relaxed"
@@ -1343,6 +1605,34 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
 
               {/* Right Printable Sheet */}
               <div className="lg:col-span-7">
+                <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-slate-900 border border-slate-800 rounded-xl mb-4 no-print shadow-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-xs font-mono font-bold text-slate-200">
+                      MM-SOW-01 · Day 1 Intake &amp; Asset Vault Checklist
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href="/downloads/day-1-asset-checklist.pdf"
+                      download="Day-1-Asset-Checklist-Mercer-Mills.pdf"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/30 transition-all"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      1-Click Download PDF
+                    </a>
+                    <a
+                      href="/downloads/day-1-asset-checklist.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 text-xs font-semibold transition-colors"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      HTML View
+                    </a>
+                  </div>
+                </div>
+
                 <div
                   id="admin-printable-sheet"
                   className="bg-white text-slate-900 rounded-2xl p-8 sm:p-12 shadow-2xl border border-slate-200 space-y-6 font-sans text-xs leading-relaxed"
@@ -1497,6 +1787,34 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
 
               {/* Right Printable Sheet */}
               <div className="lg:col-span-7">
+                <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-slate-900 border border-slate-800 rounded-xl mb-4 no-print shadow-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-xs font-mono font-bold text-slate-200">
+                      MM-SOW-02 · Curriculum &amp; Pedagogy Blueprint
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href="/downloads/sample-curriculum-blueprint.pdf"
+                      download="Sample-Curriculum-Blueprint-Mercer-Mills.pdf"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/30 transition-all"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      1-Click Download PDF
+                    </a>
+                    <a
+                      href="/downloads/sample-curriculum-blueprint.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 text-xs font-semibold transition-colors"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      HTML View
+                    </a>
+                  </div>
+                </div>
+
                 <div
                   id="admin-printable-sheet"
                   className="bg-white text-slate-900 rounded-2xl p-8 sm:p-12 shadow-2xl border border-slate-200 space-y-6 font-sans text-xs leading-relaxed"
@@ -1603,6 +1921,34 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
 
               {/* Right Printable Sheet */}
               <div className="lg:col-span-7">
+                <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-slate-900 border border-slate-800 rounded-xl mb-4 no-print shadow-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-xs font-mono font-bold text-slate-200">
+                      MM-SOW-03 · Studio Style Guide &amp; AV Standards
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href="/downloads/studio-style-guide.pdf"
+                      download="Studio-Style-Guide-Mercer-Mills.pdf"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/30 transition-all"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      1-Click Download PDF
+                    </a>
+                    <a
+                      href="/downloads/studio-style-guide.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 text-xs font-semibold transition-colors"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      HTML View
+                    </a>
+                  </div>
+                </div>
+
                 <div
                   id="admin-printable-sheet"
                   className="bg-white text-slate-900 rounded-2xl p-8 sm:p-12 shadow-2xl border border-slate-200 space-y-6 font-sans text-xs leading-relaxed"
@@ -1710,6 +2056,34 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
 
               {/* Right Printable Sheet */}
               <div className="lg:col-span-7">
+                <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-slate-900 border border-slate-800 rounded-xl mb-4 no-print shadow-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-xs font-mono font-bold text-slate-200">
+                      MM-TECH-04 · LMS Architecture &amp; Platform Specs
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href="/downloads/portal-setup-specs.pdf"
+                      download="Portal-Setup-Specs-Mercer-Mills.pdf"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/30 transition-all"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      1-Click Download PDF
+                    </a>
+                    <a
+                      href="/downloads/portal-setup-specs.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 text-xs font-semibold transition-colors"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      HTML View
+                    </a>
+                  </div>
+                </div>
+
                 <div
                   id="admin-printable-sheet"
                   className="bg-white text-slate-900 rounded-2xl p-8 sm:p-12 shadow-2xl border border-slate-200 space-y-6 font-sans text-xs leading-relaxed"
@@ -1808,6 +2182,34 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
 
               {/* Right Printable Sheet */}
               <div className="lg:col-span-7">
+                <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-slate-900 border border-slate-800 rounded-xl mb-4 no-print shadow-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-xs font-mono font-bold text-slate-200">
+                      MM-SOW-05 · Go-Live, IP Transfer &amp; Launch Kit
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href="/downloads/go-live-launch-kit.pdf"
+                      download="Go-Live-Launch-Kit-Mercer-Mills.pdf"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/30 transition-all"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      1-Click Download PDF
+                    </a>
+                    <a
+                      href="/downloads/go-live-launch-kit.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 text-xs font-semibold transition-colors"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      HTML View
+                    </a>
+                  </div>
+                </div>
+
                 <div
                   id="admin-printable-sheet"
                   className="bg-white text-slate-900 rounded-2xl p-8 sm:p-12 shadow-2xl border border-slate-200 space-y-6 font-sans text-xs leading-relaxed"
@@ -1906,43 +2308,47 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 text-xs">
-                  {[
-                    { name: "Day 1 Intake Checklist", file: "day-1-asset-checklist.html", ref: "MM-SOW-01" },
-                    { name: "5-Module Curriculum Blueprint", file: "sample-curriculum-blueprint.html", ref: "MM-ARCH-02" },
-                    { name: "Studio Style Guide & Standards", file: "studio-style-guide.html", ref: "MM-STD-03" },
-                    { name: "LMS Architecture Specs", file: "portal-setup-specs.html", ref: "MM-TECH-04" },
-                    { name: "Go-Live Launch Kit & IP", file: "go-live-launch-kit.html", ref: "MM-REL-05" },
-                  ].map((doc, idx) => {
-                    const url = getClientDownloadUrl(doc.file);
+                  {DOC_REGISTRY.map((doc) => {
+                    const url = `${window.location.origin}${doc.html}`;
                     return (
                       <div
-                        key={idx}
-                        className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center justify-between gap-3"
+                        key={doc.id}
+                        className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col justify-between gap-3"
                       >
                         <div className="space-y-1 min-w-0">
-                          <div className="font-bold text-white flex items-center gap-2">
-                            <span>{doc.name}</span>
-                            <span className="text-[10px] text-blue-400 font-mono bg-blue-950 px-1.5 py-0.5 rounded border border-blue-900">
-                              {doc.ref}
+                          <div className="font-bold text-white flex items-center justify-between gap-2">
+                            <span className="truncate">{doc.title}</span>
+                            <span className="text-[10px] text-blue-400 font-mono bg-blue-950 px-1.5 py-0.5 rounded border border-blue-900 flex-shrink-0">
+                              {doc.code}
                             </span>
                           </div>
                           <p className="text-[11px] text-slate-400 truncate font-mono">{url}</p>
                         </div>
-                        <div className="flex items-center gap-2 flex-shrink-0">
+                        <div className="flex items-center gap-2 pt-1">
+                          <a
+                            href={doc.pdf}
+                            download={doc.filename}
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-sm transition-all"
+                            title={`Download ${doc.title} as PDF`}
+                          >
+                            <Download className="w-3.5 h-3.5" />
+                            <span>1-Click PDF</span>
+                          </a>
                           <button
                             onClick={() => {
                               navigator.clipboard.writeText(url);
-                              notifyCopied(`Copied ${doc.name} Link!`);
+                              notifyCopied(`Copied ${doc.label} Link!`);
                             }}
                             className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold"
                           >
                             Copy Link
                           </button>
                           <a
-                            href={url}
+                            href={doc.html}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-1.5 rounded-lg bg-blue-600/20 text-blue-400 hover:bg-blue-600/30"
+                            title="Open Interactive HTML"
                           >
                             <ExternalLink className="w-4 h-4" />
                           </a>

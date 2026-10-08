@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import {
@@ -23,6 +23,10 @@ import {
   Building,
   HelpCircle,
   ChevronDown,
+  Volume2,
+  VolumeX,
+  Volume1,
+  Maximize2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading";
@@ -30,6 +34,7 @@ import AuditBookingModal, { CALENDLY_URL } from "@/components/AuditBookingModal"
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 // Mercer & Mills Client Academy Experience Modules for the Interactive Walkthrough Preview
 const sampleModules = [
@@ -42,6 +47,7 @@ const sampleModules = [
     checklistName: "Day 1 Asset Checklist (PDF)",
     downloadUrl: "/downloads/day-1-asset-checklist.html",
     hasChecklist: true,
+    youtubeId: "PCy-L_psXYs",
   },
   {
     id: 2,
@@ -52,6 +58,7 @@ const sampleModules = [
     checklistName: "Sample Curriculum Blueprint (PDF)",
     downloadUrl: "/downloads/sample-curriculum-blueprint.html",
     hasChecklist: true,
+    youtubeId: "bhnz9SgvAzk",
   },
   {
     id: 3,
@@ -112,6 +119,52 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<string>("General Audit");
   const [activeSampleModule, setActiveSampleModule] = useState(sampleModules[0]);
+  const [isHomeVideoPlaying, setIsHomeVideoPlaying] = useState(false);
+  const [isHomeMuted, setIsHomeMuted] = useState(false);
+  const [homeVolume, setHomeVolume] = useState(100);
+  const homeIframeRef = useRef<HTMLIFrameElement>(null);
+  const homePlayerContainerRef = useRef<HTMLDivElement>(null);
+
+  const sendHomeIframeCommand = (func: string, args: unknown[] = []) => {
+    homeIframeRef.current?.contentWindow?.postMessage(
+      JSON.stringify({ event: "command", func, args }),
+      "*"
+    );
+  };
+
+  const handleToggleHomeMute = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    const nextMute = !isHomeMuted;
+    setIsHomeMuted(nextMute);
+    if (nextMute) {
+      sendHomeIframeCommand("mute");
+    } else {
+      sendHomeIframeCommand("unMute");
+      sendHomeIframeCommand("setVolume", [homeVolume || 80]);
+    }
+  };
+
+  const handleHomeVolumeChange = (newVol: number) => {
+    setHomeVolume(newVol);
+    if (newVol === 0) {
+      setIsHomeMuted(true);
+      sendHomeIframeCommand("mute");
+    } else {
+      setIsHomeMuted(false);
+      sendHomeIframeCommand("unMute");
+      sendHomeIframeCommand("setVolume", [newVol]);
+    }
+  };
+
+  const toggleHomeFullscreen = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (!document.fullscreenElement) {
+      homePlayerContainerRef.current?.requestFullscreen?.();
+    } else {
+      document.exitFullscreen?.();
+    }
+  };
+
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   // Section 7 Embedded Qualification Form state
@@ -463,9 +516,22 @@ const Index = () => {
                   <div className="w-3 h-3 rounded-full bg-red-500/80" />
                   <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
                   <div className="w-3 h-3 rounded-full bg-green-500/80" />
-                  <span className="ml-3 text-xs text-slate-400 font-mono hidden sm:inline">
-                    academy.mercerandmills.com/client-onboarding
-                  </span>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <a
+                        href="/client-onboarding"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ml-3 text-xs text-slate-400 hover:text-cyan-400 transition-colors flex items-center gap-2 font-mono group"
+                      >
+                        <span>academy.mercerandmills.com/client-onboarding</span>
+                        <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-400 transition-colors" />
+                      </a>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-slate-900 border-slate-700 text-cyan-300 text-xs">
+                      Open Full Academy Prototype
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-slate-400">
                   <span className="inline-block w-2 h-2 rounded-full bg-green-400 animate-pulse" />
@@ -488,7 +554,12 @@ const Index = () => {
                     {sampleModules.map((mod) => (
                       <button
                         key={mod.id}
-                        onClick={() => setActiveSampleModule(mod)}
+                        onClick={() => {
+                          setActiveSampleModule(mod);
+                          if (!mod.youtubeId) {
+                            setIsHomeVideoPlaying(false);
+                          }
+                        }}
                         className={`w-full text-left p-3.5 rounded-xl border transition-all flex items-start gap-3 ${
                           activeSampleModule.id === mod.id
                             ? "bg-blue-600/15 border-blue-500/50 text-white shadow-sm"
@@ -514,6 +585,12 @@ const Index = () => {
                             </span>
                             <span>•</span>
                             <span>PDF Checklist</span>
+                            {mod.youtubeId && (
+                              <>
+                                <span>•</span>
+                                <span className="text-cyan-400 font-semibold">Video Ready</span>
+                              </>
+                            )}
                           </div>
                         </div>
                         <ChevronRight
@@ -527,30 +604,94 @@ const Index = () => {
                 </div>
 
                 {/* Right: Active Player & Takeaways (7 cols) */}
-                <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-6">
-                  {/* Fake 4K Video Player */}
-                  <div className="relative rounded-xl border border-slate-800 bg-[#080C14] aspect-video flex flex-col items-center justify-center overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
-                    <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/30">
-                      4K Studio Master · Crisp Audio
-                    </div>
-                    <div className="relative z-10 text-center space-y-3 px-4">
-                      <div className="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center mx-auto shadow-lg shadow-blue-500/30 group-hover:scale-105 transition-transform cursor-pointer">
-                        <Play className="w-6 h-6 ml-1" />
-                      </div>
-                      <p className="text-xs text-slate-300 font-medium max-w-sm">
-                        High-definition screen capture with guided narration &amp; animated visual callouts
-                      </p>
-                    </div>
+                <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-4">
+                  {/* Status Bar Above Player: Positioned Outside for Clean, Unobstructed Playback */}
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <span className="text-xs font-mono text-cyan-400 font-semibold flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                      {activeSampleModule.title.split(":")[0]}
+                    </span>
 
-                    {/* Fake Scrub Bar */}
-                    <div className="absolute bottom-3 left-4 right-4 flex items-center gap-3 text-[10px] text-slate-400 font-mono">
-                      <span>0:00</span>
-                      <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                        <div className="w-1/3 h-full bg-blue-500" />
-                      </div>
-                      <span>{activeSampleModule.duration}</span>
+                    {/* The High-Contrast Glowing Badge — Outside the Video Screen */}
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-950/90 border border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.35)] backdrop-blur-md">
+                      <span className="relative flex h-2.5 w-2.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
+                      </span>
+                      <span className="text-[11px] font-black tracking-widest text-white uppercase">
+                        4K STUDIO MASTER <span className="text-cyan-400">• CRISP AUDIO</span>
+                      </span>
                     </div>
+                  </div>
+
+                  {/* 4K Video Player */}
+                  <div
+                    ref={homePlayerContainerRef}
+                    className="relative rounded-xl border border-slate-800 bg-[#080C14] aspect-video flex flex-col items-center justify-center overflow-hidden group"
+                  >
+                    {isHomeVideoPlaying && activeSampleModule.youtubeId ? (
+                      <iframe
+                        ref={homeIframeRef}
+                        src={`https://www.youtube-nocookie.com/embed/${activeSampleModule.youtubeId}?autoplay=1&controls=1&enablejsapi=1&playsinline=1&rel=0`}
+                        title={activeSampleModule.title}
+                        className="w-full h-full border-0 absolute inset-0 z-10"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                      />
+                    ) : (
+                      <>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
+                        <div className="relative z-10 text-center space-y-3 px-4">
+                          <button
+                            type="button"
+                            onClick={() => setIsHomeVideoPlaying(true)}
+                            className="w-14 h-14 rounded-full bg-cyan-500 text-slate-950 flex items-center justify-center mx-auto shadow-lg shadow-cyan-500/30 group-hover:scale-110 active:scale-95 transition-all cursor-pointer"
+                            aria-label="Play 4K Studio Master"
+                          >
+                            <Play className="w-6 h-6 ml-1 fill-slate-950" />
+                          </button>
+                          <p className="text-xs text-slate-300 font-medium max-w-sm">
+                            {activeSampleModule.youtubeId
+                              ? "Click to play actual 4K studio recording with high-fidelity audio"
+                              : "High-definition screen capture with guided narration & animated visual callouts"}
+                          </p>
+                        </div>
+
+                        {/* Scrub Bar & Controls */}
+                        <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-[10px] text-slate-400 font-mono gap-3">
+                          <div className="flex items-center gap-2 flex-1">
+                            <span>0:00</span>
+                            <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                              <div className="w-1/3 h-full bg-cyan-500" />
+                            </div>
+                            <span>{activeSampleModule.duration}</span>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={handleToggleHomeMute}
+                              className="text-slate-400 hover:text-white transition-colors"
+                              title={isHomeMuted ? "Click to Unmute" : "Click to Mute"}
+                            >
+                              {isHomeMuted || homeVolume === 0 ? (
+                                <VolumeX className="w-3.5 h-3.5 text-red-400" />
+                              ) : (
+                                <Volume2 className="w-3.5 h-3.5 text-slate-300" />
+                              )}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={toggleHomeFullscreen}
+                              className="text-slate-400 hover:text-white transition-colors"
+                              title="Toggle Fullscreen"
+                            >
+                              <Maximize2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   {/* Module Details & Deliverables */}

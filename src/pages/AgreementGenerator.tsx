@@ -11,6 +11,7 @@ import {
   ExternalLink,
   ArrowLeft,
   FileText,
+  Download,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useClientProfile } from "@/hooks/useClientProfile";
@@ -109,8 +110,8 @@ Date: _______________________
       <style>{`
         @media print {
           @page {
-            size: auto;
-            margin: 10mm 12mm;
+            size: A4 portrait;
+            margin: 8mm 10mm;
           }
           header, footer, nav, .no-print {
             display: none !important;
@@ -123,23 +124,18 @@ Date: _______________________
             padding: 0 !important;
             margin: 0 !important;
           }
-          body * {
-            visibility: hidden;
-          }
-          #printable-agreement, #printable-agreement * {
-            visibility: visible;
-          }
           #printable-agreement {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
+            position: relative !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 auto !important;
             background: #ffffff !important;
             color: #0f172a !important;
-            padding: 16px !important;
+            padding: 12px !important;
             box-shadow: none !important;
-            border: 1px solid #e2e8f0 !important;
+            border: 1px solid #cbd5e1 !important;
             border-radius: 8px !important;
+            page-break-inside: avoid;
           }
         }
       `}</style>
@@ -174,6 +170,14 @@ Date: _______________________
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
+              <a
+                href="/downloads/sprint-agreement-nda.pdf"
+                download="Mercer-Mills-Sprint-Agreement-NDA.pdf"
+                className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-2 transition-all shadow-lg shadow-emerald-600/30"
+              >
+                <Download className="w-4 h-4" />
+                1-Click Download Official PDF
+              </a>
               <button
                 onClick={copyAgreementText}
                 className="px-4 py-2.5 rounded-xl border border-slate-700 bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold flex items-center gap-2 transition-all shadow-sm"
@@ -183,10 +187,10 @@ Date: _______________________
               </button>
               <button
                 onClick={handlePrint}
-                className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center gap-2 transition-all shadow-lg shadow-blue-600/30"
+                className="px-4 py-2.5 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-medium flex items-center gap-2 transition-all shadow-sm"
               >
                 <Printer className="w-4 h-4" />
-                Print / Save as PDF
+                Browser Print (Optional)
               </button>
             </div>
           </div>

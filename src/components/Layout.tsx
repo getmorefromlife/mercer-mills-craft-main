@@ -44,6 +44,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  if (location.pathname === "/client-onboarding") {
+    return <>{children}</>;
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0F17] text-white">
       {/* Header */}
