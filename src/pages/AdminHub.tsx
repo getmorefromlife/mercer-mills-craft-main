@@ -60,6 +60,54 @@ interface CustomChecklistSection {
   items: string[];
 }
 
+export type MilestoneStatus = "PASSED ✓" | "COMPLETED ✓" | "IN PROGRESS ⏳" | "PENDING ⏱️";
+
+export interface SprintMilestoneItem {
+  id: number;
+  label: string;
+  name: string;
+  status: MilestoneStatus;
+  description: string;
+}
+
+export const DEFAULT_SPRINT_MILESTONES: SprintMilestoneItem[] = [
+  {
+    id: 1,
+    label: "Milestone 1 (Day 1–2)",
+    name: "Intake & Secure Vault Scoping",
+    status: "PASSED ✓",
+    description: "Cloud vault initialized, mutual NDA executed, raw assets ingested.",
+  },
+  {
+    id: 2,
+    label: "Milestone 2 (Day 3–5)",
+    name: "5-Module Curriculum Architecture Matrix",
+    status: "PASSED ✓",
+    description: "Micro-learning syllabus approved, learning objectives locked.",
+  },
+  {
+    id: 3,
+    label: "Milestone 3 (Day 6–10)",
+    name: "4K Studio Screen Capture & Audio Mastering",
+    status: "PASSED ✓",
+    description: "4K 60fps walkthroughs rendered, -14 LUFS studio audio mastered.",
+  },
+  {
+    id: 4,
+    label: "Milestone 4 (Day 11–13)",
+    name: "Turnkey LMS Deployment & Progress Staging",
+    status: "PASSED ✓",
+    description: "Portal staged (Skool/Notion/LMS), interactive progress tracking verified.",
+  },
+  {
+    id: 5,
+    label: "Milestone 5 (Day 14)",
+    name: "Go-Live Handoff & Customer Distribution",
+    status: "COMPLETED ✓",
+    description: "Welcome email automation tested, 100% raw master files delivered.",
+  },
+];
+
 const DEFAULT_INVOICE_ITEMS: CustomLineItem[] = [
   {
     id: "1",
@@ -399,6 +447,37 @@ export default function AdminHub() {
   const activeWelcomeSubject =
     welcomeEmailSubject ||
     `Welcome to ${profile.clientCompany || "Acme Cloud"} — Access Your 15-Minute Onboarding Academy`;
+
+  // Sprint Milestone Statuses (Tab 7: MM-REL-05)
+  const [milestones, setMilestones] = useState<SprintMilestoneItem[]>(DEFAULT_SPRINT_MILESTONES);
+
+  const updateMilestoneStatus = (id: number, status: MilestoneStatus) => {
+    setMilestones((prev) =>
+      prev.map((m) => (m.id === id ? { ...m, status } : m))
+    );
+  };
+
+  const markAllMilestones = (status: MilestoneStatus) => {
+    setMilestones((prev) => prev.map((m) => ({ ...m, status })));
+  };
+
+  const passedOrCompletedCount = milestones.filter(
+    (m) => m.status === "PASSED ✓" || m.status === "COMPLETED ✓"
+  ).length;
+
+  const getStatusBadgeStyle = (status: MilestoneStatus) => {
+    switch (status) {
+      case "PASSED ✓":
+      case "COMPLETED ✓":
+        return "bg-emerald-100 text-emerald-800 border-emerald-300";
+      case "IN PROGRESS ⏳":
+        return "bg-amber-100 text-amber-800 border-amber-300";
+      case "PENDING ⏱️":
+        return "bg-slate-100 text-slate-700 border-slate-300";
+      default:
+        return "bg-slate-100 text-slate-700 border-slate-300";
+    }
+  };
 
   const [copiedAction, setCopiedAction] = useState<string | null>(null);
 
@@ -2236,6 +2315,48 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
                     />
                   </div>
 
+                  <div className="pt-3 border-t border-slate-800 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <label className="text-slate-300 font-bold block text-xs flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                        Milestone Sign-Off Controls ({passedOrCompletedCount}/5 Passed)
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => markAllMilestones("PASSED ✓")}
+                        className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 hover:bg-emerald-900 text-[10px] font-semibold transition-colors"
+                      >
+                        All Passed
+                      </button>
+                    </div>
+
+                    <div className="space-y-2">
+                      {milestones.map((m) => (
+                        <div
+                          key={m.id}
+                          className="p-2.5 rounded-lg bg-slate-900/90 border border-slate-800 flex items-center justify-between gap-2"
+                        >
+                          <div className="min-w-0 pr-1">
+                            <div className="text-[11px] font-bold text-white truncate">
+                              {m.id}. {m.name}
+                            </div>
+                            <div className="text-[10px] text-slate-400">{m.label}</div>
+                          </div>
+                          <select
+                            value={m.status}
+                            onChange={(e) => updateMilestoneStatus(m.id, e.target.value as MilestoneStatus)}
+                            className="bg-slate-800 text-slate-200 text-[10.5px] font-semibold px-2 py-1 rounded border border-slate-700 focus:outline-none focus:border-blue-500 cursor-pointer flex-shrink-0"
+                          >
+                            <option value="PASSED ✓">PASSED ✓</option>
+                            <option value="COMPLETED ✓">COMPLETED ✓</option>
+                            <option value="IN PROGRESS ⏳">IN PROGRESS ⏳</option>
+                            <option value="PENDING ⏱️">PENDING ⏱️</option>
+                          </select>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
                   <div className="pt-2 flex flex-col gap-2">
                     <button
                       type="button"
@@ -2357,98 +2478,60 @@ Email: syedimonrizvipmp@gmail.com | Desk: +1 (530) 423-5158
                     </div>
                   </div>
 
-                  {/* Section 1: Milestone Verification Checklist (5 of 5 Passed) */}
+                  {/* Section 1: Milestone Verification Checklist */}
                   <div className="space-y-2.5">
                     <div className="flex items-center justify-between">
                       <h3 className="font-heading font-extrabold text-slate-900 uppercase tracking-wider text-xs flex items-center gap-1.5">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                        Section 1: Milestone Verification Checklist (5 of 5 Passed)
+                        Section 1: Milestone Verification Checklist ({passedOrCompletedCount} of 5 Passed)
                       </h3>
-                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                        100% QUALITY GATES VERIFIED
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
+                        passedOrCompletedCount === 5 
+                          ? "text-emerald-700 bg-emerald-50 border-emerald-200" 
+                          : "text-amber-700 bg-amber-50 border-amber-200"
+                      }`}>
+                        {passedOrCompletedCount === 5 ? "100% QUALITY GATES VERIFIED" : `${passedOrCompletedCount} OF 5 GATES VERIFIED`}
                       </span>
                     </div>
 
                     <div className="border border-slate-200 rounded-xl overflow-hidden divide-y divide-slate-200 bg-white shadow-sm text-[11px]">
-                      {/* Milestone 1 */}
-                      <div className="p-2.5 sm:px-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 bg-slate-50/50">
-                        <div className="space-y-0.5">
-                          <div className="font-bold text-slate-900 flex items-center gap-2">
-                            <span>1. Milestone 1 (Day 1–2):</span>
-                            <span>Intake &amp; Secure Vault Scoping</span>
+                      {milestones.map((m, idx) => (
+                        <div
+                          key={m.id}
+                          className={`p-2.5 sm:px-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 ${
+                            idx % 2 === 0 ? "bg-slate-50/50" : "bg-white"
+                          }`}
+                        >
+                          <div className="space-y-0.5 min-w-0 pr-2">
+                            <div className="font-bold text-slate-900 flex items-center gap-2">
+                              <span>{m.id}. {m.label}:</span>
+                              <span>{m.name}</span>
+                            </div>
+                            <p className="text-[10.5px] text-slate-600 italic">
+                              Status: {m.description}
+                            </p>
                           </div>
-                          <p className="text-[10.5px] text-slate-600 italic">
-                            Status: Cloud vault initialized, mutual NDA executed, raw assets ingested.
-                          </p>
-                        </div>
-                        <span className="self-start sm:self-center px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold text-[10px] tracking-wide border border-emerald-200 whitespace-nowrap">
-                          PASSED ✓
-                        </span>
-                      </div>
 
-                      {/* Milestone 2 */}
-                      <div className="p-2.5 sm:px-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
-                        <div className="space-y-0.5">
-                          <div className="font-bold text-slate-900 flex items-center gap-2">
-                            <span>2. Milestone 2 (Day 3–5):</span>
-                            <span>5-Module Curriculum Architecture Matrix</span>
+                          <div className="flex items-center gap-2 self-start sm:self-center flex-shrink-0">
+                            {/* Interactive selector on screen */}
+                            <select
+                              value={m.status}
+                              onChange={(e) => updateMilestoneStatus(m.id, e.target.value as MilestoneStatus)}
+                              className={`no-print text-[10px] font-extrabold px-2 py-0.5 rounded border cursor-pointer ${getStatusBadgeStyle(m.status)}`}
+                              title="Click to select status"
+                            >
+                              <option value="PASSED ✓">PASSED ✓</option>
+                              <option value="COMPLETED ✓">COMPLETED ✓</option>
+                              <option value="IN PROGRESS ⏳">IN PROGRESS ⏳</option>
+                              <option value="PENDING ⏱️">PENDING ⏱️</option>
+                            </select>
+                            {/* Static badge during print */}
+                            <span className={`hidden print:inline-block px-2 py-0.5 rounded text-[10px] font-extrabold tracking-wide border whitespace-nowrap ${getStatusBadgeStyle(m.status)}`}>
+                              {m.status}
+                            </span>
                           </div>
-                          <p className="text-[10.5px] text-slate-600 italic">
-                            Status: Micro-learning syllabus approved, learning objectives locked.
-                          </p>
                         </div>
-                        <span className="self-start sm:self-center px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold text-[10px] tracking-wide border border-emerald-200 whitespace-nowrap">
-                          PASSED ✓
-                        </span>
-                      </div>
-
-                      {/* Milestone 3 */}
-                      <div className="p-2.5 sm:px-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 bg-slate-50/50">
-                        <div className="space-y-0.5">
-                          <div className="font-bold text-slate-900 flex items-center gap-2">
-                            <span>3. Milestone 3 (Day 6–10):</span>
-                            <span>4K Studio Screen Capture &amp; Audio Mastering</span>
-                          </div>
-                          <p className="text-[10.5px] text-slate-600 italic">
-                            Status: 4K 60fps walkthroughs rendered, -14 LUFS studio audio mastered.
-                          </p>
-                        </div>
-                        <span className="self-start sm:self-center px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold text-[10px] tracking-wide border border-emerald-200 whitespace-nowrap">
-                          PASSED ✓
-                        </span>
-                      </div>
-
-                      {/* Milestone 4 */}
-                      <div className="p-2.5 sm:px-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
-                        <div className="space-y-0.5">
-                          <div className="font-bold text-slate-900 flex items-center gap-2">
-                            <span>4. Milestone 4 (Day 11–13):</span>
-                            <span>Turnkey LMS Deployment &amp; Progress Staging</span>
-                          </div>
-                          <p className="text-[10.5px] text-slate-600 italic">
-                            Status: Portal staged (Skool/Notion/LMS), interactive progress tracking verified.
-                          </p>
-                        </div>
-                        <span className="self-start sm:self-center px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold text-[10px] tracking-wide border border-emerald-200 whitespace-nowrap">
-                          PASSED ✓
-                        </span>
-                      </div>
-
-                      {/* Milestone 5 */}
-                      <div className="p-2.5 sm:px-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 bg-slate-50/50">
-                        <div className="space-y-0.5">
-                          <div className="font-bold text-slate-900 flex items-center gap-2">
-                            <span>5. Milestone 5 (Day 14):</span>
-                            <span>Go-Live Handoff &amp; Customer Distribution</span>
-                          </div>
-                          <p className="text-[10.5px] text-slate-600 italic">
-                            Status: Welcome email automation tested, 100% raw master files delivered.
-                          </p>
-                        </div>
-                        <span className="self-start sm:self-center px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold text-[10px] tracking-wide border border-emerald-200 whitespace-nowrap">
-                          COMPLETED ✓
-                        </span>
-                      </div>
+                      ))}
                     </div>
                   </div>
 
