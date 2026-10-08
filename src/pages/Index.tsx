@@ -69,6 +69,7 @@ const sampleModules = [
     checklistName: "Studio Style Guide (PDF)",
     downloadUrl: "/downloads/studio-style-guide.html",
     hasChecklist: true,
+    youtubeId: "v0ni0dYulI0",
   },
   {
     id: 4,
@@ -79,6 +80,7 @@ const sampleModules = [
     checklistName: "Portal Setup Specs (PDF)",
     downloadUrl: "/downloads/portal-setup-specs.html",
     hasChecklist: true,
+    youtubeId: "tYA8ELvMHgE",
   },
   {
     id: 5,
@@ -89,6 +91,7 @@ const sampleModules = [
     checklistName: "Go-Live Launch Kit (PDF)",
     downloadUrl: "/downloads/go-live-launch-kit.html",
     hasChecklist: true,
+    youtubeId: "W19dCMIopF8",
   },
 ];
 

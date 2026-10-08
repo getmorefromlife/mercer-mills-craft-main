@@ -92,6 +92,7 @@ const modules: ModuleData[] = [
     blueprintPdf: "/downloads/studio-style-guide.pdf",
     deliverableName: "Studio Style Guide",
     deliverableType: "Audiovisual Standards & Grading Spec",
+    youtubeId: "v0ni0dYulI0",
   },
   {
     id: 4,
@@ -108,6 +109,7 @@ const modules: ModuleData[] = [
     blueprintPdf: "/downloads/portal-setup-specs.pdf",
     deliverableName: "Portal Setup Specs",
     deliverableType: "System Architecture & Integration Spec",
+    youtubeId: "tYA8ELvMHgE",
   },
   {
     id: 5,
@@ -124,6 +126,7 @@ const modules: ModuleData[] = [
     blueprintPdf: "/downloads/go-live-launch-kit.pdf",
     deliverableName: "Go-Live Launch Kit",
     deliverableType: "Production Handover & Operations Runbook",
+    youtubeId: "W19dCMIopF8",
   },
 ];
 
